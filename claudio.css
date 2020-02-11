@@ -1,0 +1,6 @@
+body {
+	background: black;
+}
+img[alt="www.000webhost.com"] {
+    display:none;
+}
