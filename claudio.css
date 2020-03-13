@@ -1,3 +1,21 @@
-body {
-	background: black;
+html, body {
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  background-color: #000;
+}
+
+#icons {
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-wrap: wrap;
+}
+#icons a {
+  color: #111;
+  margin: 2rem;
+}
+#icons a:hover {
+  color: #444;
 }
