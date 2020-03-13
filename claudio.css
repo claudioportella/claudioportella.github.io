@@ -13,9 +13,9 @@ html, body {
   flex-wrap: wrap;
 }
 #icons a {
-  color: #111;
+  color: #222;
   margin: 2rem;
 }
 #icons a:hover {
-  color: #444;
+  color: #aaa;
 }
