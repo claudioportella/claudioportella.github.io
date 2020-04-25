@@ -14,15 +14,6 @@ li a {
   font-size: 3em;
   color: #333;
 }
-li#linkedin a:hover {
-  color: #0A66C2;
-}
-li#myportfolio a:hover {
-  color: #FF0000;
-}
-li#youtube a:hover {
-  color: #FF0000;
-}
-li#email a:hover {
-  color: #FFF;
+li a:hover {
+  color: #999;
 }
