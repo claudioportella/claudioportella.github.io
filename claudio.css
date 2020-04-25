@@ -14,8 +14,14 @@ li a {
   font-size: 3em;
   color: #333;
 }
+li a:visited {
+  color: #333;
+}
 li a:hover {
   color: #999;
+}
+li a:checked {
+  color: #333;
 }
 li a:active {
   color: #333;
