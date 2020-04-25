@@ -17,3 +17,6 @@ li a {
 li a:hover {
   color: #999;
 }
+li a:active {
+  color: #333;
+}
