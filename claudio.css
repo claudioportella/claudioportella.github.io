@@ -1,3 +1,28 @@
-html {
-  background-color: #000;
+body {
+  background-color: black;
+  text-align: center;
+}
+ul {
+  margin: 8em 1em 1em 1em;
+  padding: 0px;
+}
+li {
+  display: inline-block;
+  margin: 2em;
+}
+li a {
+  font-size: 3em;
+  color: #333;
+}
+li#linkedin a:hover {
+  color: #0A66C2;
+}
+li#myportfolio a:hover {
+  color: #FF0000;
+}
+li#youtube a:hover {
+  color: #FF0000;
+}
+li#email a:hover {
+  color: #FFF;
 }
