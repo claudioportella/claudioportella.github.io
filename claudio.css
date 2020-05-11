@@ -9,14 +9,16 @@ ul {
 li {
   display: inline-block;
   margin: 2em;
+  text-shadow: 0px 0px 30px #aaa;
 }
 li a {
   font-size: 3em;
-  color: rgba(255, 255, 255, 0.2);
+  color: #000;
 }
 li a:visited, li a:checked, li a:active {
-  color: rgba(255, 255, 255, 0.2);
+  color: #000;
 }
 li a:hover {
-  color: rgba(255, 255, 255, 0.4);
+  color: #000;
+  text-shadow: 0px 0px 30px #fff;
 }
