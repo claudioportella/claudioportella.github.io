@@ -1,25 +1,25 @@
 body {
-  background-color: black;
-  text-align: center;
+	background-color: black;
+	text-align: center;
 }
 ul {
-  margin: 8em 1em;
-  padding: 0px;
+	margin: 8em 1em;
+	padding: 0px;
 }
 li {
-  display: inline-block;
-  margin: 2em;
-  text-shadow: 0px 0px 8px #666;
+	display: inline-block;
+	margin: 2em;
+	text-shadow: 0px 0px 8px #666;
 }
 li a {
-  font-size: 4em;
-  color: rgba(0, 0, 0, 0);
+	font-size: 4em;
+	color: rgba(0, 0, 0, 0);
 }
 li a:visited, li a:checked, li a:active {
-  color: rgba(0, 0, 0, 0);
+	color: rgba(0, 0, 0, 0);
 }
 li a:hover {
-  color: #666;
-  text-shadow: 0px 0px 0px #000;
-  transition: .5s all linear;
+	color: #666;
+	text-shadow: 0px 0px 0px #000;
+	transition: .5s all linear;
 }
