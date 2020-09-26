@@ -1,7 +1,7 @@
 body {
 	background-color: #000;
 	font-family: 'Roboto Mono', monospace;
-	font-size: calc(1em + 1vw);
+	font-size: calc(1.1em + 1vw);
 	text-align: right;
 	color: #666;
 }
