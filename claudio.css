@@ -1,21 +1,7 @@
-       @media screen and (max-width:320px) {
-       	html {
-       		font-size: 2em;
-       	}
-       }
-       @media screen and (max-width:768px) {
-       	html {
-       		font-size: 1.5em;
-       	}
-       }
-       @media screen and (max-width:1200px) {
-       	html {
-       		font-size: 1em;
-       	}
-       }
        body {
        	background-color: #000;
        	font-family: 'Roboto Mono', monospace;
+       	font-size: 1.3em;
        	text-align: right;
        	color: #666;
        }
