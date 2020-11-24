@@ -2,24 +2,40 @@
        	background-color: #000;
        	font-family: 'Roboto Mono', monospace;
        	font-size: 1.3em;
-       	text-align: right;
+       	text-align: center;
        	color: #666;
+			 margin: 3em;
        }
-       ul {
-       	list-style-type: none;
-       	margin: 6em 1em;
-       	padding: 0px;
+img {
+	height: 40vh;
+}
+       .navigation {
+       	display: flex;
+       	flex-flow: row wrap;
+       	justify-content: center;
+       	list-style: none;
+       	margin: 2em 0;
        }
-       li {
-       	margin: 3em;
-       }
-       li a {
-       	color: #666;
+       .navigation a {
        	text-decoration: none;
-       }
-       li a:visited, li a:checked, li a:active {
+       	display: block;
+       	margin: 1em;
+       	padding: 0em;
        	color: #666;
        }
-       li a:hover {
+       .navigation a:visited, .navigation a:checked, .navigation a:active {
+       	color: #666;
+       }
+       .navigation a:hover {
        	color: #FFF;
+       }
+ 
+       @media all and (max-width: 800px) {
+       	.navigation {
+       		flex-flow: column wrap;
+       	}
+       	.navigation a {
+       		text-align: center;
+       		margin: 0.5em;
+       	}
        }
