@@ -4,11 +4,14 @@
        	font-size: 1.3em;
        	text-align: center;
        	color: #666;
-			 margin: 3em;
+       	margin: 3em;
        }
-img {
-	height: 40vh;
-}
+       img {
+       	height: 40vh;
+       }
+       ul {
+       	padding: 0;
+       }
        .navigation {
        	display: flex;
        	flex-flow: row wrap;
@@ -29,7 +32,6 @@ img {
        .navigation a:hover {
        	color: #FFF;
        }
- 
        @media all and (max-width: 800px) {
        	.navigation {
        		flex-flow: column wrap;
