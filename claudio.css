@@ -3,7 +3,7 @@
        	font-family: 'Roboto Mono', monospace;
        	font-size: 1.3em;
        	text-align: center;
-       	color: #666;
+       	color: #939597;
        	margin: 3em;
        }
        img {
@@ -24,13 +24,13 @@
        	display: block;
        	margin: 1em;
        	padding: 0em;
-       	color: #666;
+       	color: #939597;
        }
        .navigation a:visited, .navigation a:checked, .navigation a:active {
-       	color: #666;
+       	color: #939597;
        }
        .navigation a:hover {
-       	color: #FFF;
+       	color: #F5DF4D;
        }
        @media all and (max-width: 800px) {
        	.navigation {
