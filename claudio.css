@@ -13,11 +13,14 @@
        	padding: 0;
        }
        .navigation {
+       	background: url(logo.svg) center center no-repeat;
        	display: flex;
        	flex-flow: row wrap;
        	justify-content: center;
        	list-style: none;
-       	margin: 2em 0;
+       	align-items: center;
+       	margin: 0;
+       	height: 20em;
        }
        .navigation a {
        	text-decoration: none;
@@ -39,5 +42,5 @@
        	.navigation a {
        		text-align: center;
        		margin: 0.5em;
-       	}
+       	}}
        }
