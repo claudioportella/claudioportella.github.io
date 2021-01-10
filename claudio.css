@@ -4,30 +4,32 @@
        	font-size: 1.7em;
        	text-align: center;
        	color: #666;
-       	margin: 2.5em;
+       	margin: 1em;
+       }
+       img {
+       	height: 12em;
+       	max-width: 90%;
        }
        ul {
        	padding: 0;
        }
        .navigation {
-       	background: url(logo.svg) center center no-repeat;
        	display: flex;
        	flex-flow: row wrap;
        	justify-content: center;
        	list-style: none;
        	align-items: center;
-       	margin: 0;
-       	height: 15em;
+       	margin: 1em 0 0 0;
        }
        .navigation a {
        	text-decoration: none;
        	display: block;
-       	margin: 1em 1em;
+       	margin: 1em;
        	padding: 0em;
-       	color: #666;
+       	color: #222;
        }
        .navigation a:visited, .navigation a:checked, .navigation a:active {
-       	color: #666;
+       	color: #222;
        }
        .navigation a:hover {
        	color: #FFF;
@@ -38,6 +40,6 @@
        	}
        	.navigation a {
        		text-align: center;
-       		margin: 1em;
+       		margin: 0.25em;
        	}
        }
