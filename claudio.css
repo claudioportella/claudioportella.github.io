@@ -1,13 +1,10 @@
        body {
        	background-color: #000;
-       	font-family: 'Roboto Mono', monospace;
-       	font-size: 1.3em;
+       	font-family: 'Oswald', sans-serif;
+       	font-size: 1.7em;
        	text-align: center;
        	color: #666;
-       	margin: 3em;
-       }
-       img {
-       	height: 40vh;
+       	margin: 2.5em;
        }
        ul {
        	padding: 0;
@@ -20,12 +17,12 @@
        	list-style: none;
        	align-items: center;
        	margin: 0;
-       	height: 20em;
+       	height: 15em;
        }
        .navigation a {
        	text-decoration: none;
        	display: block;
-       	margin: 1em 2em;
+       	margin: 1em 1em;
        	padding: 0em;
        	color: #666;
        }
@@ -42,5 +39,5 @@
        	.navigation a {
        		text-align: center;
        		margin: 1em;
-       	}}
+       	}
        }
