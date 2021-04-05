@@ -1,45 +1,45 @@
        body {
-       	background-color: #000;
-       	font-family: 'Oswald', sans-serif;
-       	font-size: 1.7em;
-       	text-align: center;
-       	color: #666;
-       	margin: 1em;
+          background-color: #000;
+          font-family: 'Oswald', sans-serif;
+          font-size: 1.6em;
+          text-align: center;
+          color: #666;
+          margin: 1em;
        }
        img {
-       	height: 12em;
-       	max-width: 90%;
+          height: 12em;
+          max-width: 85%;
        }
        ul {
-       	padding: 0;
+          padding: 0;
        }
        .navigation {
-       	display: flex;
-       	flex-flow: row wrap;
-       	justify-content: center;
-       	list-style: none;
-       	align-items: center;
-       	margin: 0.5em 0 0 0;
+          display: flex;
+          flex-flow: row wrap;
+          justify-content: center;
+          list-style: none;
+          align-items: center;
+          margin: 0.5em 0 0 0;
        }
        .navigation a {
-       	text-decoration: none;
-       	display: block;
-       	margin: 1em;
-       	padding: 0em;
-       	color: #222;
+          text-decoration: none;
+          display: block;
+          margin: 1em;
+          padding: 0em;
+          color: #222;
        }
        .navigation a:visited, .navigation a:checked, .navigation a:active {
-       	color: #222;
+          color: #222;
        }
-       .navigation a:hover {
-       	color: #FFF;
+       .navigation a:hover, .navigation a:focus {
+          color: #FFF;
        }
        @media all and (max-width: 800px) {
-       	.navigation {
-       		flex-flow: column wrap;
-       	}
-       	.navigation a {
-       		text-align: center;
-       		margin: 0.25em;
-       	}
+          .navigation {
+             flex-flow: column wrap;
+          }
+          .navigation a {
+             text-align: center;
+             margin: 0.25em;
+          }
        }
