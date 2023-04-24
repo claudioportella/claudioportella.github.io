@@ -1,42 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
   <head>
-    <meta charset="UTF-8">
-    <title>Book Spine Calculator</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta charset="UTF-8" />
+    <title>Cálculo de Lombada</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div class="container">
-      <h1>Book Spine Calculator</h1>
-      <div class="form">
-        <label for="binding-type">Binding Type:</label>
-        <select id="binding-type">
-          <option value="colada">Colada Binding</option>
-          <option value="costurada">Costurada Binding</option>
-        </select>
-        <br><br>
-        <label for="paper-type">Paper Type:</label>
-        <select id="paper-type">
-          <option value="offset-63g">Offset 63g</option>
-          <option value="offset-75g">Offset 75g</option>
-          <option value="offset-90g">Offset 90g</option>
-          <option value="couchê-90g">Couchê 90g</option>
-          <option value="couchê-120g">Couchê 120g</option>
-          <option value="couchê-150g">Couchê 150g</option>
-          <option value="pólen-soft-70g">Pólen Soft 70g</option>
-          <option value="pólen-soft-80g">Pólen Soft 80g</option>
-          <option value="vergê-85g">Vergê 85g</option>
-        </select>
-        <br><br>
-        <label for="num-pages">Number of Pages:</label>
-        <input type="number" id="num-pages" min="1">
-        <br><br>
-        <button onclick="calculateSpine()">Calculate</button>
-      </div>
-      <div class="result">
-        <p id="spine-size"></p>
-      </div>
+      <h1>Cálculo de Lombada</h1>
+      <form>
+        <div class="form-group">
+          <label for="binding">Encadernação:</label>
+          <select id="binding" name="binding">
+            <option value="">-- Selecione --</option>
+            <option value="colada">Colada</option>
+            <option value="costurada">Costurada</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="paper-type">Tipo de Papel:</label>
+          <select id="paper-type" name="paper-type">
+            <option value="">-- Selecione --</option>
+            <option value="offset 63g">Offset 63g</option>
+            <option value="offset 75g">Offset 75g</option>
+            <option value="offset 90g">Offset 90g</option>
+            <option value="couchê 90g">Couchê 90g</option>
+            <option value="couchê 120g">Couchê 120g</option>
+            <option value="couchê 150g">Couchê 150g</option>
+            <option value="pólen soft 70g">Pólen Soft 70g</option>
+            <option value="pólen soft 80g">Pólen Soft 80g</option>
+            <option value="vergê 85g">Vergê 85g</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="num-pages">Número de Páginas:</label>
+          <input type="number" id="num-pages" name="num-pages" min="1" />
+        </div>
+        <div class="form-group">
+          <button type="button" id="calc-btn">Calcular</button>
+        </div>
+      </form>
+      <div id="result"></div>
     </div>
-    <script src="script.js"></script>
+    <script src="spine.js"></script>
   </body>
 </html>
