@@ -13,23 +13,24 @@
 <main>
   <form>
     <div class="form-group">
-      <label for="tipoPapel">Tipo de papel</label>
+      <label for="tipoPapel">PAPEL</label>
       <select id="tipoPapel">
       </select>
     </div>
     <div class="form-group">
-      <label for="encadernacao">Encadernação</label>
+      <label for="encadernacao">ENCADERNAÇÃO</label>
       <select id="encadernacao">
         <option value="semCostura">Sem costura</option>
         <option value="comCostura">Com costura</option>
       </select>
     </div>
     <div class="form-group">
-      <label for="numPaginas">Número de páginas</label>
+      <label for="numPaginas">NÚMERO DE PÁGINAS</label>
       <input type="number" id="numPaginas" min="1">
     </div>
     <button type="button" onclick="calcularLombada()">Calcular</button>
     <p id="resultado"></p>
+	      <p id="obs"></p>
   </form>
 </main>
 <script src="script.js"></script>

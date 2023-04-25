@@ -24,13 +24,22 @@ function gerarCamposPapel() {
 function calcularLombada() {
   const papelIndex = document.getElementById("tipoPapel").value;
   const encadernacao = document.getElementById("encadernacao").value;
-  const paginas = document.getElementById("numPaginas").value;  
+  const paginas = document.getElementById("numPaginas").value;
   const papel = papeis[papelIndex];
   const lombada = encadernacao === "semCostura" ? papel.semCostura : papel.comCostura;
- 
-const resultado = paginas * lombada;
-document.getElementById("resultado").innerHTML = resultado.toFixed(1) + " mm";
-}
+  const resultado = paginas * lombada;
 
-// Chama a função de gerar campos assim que a página carrega
+  document.getElementById("resultado").innerHTML = resultado.toLocaleString('pt-BR', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 1
+  }) + " mm";
+
+   const obs = document.getElementById("obs");
+  if (resultado < 4) {
+    obs.innerHTML = "Para lombadas com menos de 4mm o recomendável é grampo canoa";
+  } else {
+    obs.innerHTML = "";
+  }
+	
+}
 window.onload = gerarCamposPapel;

@@ -7,11 +7,13 @@ body {
   font-size: 16px;
   line-height: 1.5;
   margin: 0;
+	background-color: #f1f1f1;
 }
 
 header {
-  background-color: #006699;
-  color: #fff;
+  background-color: #005c9e;
+	text-align: center;
+  color: #e1f6fe;
   padding: 10px;
 }
 
@@ -20,6 +22,7 @@ main {
 }
 
 form {
+	font-size: 18px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -33,26 +36,31 @@ form {
 }
 
 label {
+	text-align: center;
   margin-bottom: 5px;
+	color: #005c9e;
 }
 
 select,
 input[type="number"] {
+	font-size: 18px;
+	width: 300px;
+	text-align: center;
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
+	background-color: #e1f6fe;
 }
 
-select {
-  width: 100%;
-}
+
 
 button {
-  background-color: #006699;
-  color: #fff;
+	font-size: 18px;
+  background-color: #005c9e;
+  color: #f1f1f1;
   border: none;
   padding: 10px 20px;
-  border-radius: 5px;
+  border-radius: 20px;
   margin: 10px 0;
   cursor: pointer;
 }
@@ -61,8 +69,14 @@ p {
   margin: 20px 0;
 }
 
-footer {
-  background-color: #ddd;
-  padding: 10px;
-  text-align: center;
+#resultado {
+	font-weight: bold;
+	font-size: 24px; 
+	color: #005c9e;
+}
+
+#obs {
+		text-align: center;
+	font-style: italic;
+	font-size: 18px;
 }
