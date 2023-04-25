@@ -34,12 +34,14 @@ function calcularLombada() {
     maximumFractionDigits: 1
   }) + " mm";
 
-   const obs = document.getElementById("obs");
+  const obs = document.getElementById("obs");
+
   if (resultado < 3) {
     obs.innerHTML = "⚠️<br>Espessura com menos de 3 mm.<br> Encadernar com grampo canoa.";
   } else {
     obs.innerHTML = "";
   }
-	
+
 }
+
 window.onload = gerarCamposPapel;
