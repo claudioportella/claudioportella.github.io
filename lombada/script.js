@@ -44,4 +44,13 @@ function calcularLombada() {
 
 }
 
+var numPaginas = document.getElementById("numPaginas");
+
+numPaginas.addEventListener("keydown", function(event) {
+  if (event.keyCode === 13) {
+    event.preventDefault(); // impede o comportamento padrão de envio do formulário
+    calcularLombada(); // chama a função de cálculo da lombada
+  }
+});
+
 window.onload = gerarCamposPapel;
