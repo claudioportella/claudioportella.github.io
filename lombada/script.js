@@ -37,11 +37,13 @@ function calcularLombada() {
   const obs = document.getElementById("obs");
 
   if (resultado < 3) {
-    obs.innerHTML = "⚠️<br>Espessura com menos de 3 mm.<br> Encadernar com grampo canoa.";
-  } else {
+    obs.innerHTML = "⚠️<br>Espessura com menos de 3 mm.<br> <strong>Encadernar com grampo canoa.</strong>";
+  } else if (resultado > 60) {
+    obs.innerHTML = "⚠️<br>Espessura com mais de 6 cm.<br> <strong>Acima do limite para encadernação.</strong>";
+  }
+ else {
     obs.innerHTML = "";
   }
-
 }
 
 var numPaginas = document.getElementById("numPaginas");
