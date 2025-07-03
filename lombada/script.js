@@ -2,6 +2,7 @@ const papeis = [
   { tipo: "offset 75g", colada: 0.050, costurada: 0.052 },
   { tipo: "offset 63g", colada: 0.042, costurada: 0.044 },
   { tipo: "offset 90g", colada: 0.058, costurada: 0.062 },
+  { tipo: "offset 120g", colada: 0.065, costurada: 0.067 },
   { tipo: "couchê 90g", colada: 0.044, costurada: 0.046 },
   { tipo: "couchê 120g", colada: 0.060, costurada: 0.062 },
   { tipo: "couchê 150g", colada: 0.070, costurada: 0.072 },
