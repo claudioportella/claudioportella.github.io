@@ -1,54 +1,430 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<!-- Google tag (gtag.js) --> 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-E4WHRRHXMD"></script> 
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculo de Lombada - Dark Mode</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #0a0a0a;
+            --card-dark: #141414;
+            --border-subtle: #262626;
+        }
 
-  gtag('config', 'G-E4WHRRHXMD');
-</script>
-<meta charset="UTF-8">
-<title>Cálculo de Lombada</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style.css">
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-deep);
+            color: #ededed;
+        }
+
+        .glass-card {
+            background: var(--card-dark);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-subtle);
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .input-dark {
+            background: #1a1a1a;
+            border: 1px solid #2d2d2d;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Força os placeholders a ficarem brancos em todos os navegadores */
+        .input-dark::placeholder {
+            color: #ffffff !important;
+            opacity: 0.6 !important;
+        }
+        
+        .input-dark::-webkit-input-placeholder {
+            color: #ffffff !important;
+            opacity: 0.6 !important;
+        }
+
+        .input-dark:focus {
+            border-color: #3b82f6;
+            outline: none;
+        }
+
+        .canvas-container {
+            display: none;
+            background: #0f0f0f;
+            border-radius: 2rem;
+            border: 1px solid var(--border-subtle);
+            overflow: hidden;
+            width: 100%;
+            padding: 0; 
+        }
+
+        canvas {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .legenda-item {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 0.5rem;
+            border-radius: 1rem;
+        }
+
+        .legenda-item:hover {
+            background-color: #1a1a1a;
+            transform: translateX(4px);
+        }
+    </style>
 </head>
-<body>
-<header>
-  <h1>Cálculo de Lombada</h1>
-</header>
-<main>
-  <form>
-    <div class="form-group">
-      <label for="tipoPapel">PAPEL</label>
-      <select id="tipoPapel" onchange="calcularLombada()">
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="encadernacao">ENCADERNAÇÃO</label>
-      <select id="encadernacao" onchange="calcularLombada()">
-        <option value="colada">colada</option>
-        <option value="costurada">costurada</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="formato">FORMATO</label>
-      <div class="formato-group">
-		<input type="number" id="formatoH" min="1" onchange="calcularLombada()">
-      <p>&nbsp;X&nbsp;</p>
-		  <input type="number" id="formatoV" min="1" onchange="calcularLombada()"></div>
-    </div>
-    <div class="form-group">
-      <label for="orelha">ORELHA</label>
-      <input type="number" id="orelha" min="0" onchange="calcularLombada()">
-    </div>
-    <button type="button" onclick="calcularLombada()">CALCULAR</button>
-    <p id="resultado"></p>
-    <p id="obs"></p>
-  </form>
-</main>
-<script src="script.js"></script>
+<body class="min-h-screen">
+
+    <main class="grid grid-cols-1 lg:grid-cols-12 gap-8 p-4 md:p-8 lg:p-12 items-start">
+        
+        <!-- Painel de Controlos -->
+        <div class="lg:col-span-4 xl:col-span-3">
+            <div class="glass-card w-full p-8 rounded-[2rem]">
+                <form id="lombadaForm" class="space-y-6" onsubmit="return false;">
+                    
+                    <div class="space-y-4">
+                        <div class="flex flex-col">
+                            <label for="tipoPapel" class="text-[10px] font-bold text-gray-500 mb-2 uppercase ml-1">Papel</label>
+                            <div class="relative">
+                                <select id="tipoPapel" onchange="calcularLombada()" class="w-full input-dark rounded-2xl p-4 text-sm font-medium appearance-none cursor-pointer">
+                                </select>
+                                <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256"><path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80a8,8,0,0,1,11.32-11.32L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path></svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col">
+                            <label for="encadernacao" class="text-[10px] font-bold text-gray-500 mb-2 uppercase ml-1">Encadernação</label>
+                            <div class="relative">
+                                <select id="encadernacao" onchange="calcularLombada()" class="w-full input-dark rounded-2xl p-4 text-sm font-medium appearance-none cursor-pointer">
+                                    <option value="colada">Colada</option>
+                                    <option value="costurada">Costurada</option>
+                                </select>
+                                <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256"><path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80a8,8,0,0,1,11.32-11.32L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path></svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bloco Reposicionado: Número de Páginas -->
+                    <div class="flex flex-col">
+                        <label for="numPaginas" class="text-[10px] font-bold text-gray-500 mb-2 uppercase ml-1">Número de páginas</label>
+                        <input type="number" id="numPaginas" min="1" oninput="calcularLombada()" class="w-full input-dark rounded-2xl p-4 text-sm font-medium focus:border-blue-500 outline-none transition-all">
+                    </div>
+
+                    <div class="flex flex-col">
+                        <label class="text-[10px] font-bold text-gray-500 mb-2 uppercase ml-1">Formato</label>
+                        <div class="input-dark p-6 rounded-2xl space-y-4">
+                            <div class="flex items-end gap-2">
+                                <div class="flex-1 flex flex-col">
+                                    <label for="largura" class="text-[10px] font-bold text-gray-500 mb-2 uppercase text-center block">Largura (mm)</label>
+                                    <input type="number" id="largura" oninput="calcularLombada()" class="w-full input-dark rounded-xl p-3 text-center text-sm font-medium text-white">
+                                </div>
+                                <div class="font-bold text-xs pb-4" style="color: #2d2d2d;">X</div>
+                                <div class="flex-1 flex flex-col">
+                                    <label for="altura" class="text-[10px] font-bold text-gray-500 mb-2 uppercase text-center block">Altura (mm)</label>
+                                    <input type="number" id="altura" oninput="calcularLombada()" class="w-full input-dark rounded-xl p-3 text-center text-sm font-medium text-white">
+                                </div>
+                            </div>
+                            
+                            <div class="pt-4 border-t border-white/10">
+                                <label for="orelhas" class="text-[10px] font-bold text-gray-500 mb-2 uppercase text-center block">Orelha (mm)</label>
+                                <input type="number" id="orelhas" oninput="calcularLombada()" class="w-full input-dark rounded-xl p-3 text-center text-sm font-medium text-white">
+                                <div id="infoOrelha" class="text-[9px] text-white text-center mt-2 uppercase font-normal hidden">largura da capa aumentará 2mm</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <label class="text-[10px] font-bold text-gray-500 mb-2 uppercase ml-1">Lombada</label>
+                        <div id="containerResultado" class="input-dark p-4 rounded-2xl text-center min-h-[72px] flex items-center justify-center">
+                            <p id="resultado" class="text-4xl font-normal text-white"></p>
+                        </div>
+                    </div>
+
+                    <div id="obs" class="text-center transition-all h-4"></div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Esquema Técnico -->
+        <div class="lg:col-span-8 xl:col-span-9 w-full">
+            <div id="canvasWrapper" class="canvas-container p-8">
+                <canvas id="canvasEsquema"></canvas>
+                
+                <div id="legendaMedidas" class="mt-12 grid grid-cols-2 md:grid-cols-3 gap-6 border-t border-white/5 pt-8 text-sm">
+                    <div class="legenda-item flex items-start gap-3" onmouseenter="setHighlight('largura')" onmouseleave="setHighlight(null)">
+                        <div class="w-3 h-3 rounded-full mt-1 bg-blue-500"></div>
+                        <div class="flex flex-col">
+                            <span class="text-[10px] font-bold text-gray-500 uppercase">Largura</span>
+                            <span id="leg_largura" class="text-lg font-medium text-gray-300">-</span>
+                        </div>
+                    </div>
+                    <div class="legenda-item flex items-start gap-3" onmouseenter="setHighlight('altura')" onmouseleave="setHighlight(null)">
+                        <div class="w-3 h-3 rounded-full mt-1 bg-gray-400"></div>
+                        <div class="flex flex-col">
+                            <span class="text-[10px] font-bold text-gray-500 uppercase">Altura</span>
+                            <span id="leg_altura" class="text-lg font-medium text-gray-300">-</span>
+                        </div>
+                    </div>
+                    <div class="legenda-item flex items-start gap-3" onmouseenter="setHighlight('lombada')" onmouseleave="setHighlight(null)">
+                        <div class="w-3 h-3 rounded-full mt-1 bg-white"></div>
+                        <div class="flex flex-col">
+                            <span class="text-[10px] font-bold text-gray-500 uppercase">Lombada</span>
+                            <span id="leg_lombada" class="text-lg font-medium text-gray-300">-</span>
+                        </div>
+                    </div>
+                    <div class="legenda-item flex items-start gap-3" onmouseenter="setHighlight('orelha')" onmouseleave="setHighlight(null)">
+                        <div class="w-3 h-3 rounded-full mt-1 bg-amber-500"></div>
+                        <div class="flex flex-col">
+                            <span class="text-[10px] font-bold text-gray-500 uppercase">Orelha</span>
+                            <span id="leg_orelha" class="text-lg font-medium text-gray-300">-</span>
+                        </div>
+                    </div>
+                    <div class="legenda-item flex items-start gap-3" onmouseenter="setHighlight('total')" onmouseleave="setHighlight(null)">
+                        <div class="w-3 h-3 rounded-full mt-1 bg-indigo-600"></div>
+                        <div class="flex flex-col">
+                            <span class="text-[10px] font-bold text-gray-500 uppercase">Formato Total</span>
+                            <span id="leg_total_aberto" class="text-lg font-bold text-indigo-400">-</span>
+                        </div>
+                    </div>
+                    <div class="legenda-item flex items-start gap-3" onmouseenter="setHighlight('sangria')" onmouseleave="setHighlight(null)">
+                        <div class="w-3 h-3 rounded-full mt-1 bg-red-500"></div>
+                        <div class="flex flex-col">
+                            <span class="text-[10px] font-bold text-gray-500 uppercase">Com Sangria</span>
+                            <span id="leg_total_sangria" class="text-lg font-bold text-red-500">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        const papeis = [
+            { tipo: "Offset 75g", colada: 0.050, costurada: 0.052 },
+            { tipo: "Offset 63g", colada: 0.042, costurada: 0.044 },
+            { tipo: "Offset 90g", colada: 0.058, costurada: 0.062 },
+            { tipo: "Offset 120g", colada: 0.065, costurada: 0.067 },
+            { tipo: "Couchê 90g", colada: 0.044, costurada: 0.046 },
+            { tipo: "Couchê 120g", colada: 0.060, costurada: 0.062 },
+            { tipo: "Couchê 150g", colada: 0.070, costurada: 0.072 },
+            { tipo: "Pólen Soft 70g", colada: 0.048, costurada: 0.050 },
+            { tipo: "Pólen Soft 80g", colada: 0.054, costurada: 0.057 },
+            { tipo: "Vergê 85g", colada: 0.059, costurada: 0.061 },
+        ];
+
+        let lombadaGlobal = 0;
+        let highlightedItem = null;
+        const SANGRIA = 5;
+        const AVANCO_ORELHA = 2;
+
+        const CORES_LINHA = {
+            largura: '#3b82f6', 
+            altura: '#94a3b8',
+            lombada: '#ffffff',      
+            orelha: '#f59e0b', 
+            total: '#6366f1',   
+            sangria: '#ef4444'  
+        };
+
+        function setHighlight(item) {
+            highlightedItem = item;
+            desenharEsquema();
+        }
+
+        function gerarCamposPapel() {
+            const selectPapel = document.getElementById("tipoPapel");
+            papeis.forEach((papel, index) => {
+                const option = document.createElement("option");
+                option.value = index;
+                option.text = papel.tipo;
+                selectPapel.add(option);
+            });
+            // Foco inicial no campo de número de páginas
+            document.getElementById("numPaginas").focus();
+        }
+
+        function desenharEsquema() {
+            const baseLargura = parseFloat(document.getElementById('largura').value);
+            const alturaDoc = parseFloat(document.getElementById('altura').value);
+            const wrapper = document.getElementById('canvasWrapper');
+            const canvas = document.getElementById('canvasEsquema');
+
+            if (!baseLargura || !alturaDoc || baseLargura <= 0 || alturaDoc <= 0) {
+                wrapper.style.display = 'none';
+                return;
+            }
+
+            wrapper.style.display = 'block';
+            const ctx = canvas.getContext('2d');
+            
+            const orelhaDoc = parseFloat(document.getElementById('orelhas').value) || 0;
+            const espessura = lombadaGlobal || 0;
+            const larguraDoc = orelhaDoc > 0 ? baseLargura + AVANCO_ORELHA : baseLargura;
+
+            const larguraTotalAberta = (orelhaDoc * 2) + (larguraDoc * 2) + espessura;
+            const larguraComSangria = larguraTotalAberta + (SANGRIA * 2);
+            const alturaComSangria = alturaDoc + (SANGRIA * 2);
+
+            document.getElementById('leg_largura').innerText = `${larguraDoc} mm`;
+            document.getElementById('leg_altura').innerText = `${alturaDoc} mm`;
+            document.getElementById('leg_lombada').innerText = `${espessura.toFixed(1)} mm`;
+            document.getElementById('leg_orelha').innerText = `${orelhaDoc} mm`;
+            document.getElementById('leg_total_aberto').innerText = `${larguraTotalAberta.toFixed(1)} mm`;
+            document.getElementById('leg_total_sangria').innerText = `${larguraComSangria.toFixed(1)} mm`;
+
+            const padding = 60;
+            canvas.width = larguraComSangria + padding * 2;
+            canvas.height = alturaComSangria + padding * 2;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const xInicio = (canvas.width - larguraTotalAberta) / 2;
+            const yInicio = (canvas.height - alturaDoc) / 2;
+
+            const w = larguraDoc;
+            const h = alturaDoc;
+            const s = Math.max(1, espessura);
+            const or = orelhaDoc;
+            const b = SANGRIA;
+
+            ctx.beginPath();
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = '#441111';
+            if (highlightedItem === 'sangria') {
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = '#ef4444';
+            }
+            ctx.rect(xInicio - b, yInicio - b, larguraTotalAberta + (b * 2), h + (b * 2));
+            ctx.stroke();
+
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([]);
+            
+            const drawLine = (x1, y1, x2, y2, color, active) => {
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.strokeStyle = active ? color : '#333333';
+                ctx.lineWidth = active ? 4 : 1.5;
+                ctx.stroke();
+                ctx.restore();
+            };
+
+            ctx.fillStyle = '#111111';
+            ctx.fillRect(xInicio, yInicio, larguraTotalAberta, h);
+
+            ctx.strokeStyle = '#333333';
+            if (or > 0) ctx.strokeRect(xInicio, yInicio, or, h);
+            ctx.strokeRect(xInicio + or, yInicio, w, h);
+            ctx.strokeRect(xInicio + or + w + s, yInicio, w, h);
+            if (or > 0) ctx.strokeRect(xInicio + or + w + s + w, yInicio, or, h);
+
+            ctx.save();
+            ctx.setLineDash([2, 4]);
+            ctx.strokeStyle = '#444444';
+            ctx.beginPath();
+            ctx.moveTo(xInicio + or + w, yInicio);
+            ctx.lineTo(xInicio + or + w, yInicio + h);
+            ctx.moveTo(xInicio + or + w + s, yInicio);
+            ctx.lineTo(xInicio + or + w + s, yInicio + h);
+            ctx.stroke();
+            ctx.restore();
+
+            ctx.strokeStyle = '#222222';
+            if (or > 0) {
+                ctx.beginPath();
+                ctx.moveTo(xInicio + or, yInicio); ctx.lineTo(xInicio + or, yInicio + h);
+                ctx.moveTo(xInicio + or + w + s + w, yInicio); ctx.lineTo(xInicio + or + w + s + w, yInicio + h);
+                ctx.stroke();
+            }
+
+            if (highlightedItem === 'largura') {
+                drawLine(xInicio + or, yInicio, xInicio + or + w, yInicio, CORES_LINHA.largura, true);
+                drawLine(xInicio + or + w + s, yInicio, xInicio + or + w + s + w, yInicio, CORES_LINHA.largura, true);
+            }
+            
+            if (highlightedItem === 'altura') {
+                drawLine(xInicio + or + w + s + w, yInicio, xInicio + or + w + s + w, yInicio + h, CORES_LINHA.altura, true);
+            }
+
+            if (highlightedItem === 'lombada') {
+                ctx.save();
+                ctx.setLineDash([2, 4]);
+                drawLine(xInicio + or + w, yInicio, xInicio + or + w, yInicio + h, CORES_LINHA.lombada, true);
+                drawLine(xInicio + or + w + s, yInicio, xInicio + or + w + s, yInicio + h, CORES_LINHA.lombada, true);
+                ctx.restore();
+            }
+
+            if (highlightedItem === 'orelha' && or > 0) {
+                drawLine(xInicio, yInicio, xInicio + or, yInicio, CORES_LINHA.orelha, true);
+                drawLine(xInicio + or + w + s + w, yInicio, xInicio + or + w + s + w + or, yInicio, CORES_LINHA.orelha, true);
+            }
+
+            if (highlightedItem === 'total') {
+                drawLine(xInicio, yInicio, xInicio + larguraTotalAberta, yInicio, CORES_LINHA.total, true);
+            }
+        }
+
+        function calcularLombada() {
+            const papelIndex = document.getElementById("tipoPapel").value;
+            const encadernacao = document.getElementById("encadernacao").value;
+            const paginasInput = document.getElementById("numPaginas").value;
+            const orelhas = parseFloat(document.getElementById("orelhas").value) || 0;
+            const resultadoDisplay = document.getElementById("resultado");
+            const obsDisplay = document.getElementById("obs");
+            const infoOrelha = document.getElementById("infoOrelha");
+
+            if (orelhas > 0) infoOrelha.classList.remove('hidden');
+            else infoOrelha.classList.add('hidden');
+
+            // Deixa a caixa em branco se não houver páginas indicadas
+            if (!paginasInput || paginasInput <= 0) {
+                lombadaGlobal = 0;
+                resultadoDisplay.innerHTML = "";
+                obsDisplay.innerHTML = "";
+                desenharEsquema();
+                return;
+            }
+
+            const paginas = parseFloat(paginasInput);
+            const papel = papeis[papelIndex];
+            const fatorLombada = encadernacao === "colada" ? papel.colada : papel.costurada;
+            const calculo = paginas * fatorLombada;
+            lombadaGlobal = calculo;
+
+            resultadoDisplay.innerHTML = `${calculo.toLocaleString('pt-BR', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 1
+            })}<span class="text-xl ml-1 text-white">mm</span>`;
+
+            if (calculo < 3) {
+                obsDisplay.innerHTML = `<p class="text-[9px] text-white font-normal uppercase animate-pulse">A lombada deve ter pelo menos 3 mm</p>`;
+            } else {
+                obsDisplay.innerHTML = "";
+            }
+
+            desenharEsquema();
+        }
+
+        window.addEventListener('resize', desenharEsquema);
+        window.onload = gerarCamposPapel;
+    </script>
 </body>
 </html>
