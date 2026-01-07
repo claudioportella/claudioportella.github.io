@@ -52,7 +52,6 @@
             overflow: hidden;
             width: 100%;
             padding: 1.5rem;
-            /* Garante que o box não cresça além do pai no grid */
             max-height: 100%; 
         }
 
@@ -72,7 +71,6 @@
             max-height: 100%;
         }
 
-        /* Linhas técnicas com 1px fixos e sem serrilhado */
         .technical-line {
             vector-effect: non-scaling-stroke;
             shape-rendering: crispEdges;
@@ -260,7 +258,6 @@
             desenharEsquema();
         }
 
-        // Função auxiliar para formatar números com vírgula (padrão PT-BR)
         function formatMM(valor, decimais = 0) {
             return valor.toLocaleString('pt-BR', { 
                 minimumFractionDigits: decimais, 
@@ -277,6 +274,8 @@
                 selectPapel.add(option);
             });
             document.getElementById("numPaginas").focus();
+            // Garante que o box comece oculto
+            desenharEsquema();
         }
 
         function desenharEsquema() {
@@ -290,7 +289,8 @@
             const drawingArea = document.getElementById('drawingArea');
             const panelControl = document.getElementById('panelControl');
 
-            if (!inputLargura || !inputAltura || baseLargura <= 0 || alturaDoc <= 0) {
+            // Verificação rigorosa para exibição do box
+            if (!inputLargura || !inputAltura || isNaN(baseLargura) || isNaN(alturaDoc) || baseLargura <= 0 || alturaDoc <= 0) {
                 wrapper.style.display = 'none';
                 return;
             }
@@ -315,7 +315,6 @@
             const larguraSangria = larguraTotalAberta + (SANGRIA * 2);
             const alturaSangria = alturaDoc + (SANGRIA * 2);
 
-            // Atualização da legenda com vírgula
             document.getElementById('leg_largura').innerText = formatMM(larguraCapa);
             document.getElementById('leg_altura').innerText = formatMM(alturaDoc);
             document.getElementById('leg_lombada').innerText = formatMM(espessura, 1);
