@@ -52,6 +52,8 @@
             overflow: hidden;
             width: 100%;
             padding: 1.5rem;
+            /* Garante que o box não cresça além do pai no grid */
+            max-height: 100%; 
         }
 
         #drawingArea {
@@ -76,7 +78,7 @@
             shape-rendering: crispEdges;
             stroke-linecap: square;
             stroke-linejoin: miter;
-            stroke-width: 1;
+            stroke-width: 1 !important;
         }
 
         .legenda-item {
@@ -97,7 +99,7 @@
     <main class="grid grid-cols-1 lg:grid-cols-12 gap-8 p-4 md:p-8 lg:p-12 items-start h-full">
         
         <!-- Painel de Controle -->
-        <div class="lg:col-span-4 xl:col-span-3 h-full" id="panelControl">
+        <div class="lg:col-span-4 xl:col-span-3 h-auto" id="panelControl">
             <div class="glass-card w-full p-8 rounded-[2rem]">
                 <form id="lombadaForm" class="space-y-6" onsubmit="return false;">
                     
@@ -168,8 +170,8 @@
         </div>
 
         <!-- Esquema Técnico SVG -->
-        <div class="lg:col-span-8 xl:col-span-9 w-full flex flex-col lg:max-h-full h-full self-stretch">
-            <div id="canvasWrapper" class="canvas-container flex-1 flex flex-col">
+        <div class="lg:col-span-8 xl:col-span-9 w-full flex flex-col items-stretch h-full self-start">
+            <div id="canvasWrapper" class="canvas-container flex flex-col">
                 <div id="drawingArea">
                     <!-- O SVG será injetado aqui via JS -->
                 </div>
@@ -242,7 +244,6 @@
         const SANGRIA = 5;
         const AVANCO_ORELHA = 2;
 
-        // Todas as cores de hover agora são branco
         const CORES_HOVER = {
             largura: '#ffffff', 
             altura: '#ffffff',
@@ -252,11 +253,19 @@
             sangria: '#ffffff'  
         };
 
-        const COR_ESQUEMA = '#2d2d2d'; // Mesmo cinza do painel
+        const COR_ESQUEMA = '#6b7280';
 
         function setHighlight(item) {
             highlightedItem = item;
             desenharEsquema();
+        }
+
+        // Função auxiliar para formatar números com vírgula (padrão PT-BR)
+        function formatMM(valor, decimais = 0) {
+            return valor.toLocaleString('pt-BR', { 
+                minimumFractionDigits: decimais, 
+                maximumFractionDigits: decimais 
+            }) + " mm";
         }
 
         function gerarCamposPapel() {
@@ -271,13 +280,17 @@
         }
 
         function desenharEsquema() {
-            const baseLargura = parseFloat(document.getElementById('largura').value);
-            const alturaDoc = parseFloat(document.getElementById('altura').value);
+            const inputLargura = document.getElementById('largura').value;
+            const inputAltura = document.getElementById('altura').value;
+            
+            const baseLargura = parseFloat(inputLargura);
+            const alturaDoc = parseFloat(inputAltura);
+            
             const wrapper = document.getElementById('canvasWrapper');
             const drawingArea = document.getElementById('drawingArea');
             const panelControl = document.getElementById('panelControl');
 
-            if (!baseLargura || !alturaDoc || baseLargura <= 0 || alturaDoc <= 0) {
+            if (!inputLargura || !inputAltura || baseLargura <= 0 || alturaDoc <= 0) {
                 wrapper.style.display = 'none';
                 return;
             }
@@ -285,10 +298,12 @@
             wrapper.style.display = 'flex';
             
             if (window.innerWidth >= 1024) {
-                const h = panelControl.offsetHeight;
-                wrapper.style.height = h + 'px';
+                const panelHeight = panelControl.offsetHeight;
+                wrapper.style.height = panelHeight + 'px';
+                wrapper.style.maxHeight = panelHeight + 'px';
             } else {
                 wrapper.style.height = '500px';
+                wrapper.style.maxHeight = 'none';
             }
 
             const orelhaInput = document.getElementById('orelhas').value;
@@ -300,13 +315,14 @@
             const larguraSangria = larguraTotalAberta + (SANGRIA * 2);
             const alturaSangria = alturaDoc + (SANGRIA * 2);
 
-            document.getElementById('leg_largura').innerText = `${larguraCapa} mm`;
-            document.getElementById('leg_altura').innerText = `${alturaDoc} mm`;
-            document.getElementById('leg_lombada').innerText = `${espessura.toFixed(1)} mm`;
-            document.getElementById('leg_orelha').innerText = `${orelhaDoc} mm`;
-            document.getElementById('leg_total_aberto').innerText = `${larguraTotalAberta.toFixed(1)} mm`;
-            document.getElementById('leg_total_sangria_l').innerText = `${larguraSangria.toFixed(1)} mm`;
-            document.getElementById('leg_total_sangria_a').innerText = `${alturaSangria.toFixed(1)} mm`;
+            // Atualização da legenda com vírgula
+            document.getElementById('leg_largura').innerText = formatMM(larguraCapa);
+            document.getElementById('leg_altura').innerText = formatMM(alturaDoc);
+            document.getElementById('leg_lombada').innerText = formatMM(espessura, 1);
+            document.getElementById('leg_orelha').innerText = formatMM(orelhaDoc);
+            document.getElementById('leg_total_aberto').innerText = formatMM(larguraTotalAberta, 1);
+            document.getElementById('leg_total_sangria_l').innerText = formatMM(larguraSangria, 1);
+            document.getElementById('leg_total_sangria_a').innerText = formatMM(alturaSangria, 1);
             document.getElementById('leg_orelha_container').style.display = orelhaDoc > 0 ? 'flex' : 'none';
 
             const margin = 50;
@@ -326,14 +342,11 @@
 
             let svgContent = `
                 <svg viewBox="0 0 ${viewW} ${viewH}" preserveAspectRatio="xMidYMid meet">
-                    <!-- Retângulo de Sangria (Cinza, 1px) -->
                     <rect x="${x0}" y="${y0}" width="${Math.floor(larguraSangria)}" height="${Math.floor(alturaSangria)}" 
                         fill="none" class="technical-line" style="stroke: ${COR_ESQUEMA};" />
                     
-                    <!-- Fundo do Papel -->
                     <rect x="${xPapel}" y="${yPapel}" width="${Math.floor(larguraTotalAberta)}" height="${Math.floor(alturaDoc)}" fill="#111111" />
 
-                    <!-- Bordas Externas do Livro (Contorno Cinza, 1px) -->
                     <g fill="none" class="technical-line" style="stroke: ${COR_ESQUEMA};">
                         <rect x="${xC1}" y="${yPapel}" width="${Math.floor(larguraCapa)}" height="${Math.floor(alturaDoc)}" />
                         <rect x="${xL}" y="${yPapel}" width="${Math.floor(espessura)}" height="${Math.floor(alturaDoc)}" />
@@ -345,7 +358,6 @@
                         ` : ''}
                     </g>
 
-                    <!-- Linhas Verticais de Dobra Internas (Cinza, 1px) -->
                     <g class="technical-line" style="stroke: ${COR_ESQUEMA};">
                         ${orelhaDoc > 0 ? `<line x1="${xC1}" y1="${yPapel}" x2="${xC1}" y2="${Math.floor(yPapel + alturaDoc)}" />` : ''}
                         <line x1="${xL}" y1="${yPapel}" x2="${xL}" y2="${Math.floor(yPapel + alturaDoc)}" />
@@ -353,7 +365,6 @@
                         ${orelhaDoc > 0 ? `<line x1="${xO2}" y1="${yPapel}" x2="${xO2}" y2="${Math.floor(yPapel + alturaDoc)}" />` : ''}
                     </g>
 
-                    <!-- Réguas de Medida (Destaques, 1px) -->
                     ${getHighlightsSVG(xC1, xL, xC2, xO2, xO1, x0, y0, yPapel, alturaDoc, espessura, orelhaDoc, larguraCapa, larguraTotalAberta, larguraSangria, alturaSangria)}
                 </svg>
             `;
@@ -367,34 +378,34 @@
             switch(highlightedItem) {
                 case 'largura':
                     return `
-                        <line x1="${xC1}" y1="${yP}" x2="${xL}" y2="${yP}" stroke="${CORES_HOVER.largura}" class="technical-line" style="stroke: ${CORES_HOVER.largura}; stroke-width: 1.5;" />
-                        <line x1="${xC2}" y1="${yP}" x2="${xO2}" y2="${yP}" stroke="${CORES_HOVER.largura}" class="technical-line" style="stroke: ${CORES_HOVER.largura}; stroke-width: 1.5;" />
+                        <line x1="${xC1}" y1="${yP}" x2="${xL}" y2="${yP}" class="technical-line" style="stroke: ${CORES_HOVER.largura};" />
+                        <line x1="${xC2}" y1="${yP}" x2="${xO2}" y2="${yP}" class="technical-line" style="stroke: ${CORES_HOVER.largura};" />
                     `;
                 case 'altura':
                     return `
-                        <line x1="${xO2 + orelha}" y1="${yP}" x2="${xO2 + orelha}" y2="${Math.floor(yP + hD)}" stroke="${CORES_HOVER.altura}" class="technical-line" style="stroke: ${CORES_HOVER.altura}; stroke-width: 1.5;" />
+                        <line x1="${xO2 + orelha}" y1="${yP}" x2="${xO2 + orelha}" y2="${Math.floor(yP + hD)}" class="technical-line" style="stroke: ${CORES_HOVER.altura};" />
                     `;
                 case 'lombada':
                     return `
-                        <line x1="${xL}" y1="${yP}" x2="${xC2}" y2="${yP}" stroke="${CORES_HOVER.lombada}" class="technical-line" style="stroke: ${CORES_HOVER.lombada}; stroke-width: 1.5;" />
+                        <line x1="${xL}" y1="${yP}" x2="${xC2}" y2="${yP}" class="technical-line" style="stroke: ${CORES_HOVER.lombada};" />
                     `;
                 case 'orelha':
                     if (orelha <= 0) return '';
                     return `
-                        <line x1="${xO1}" y1="${yP}" x2="${xC1}" y2="${yP}" stroke="${CORES_HOVER.orelha}" class="technical-line" style="stroke: ${CORES_HOVER.orelha}; stroke-width: 1.5;" />
-                        <line x1="${xO2}" y1="${yP}" x2="${Math.floor(xO2 + orelha)}" y2="${yP}" stroke="${CORES_HOVER.orelha}" class="technical-line" style="stroke: ${CORES_HOVER.orelha}; stroke-width: 1.5;" />
+                        <line x1="${xO1}" y1="${yP}" x2="${xC1}" y2="${yP}" class="technical-line" style="stroke: ${CORES_HOVER.orelha};" />
+                        <line x1="${xO2}" y1="${yP}" x2="${Math.floor(xO2 + orelha)}" y2="${yP}" class="technical-line" style="stroke: ${CORES_HOVER.orelha};" />
                     `;
                 case 'total':
                     return `
-                        <line x1="${xO1}" y1="${yP}" x2="${Math.floor(xO1 + lTotal)}" y2="${yP}" stroke="${CORES_HOVER.total}" class="technical-line" style="stroke: ${CORES_HOVER.total}; stroke-width: 1.5;" />
+                        <line x1="${xO1}" y1="${yP}" x2="${Math.floor(xO1 + lTotal)}" y2="${yP}" class="technical-line" style="stroke: ${CORES_HOVER.total};" />
                     `;
                 case 'sangriaLargura':
                     return `
-                        <line x1="${x0}" y1="${y0}" x2="${Math.floor(x0 + lSangria)}" y2="${y0}" stroke="${CORES_HOVER.sangria}" class="technical-line" style="stroke: ${CORES_HOVER.sangria}; stroke-width: 1.5;" />
+                        <line x1="${x0}" y1="${y0}" x2="${Math.floor(x0 + lSangria)}" y2="${y0}" class="technical-line" style="stroke: ${CORES_HOVER.sangria};" />
                     `;
                 case 'sangriaAltura':
                     return `
-                        <line x1="${x0}" y1="${y0}" x2="${x0}" y2="${Math.floor(y0 + hSangria)}" stroke="${CORES_HOVER.sangria}" class="technical-line" style="stroke: ${CORES_HOVER.sangria}; stroke-width: 1.5;" />
+                        <line x1="${x0}" y1="${y0}" x2="${x0}" y2="${Math.floor(y0 + hSangria)}" class="technical-line" style="stroke: ${CORES_HOVER.sangria};" />
                     `;
                 default:
                     return '';
