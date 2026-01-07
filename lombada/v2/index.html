@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cálculo de Lombada - Dark Mode</title>
+    <title>Cálculo de Lombada</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -17,6 +17,7 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-deep);
             color: #ededed;
+            overflow-x: hidden;
         }
 
         .glass-card {
@@ -35,19 +36,7 @@
             background: #1a1a1a;
             border: 1px solid #2d2d2d;
             color: #fff;
-            font-family: 'Inter', sans-serif;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Força os placeholders a ficarem brancos em todos os navegadores */
-        .input-dark::placeholder {
-            color: #ffffff !important;
-            opacity: 0.6 !important;
-        }
-        
-        .input-dark::-webkit-input-placeholder {
-            color: #ffffff !important;
-            opacity: 0.6 !important;
         }
 
         .input-dark:focus {
@@ -62,20 +51,39 @@
             border: 1px solid var(--border-subtle);
             overflow: hidden;
             width: 100%;
-            padding: 0; 
+            padding: 1.5rem;
         }
 
-        canvas {
+        #drawingArea {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
             width: 100%;
-            height: auto;
-            display: block;
+            min-height: 0;
+            position: relative;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+            max-height: 100%;
+        }
+
+        /* Linhas técnicas com 1px fixos e sem serrilhado */
+        .technical-line {
+            vector-effect: non-scaling-stroke;
+            shape-rendering: crispEdges;
+            stroke-linecap: square;
+            stroke-linejoin: miter;
+            stroke-width: 1;
         }
 
         .legenda-item {
             cursor: pointer;
             transition: all 0.2s ease;
-            padding: 0.5rem;
-            border-radius: 1rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 0.5rem;
         }
 
         .legenda-item:hover {
@@ -86,10 +94,10 @@
 </head>
 <body class="min-h-screen">
 
-    <main class="grid grid-cols-1 lg:grid-cols-12 gap-8 p-4 md:p-8 lg:p-12 items-start">
+    <main class="grid grid-cols-1 lg:grid-cols-12 gap-8 p-4 md:p-8 lg:p-12 items-start h-full">
         
-        <!-- Painel de Controlos -->
-        <div class="lg:col-span-4 xl:col-span-3">
+        <!-- Painel de Controle -->
+        <div class="lg:col-span-4 xl:col-span-3 h-full" id="panelControl">
             <div class="glass-card w-full p-8 rounded-[2rem]">
                 <form id="lombadaForm" class="space-y-6" onsubmit="return false;">
                     
@@ -119,7 +127,6 @@
                         </div>
                     </div>
 
-                    <!-- Bloco Reposicionado: Número de Páginas -->
                     <div class="flex flex-col">
                         <label for="numPaginas" class="text-[10px] font-bold text-gray-500 mb-2 uppercase ml-1">Número de páginas</label>
                         <input type="number" id="numPaginas" min="1" oninput="calcularLombada()" class="w-full input-dark rounded-2xl p-4 text-sm font-medium focus:border-blue-500 outline-none transition-all">
@@ -160,52 +167,54 @@
             </div>
         </div>
 
-        <!-- Esquema Técnico -->
-        <div class="lg:col-span-8 xl:col-span-9 w-full">
-            <div id="canvasWrapper" class="canvas-container p-8">
-                <canvas id="canvasEsquema"></canvas>
+        <!-- Esquema Técnico SVG -->
+        <div class="lg:col-span-8 xl:col-span-9 w-full flex flex-col lg:max-h-full h-full self-stretch">
+            <div id="canvasWrapper" class="canvas-container flex-1 flex flex-col">
+                <div id="drawingArea">
+                    <!-- O SVG será injetado aqui via JS -->
+                </div>
                 
-                <div id="legendaMedidas" class="mt-12 grid grid-cols-2 md:grid-cols-3 gap-6 border-t border-white/5 pt-8 text-sm">
-                    <div class="legenda-item flex items-start gap-3" onmouseenter="setHighlight('largura')" onmouseleave="setHighlight(null)">
-                        <div class="w-3 h-3 rounded-full mt-1 bg-blue-500"></div>
-                        <div class="flex flex-col">
-                            <span class="text-[10px] font-bold text-gray-500 uppercase">Largura</span>
-                            <span id="leg_largura" class="text-lg font-medium text-gray-300">-</span>
+                <div id="legendaMedidas" class="mt-2 flex flex-col gap-0 border-t border-white/5 pt-4 text-sm shrink-0">
+                    <div class="legenda-item flex items-center" onmouseenter="setHighlight('largura')" onmouseleave="setHighlight(null)">
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] font-bold text-gray-500 uppercase">Largura da capa</span>
+                            <span id="leg_largura" class="text-sm font-medium text-white">-</span>
                         </div>
                     </div>
-                    <div class="legenda-item flex items-start gap-3" onmouseenter="setHighlight('altura')" onmouseleave="setHighlight(null)">
-                        <div class="w-3 h-3 rounded-full mt-1 bg-gray-400"></div>
-                        <div class="flex flex-col">
-                            <span class="text-[10px] font-bold text-gray-500 uppercase">Altura</span>
-                            <span id="leg_altura" class="text-lg font-medium text-gray-300">-</span>
+                    <div class="legenda-item flex items-center" onmouseenter="setHighlight('altura')" onmouseleave="setHighlight(null)">
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] font-bold text-gray-500 uppercase">Altura da capa</span>
+                            <span id="leg_altura" class="text-sm font-medium text-white">-</span>
                         </div>
                     </div>
-                    <div class="legenda-item flex items-start gap-3" onmouseenter="setHighlight('lombada')" onmouseleave="setHighlight(null)">
-                        <div class="w-3 h-3 rounded-full mt-1 bg-white"></div>
-                        <div class="flex flex-col">
+                    <div class="legenda-item flex items-center" onmouseenter="setHighlight('lombada')" onmouseleave="setHighlight(null)">
+                        <div class="flex items-center gap-2">
                             <span class="text-[10px] font-bold text-gray-500 uppercase">Lombada</span>
-                            <span id="leg_lombada" class="text-lg font-medium text-gray-300">-</span>
+                            <span id="leg_lombada" class="text-sm font-medium text-white">-</span>
                         </div>
                     </div>
-                    <div class="legenda-item flex items-start gap-3" onmouseenter="setHighlight('orelha')" onmouseleave="setHighlight(null)">
-                        <div class="w-3 h-3 rounded-full mt-1 bg-amber-500"></div>
-                        <div class="flex flex-col">
+                    <div id="leg_orelha_container" class="legenda-item flex items-center" onmouseenter="setHighlight('orelha')" onmouseleave="setHighlight(null)">
+                        <div class="flex items-center gap-2">
                             <span class="text-[10px] font-bold text-gray-500 uppercase">Orelha</span>
-                            <span id="leg_orelha" class="text-lg font-medium text-gray-300">-</span>
+                            <span id="leg_orelha" class="text-sm font-medium text-white">-</span>
                         </div>
                     </div>
-                    <div class="legenda-item flex items-start gap-3" onmouseenter="setHighlight('total')" onmouseleave="setHighlight(null)">
-                        <div class="w-3 h-3 rounded-full mt-1 bg-indigo-600"></div>
-                        <div class="flex flex-col">
-                            <span class="text-[10px] font-bold text-gray-500 uppercase">Formato Total</span>
-                            <span id="leg_total_aberto" class="text-lg font-bold text-indigo-400">-</span>
+                    <div class="legenda-item flex items-center" onmouseenter="setHighlight('total')" onmouseleave="setHighlight(null)">
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] font-bold text-gray-500 uppercase">Largura total</span>
+                            <span id="leg_total_aberto" class="text-sm font-medium text-white">-</span>
                         </div>
                     </div>
-                    <div class="legenda-item flex items-start gap-3" onmouseenter="setHighlight('sangria')" onmouseleave="setHighlight(null)">
-                        <div class="w-3 h-3 rounded-full mt-1 bg-red-500"></div>
-                        <div class="flex flex-col">
-                            <span class="text-[10px] font-bold text-gray-500 uppercase">Com Sangria</span>
-                            <span id="leg_total_sangria" class="text-lg font-bold text-red-500">-</span>
+                    <div class="legenda-item flex items-center" onmouseenter="setHighlight('sangriaLargura')" onmouseleave="setHighlight(null)">
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] font-bold text-gray-500 uppercase">Largura total com sangria</span>
+                            <span id="leg_total_sangria_l" class="text-sm font-medium text-white">-</span>
+                        </div>
+                    </div>
+                    <div class="legenda-item flex items-center" onmouseenter="setHighlight('sangriaAltura')" onmouseleave="setHighlight(null)">
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] font-bold text-gray-500 uppercase">Altura com sangria</span>
+                            <span id="leg_total_sangria_a" class="text-sm font-medium text-white">-</span>
                         </div>
                     </div>
                 </div>
@@ -233,14 +242,17 @@
         const SANGRIA = 5;
         const AVANCO_ORELHA = 2;
 
-        const CORES_LINHA = {
-            largura: '#3b82f6', 
-            altura: '#94a3b8',
+        // Todas as cores de hover agora são branco
+        const CORES_HOVER = {
+            largura: '#ffffff', 
+            altura: '#ffffff',
             lombada: '#ffffff',      
-            orelha: '#f59e0b', 
-            total: '#6366f1',   
-            sangria: '#ef4444'  
+            orelha: '#ffffff', 
+            total: '#ffffff',   
+            sangria: '#ffffff'  
         };
+
+        const COR_ESQUEMA = '#2d2d2d'; // Mesmo cinza do painel
 
         function setHighlight(item) {
             highlightedItem = item;
@@ -255,7 +267,6 @@
                 option.text = papel.tipo;
                 selectPapel.add(option);
             });
-            // Foco inicial no campo de número de páginas
             document.getElementById("numPaginas").focus();
         }
 
@@ -263,122 +274,130 @@
             const baseLargura = parseFloat(document.getElementById('largura').value);
             const alturaDoc = parseFloat(document.getElementById('altura').value);
             const wrapper = document.getElementById('canvasWrapper');
-            const canvas = document.getElementById('canvasEsquema');
+            const drawingArea = document.getElementById('drawingArea');
+            const panelControl = document.getElementById('panelControl');
 
             if (!baseLargura || !alturaDoc || baseLargura <= 0 || alturaDoc <= 0) {
                 wrapper.style.display = 'none';
                 return;
             }
 
-            wrapper.style.display = 'block';
-            const ctx = canvas.getContext('2d');
+            wrapper.style.display = 'flex';
             
-            const orelhaDoc = parseFloat(document.getElementById('orelhas').value) || 0;
+            if (window.innerWidth >= 1024) {
+                const h = panelControl.offsetHeight;
+                wrapper.style.height = h + 'px';
+            } else {
+                wrapper.style.height = '500px';
+            }
+
+            const orelhaInput = document.getElementById('orelhas').value;
+            const orelhaDoc = (orelhaInput === "" || parseFloat(orelhaInput) <= 0) ? 0 : parseFloat(orelhaInput);
             const espessura = lombadaGlobal || 0;
-            const larguraDoc = orelhaDoc > 0 ? baseLargura + AVANCO_ORELHA : baseLargura;
+            const larguraCapa = orelhaDoc > 0 ? baseLargura + AVANCO_ORELHA : baseLargura;
 
-            const larguraTotalAberta = (orelhaDoc * 2) + (larguraDoc * 2) + espessura;
-            const larguraComSangria = larguraTotalAberta + (SANGRIA * 2);
-            const alturaComSangria = alturaDoc + (SANGRIA * 2);
+            const larguraTotalAberta = (orelhaDoc * 2) + (larguraCapa * 2) + espessura;
+            const larguraSangria = larguraTotalAberta + (SANGRIA * 2);
+            const alturaSangria = alturaDoc + (SANGRIA * 2);
 
-            document.getElementById('leg_largura').innerText = `${larguraDoc} mm`;
+            document.getElementById('leg_largura').innerText = `${larguraCapa} mm`;
             document.getElementById('leg_altura').innerText = `${alturaDoc} mm`;
             document.getElementById('leg_lombada').innerText = `${espessura.toFixed(1)} mm`;
             document.getElementById('leg_orelha').innerText = `${orelhaDoc} mm`;
             document.getElementById('leg_total_aberto').innerText = `${larguraTotalAberta.toFixed(1)} mm`;
-            document.getElementById('leg_total_sangria').innerText = `${larguraComSangria.toFixed(1)} mm`;
+            document.getElementById('leg_total_sangria_l').innerText = `${larguraSangria.toFixed(1)} mm`;
+            document.getElementById('leg_total_sangria_a').innerText = `${alturaSangria.toFixed(1)} mm`;
+            document.getElementById('leg_orelha_container').style.display = orelhaDoc > 0 ? 'flex' : 'none';
 
-            const padding = 60;
-            canvas.width = larguraComSangria + padding * 2;
-            canvas.height = alturaComSangria + padding * 2;
+            const margin = 50;
+            const viewW = Math.floor(larguraSangria + (margin * 2));
+            const viewH = Math.floor(alturaSangria + (margin * 2));
 
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const x0 = Math.floor(margin);
+            const y0 = Math.floor(margin);
+            const xPapel = Math.floor(x0 + SANGRIA);
+            const yPapel = Math.floor(y0 + SANGRIA);
 
-            const xInicio = (canvas.width - larguraTotalAberta) / 2;
-            const yInicio = (canvas.height - alturaDoc) / 2;
+            const xO1 = xPapel;
+            const xC1 = Math.floor(xO1 + orelhaDoc);
+            const xL = Math.floor(xC1 + larguraCapa);
+            const xC2 = Math.floor(xL + espessura);
+            const xO2 = Math.floor(xC2 + larguraCapa);
 
-            const w = larguraDoc;
-            const h = alturaDoc;
-            const s = Math.max(1, espessura);
-            const or = orelhaDoc;
-            const b = SANGRIA;
+            let svgContent = `
+                <svg viewBox="0 0 ${viewW} ${viewH}" preserveAspectRatio="xMidYMid meet">
+                    <!-- Retângulo de Sangria (Cinza, 1px) -->
+                    <rect x="${x0}" y="${y0}" width="${Math.floor(larguraSangria)}" height="${Math.floor(alturaSangria)}" 
+                        fill="none" class="technical-line" style="stroke: ${COR_ESQUEMA};" />
+                    
+                    <!-- Fundo do Papel -->
+                    <rect x="${xPapel}" y="${yPapel}" width="${Math.floor(larguraTotalAberta)}" height="${Math.floor(alturaDoc)}" fill="#111111" />
 
-            ctx.beginPath();
-            ctx.lineWidth = 1;
-            ctx.strokeStyle = '#441111';
-            if (highlightedItem === 'sangria') {
-                ctx.lineWidth = 2;
-                ctx.strokeStyle = '#ef4444';
-            }
-            ctx.rect(xInicio - b, yInicio - b, larguraTotalAberta + (b * 2), h + (b * 2));
-            ctx.stroke();
+                    <!-- Bordas Externas do Livro (Contorno Cinza, 1px) -->
+                    <g fill="none" class="technical-line" style="stroke: ${COR_ESQUEMA};">
+                        <rect x="${xC1}" y="${yPapel}" width="${Math.floor(larguraCapa)}" height="${Math.floor(alturaDoc)}" />
+                        <rect x="${xL}" y="${yPapel}" width="${Math.floor(espessura)}" height="${Math.floor(alturaDoc)}" />
+                        <rect x="${xC2}" y="${yPapel}" width="${Math.floor(larguraCapa)}" height="${Math.floor(alturaDoc)}" />
+                        
+                        ${orelhaDoc > 0 ? `
+                            <rect x="${xO1}" y="${yPapel}" width="${Math.floor(orelhaDoc)}" height="${Math.floor(alturaDoc)}" />
+                            <rect x="${xO2}" y="${yPapel}" width="${Math.floor(orelhaDoc)}" height="${Math.floor(alturaDoc)}" />
+                        ` : ''}
+                    </g>
 
-            ctx.lineWidth = 1.5;
-            ctx.setLineDash([]);
+                    <!-- Linhas Verticais de Dobra Internas (Cinza, 1px) -->
+                    <g class="technical-line" style="stroke: ${COR_ESQUEMA};">
+                        ${orelhaDoc > 0 ? `<line x1="${xC1}" y1="${yPapel}" x2="${xC1}" y2="${Math.floor(yPapel + alturaDoc)}" />` : ''}
+                        <line x1="${xL}" y1="${yPapel}" x2="${xL}" y2="${Math.floor(yPapel + alturaDoc)}" />
+                        <line x1="${xC2}" y1="${yPapel}" x2="${xC2}" y2="${Math.floor(yPapel + alturaDoc)}" />
+                        ${orelhaDoc > 0 ? `<line x1="${xO2}" y1="${yPapel}" x2="${xO2}" y2="${Math.floor(yPapel + alturaDoc)}" />` : ''}
+                    </g>
+
+                    <!-- Réguas de Medida (Destaques, 1px) -->
+                    ${getHighlightsSVG(xC1, xL, xC2, xO2, xO1, x0, y0, yPapel, alturaDoc, espessura, orelhaDoc, larguraCapa, larguraTotalAberta, larguraSangria, alturaSangria)}
+                </svg>
+            `;
+
+            drawingArea.innerHTML = svgContent;
+        }
+
+        function getHighlightsSVG(xC1, xL, xC2, xO2, xO1, x0, y0, yP, hD, esp, orelha, lCapa, lTotal, lSangria, hSangria) {
+            if (!highlightedItem) return '';
             
-            const drawLine = (x1, y1, x2, y2, color, active) => {
-                ctx.save();
-                ctx.beginPath();
-                ctx.moveTo(x1, y1);
-                ctx.lineTo(x2, y2);
-                ctx.strokeStyle = active ? color : '#333333';
-                ctx.lineWidth = active ? 4 : 1.5;
-                ctx.stroke();
-                ctx.restore();
-            };
-
-            ctx.fillStyle = '#111111';
-            ctx.fillRect(xInicio, yInicio, larguraTotalAberta, h);
-
-            ctx.strokeStyle = '#333333';
-            if (or > 0) ctx.strokeRect(xInicio, yInicio, or, h);
-            ctx.strokeRect(xInicio + or, yInicio, w, h);
-            ctx.strokeRect(xInicio + or + w + s, yInicio, w, h);
-            if (or > 0) ctx.strokeRect(xInicio + or + w + s + w, yInicio, or, h);
-
-            ctx.save();
-            ctx.setLineDash([2, 4]);
-            ctx.strokeStyle = '#444444';
-            ctx.beginPath();
-            ctx.moveTo(xInicio + or + w, yInicio);
-            ctx.lineTo(xInicio + or + w, yInicio + h);
-            ctx.moveTo(xInicio + or + w + s, yInicio);
-            ctx.lineTo(xInicio + or + w + s, yInicio + h);
-            ctx.stroke();
-            ctx.restore();
-
-            ctx.strokeStyle = '#222222';
-            if (or > 0) {
-                ctx.beginPath();
-                ctx.moveTo(xInicio + or, yInicio); ctx.lineTo(xInicio + or, yInicio + h);
-                ctx.moveTo(xInicio + or + w + s + w, yInicio); ctx.lineTo(xInicio + or + w + s + w, yInicio + h);
-                ctx.stroke();
-            }
-
-            if (highlightedItem === 'largura') {
-                drawLine(xInicio + or, yInicio, xInicio + or + w, yInicio, CORES_LINHA.largura, true);
-                drawLine(xInicio + or + w + s, yInicio, xInicio + or + w + s + w, yInicio, CORES_LINHA.largura, true);
-            }
-            
-            if (highlightedItem === 'altura') {
-                drawLine(xInicio + or + w + s + w, yInicio, xInicio + or + w + s + w, yInicio + h, CORES_LINHA.altura, true);
-            }
-
-            if (highlightedItem === 'lombada') {
-                ctx.save();
-                ctx.setLineDash([2, 4]);
-                drawLine(xInicio + or + w, yInicio, xInicio + or + w, yInicio + h, CORES_LINHA.lombada, true);
-                drawLine(xInicio + or + w + s, yInicio, xInicio + or + w + s, yInicio + h, CORES_LINHA.lombada, true);
-                ctx.restore();
-            }
-
-            if (highlightedItem === 'orelha' && or > 0) {
-                drawLine(xInicio, yInicio, xInicio + or, yInicio, CORES_LINHA.orelha, true);
-                drawLine(xInicio + or + w + s + w, yInicio, xInicio + or + w + s + w + or, yInicio, CORES_LINHA.orelha, true);
-            }
-
-            if (highlightedItem === 'total') {
-                drawLine(xInicio, yInicio, xInicio + larguraTotalAberta, yInicio, CORES_LINHA.total, true);
+            switch(highlightedItem) {
+                case 'largura':
+                    return `
+                        <line x1="${xC1}" y1="${yP}" x2="${xL}" y2="${yP}" stroke="${CORES_HOVER.largura}" class="technical-line" style="stroke: ${CORES_HOVER.largura}; stroke-width: 1.5;" />
+                        <line x1="${xC2}" y1="${yP}" x2="${xO2}" y2="${yP}" stroke="${CORES_HOVER.largura}" class="technical-line" style="stroke: ${CORES_HOVER.largura}; stroke-width: 1.5;" />
+                    `;
+                case 'altura':
+                    return `
+                        <line x1="${xO2 + orelha}" y1="${yP}" x2="${xO2 + orelha}" y2="${Math.floor(yP + hD)}" stroke="${CORES_HOVER.altura}" class="technical-line" style="stroke: ${CORES_HOVER.altura}; stroke-width: 1.5;" />
+                    `;
+                case 'lombada':
+                    return `
+                        <line x1="${xL}" y1="${yP}" x2="${xC2}" y2="${yP}" stroke="${CORES_HOVER.lombada}" class="technical-line" style="stroke: ${CORES_HOVER.lombada}; stroke-width: 1.5;" />
+                    `;
+                case 'orelha':
+                    if (orelha <= 0) return '';
+                    return `
+                        <line x1="${xO1}" y1="${yP}" x2="${xC1}" y2="${yP}" stroke="${CORES_HOVER.orelha}" class="technical-line" style="stroke: ${CORES_HOVER.orelha}; stroke-width: 1.5;" />
+                        <line x1="${xO2}" y1="${yP}" x2="${Math.floor(xO2 + orelha)}" y2="${yP}" stroke="${CORES_HOVER.orelha}" class="technical-line" style="stroke: ${CORES_HOVER.orelha}; stroke-width: 1.5;" />
+                    `;
+                case 'total':
+                    return `
+                        <line x1="${xO1}" y1="${yP}" x2="${Math.floor(xO1 + lTotal)}" y2="${yP}" stroke="${CORES_HOVER.total}" class="technical-line" style="stroke: ${CORES_HOVER.total}; stroke-width: 1.5;" />
+                    `;
+                case 'sangriaLargura':
+                    return `
+                        <line x1="${x0}" y1="${y0}" x2="${Math.floor(x0 + lSangria)}" y2="${y0}" stroke="${CORES_HOVER.sangria}" class="technical-line" style="stroke: ${CORES_HOVER.sangria}; stroke-width: 1.5;" />
+                    `;
+                case 'sangriaAltura':
+                    return `
+                        <line x1="${x0}" y1="${y0}" x2="${x0}" y2="${Math.floor(y0 + hSangria)}" stroke="${CORES_HOVER.sangria}" class="technical-line" style="stroke: ${CORES_HOVER.sangria}; stroke-width: 1.5;" />
+                    `;
+                default:
+                    return '';
             }
         }
 
@@ -387,14 +406,11 @@
             const encadernacao = document.getElementById("encadernacao").value;
             const paginasInput = document.getElementById("numPaginas").value;
             const orelhas = parseFloat(document.getElementById("orelhas").value) || 0;
+            
             const resultadoDisplay = document.getElementById("resultado");
             const obsDisplay = document.getElementById("obs");
-            const infoOrelha = document.getElementById("infoOrelha");
+            document.getElementById("infoOrelha").classList.toggle('hidden', orelhas <= 0);
 
-            if (orelhas > 0) infoOrelha.classList.remove('hidden');
-            else infoOrelha.classList.add('hidden');
-
-            // Deixa a caixa em branco se não houver páginas indicadas
             if (!paginasInput || paginasInput <= 0) {
                 lombadaGlobal = 0;
                 resultadoDisplay.innerHTML = "";
@@ -403,22 +419,12 @@
                 return;
             }
 
-            const paginas = parseFloat(paginasInput);
             const papel = papeis[papelIndex];
-            const fatorLombada = encadernacao === "colada" ? papel.colada : papel.costurada;
-            const calculo = paginas * fatorLombada;
-            lombadaGlobal = calculo;
+            const fator = encadernacao === "colada" ? papel.colada : papel.costurada;
+            lombadaGlobal = parseFloat(paginasInput) * fator;
 
-            resultadoDisplay.innerHTML = `${calculo.toLocaleString('pt-BR', {
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 1
-            })}<span class="text-xl ml-1 text-white">mm</span>`;
-
-            if (calculo < 3) {
-                obsDisplay.innerHTML = `<p class="text-[9px] text-white font-normal uppercase animate-pulse">A lombada deve ter pelo menos 3 mm</p>`;
-            } else {
-                obsDisplay.innerHTML = "";
-            }
+            resultadoDisplay.innerHTML = `${lombadaGlobal.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}<span class="text-xl ml-1 text-white">mm</span>`;
+            obsDisplay.innerHTML = (lombadaGlobal < 3) ? `<p class="text-[9px] text-white font-normal uppercase animate-pulse">Lombada mínima sugerida: 3 mm</p>` : "";
 
             desenharEsquema();
         }
