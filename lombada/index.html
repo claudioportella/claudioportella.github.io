@@ -11,6 +11,7 @@
             --bg-deep: #0a0a0a;
             --card-dark: #141414;
             --border-subtle: #262626;
+            --error-red: #ef4444;
         }
 
         body {
@@ -104,6 +105,11 @@
 
         .legenda-destaque:hover {
             background-color: #1a1a1a !important;
+        }
+
+        /* Classe para o estado de erro */
+        .text-error {
+            color: var(--error-red) !important;
         }
     </style>
 </head>
@@ -517,11 +523,17 @@
             let displayLombada = lombadaGlobal;
             if (encadernacao === 'capadura') displayLombada += ACRESCIMO_LOMBADA_CAPADURA;
 
-            resultadoDisplay.innerHTML = `${displayLombada.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}<span class="text-xl ml-1 text-white">mm</span>`;
+            // Define se deve mostrar erro (lombada inferior a 3mm)
+            const isError = (encadernacao !== 'capadura' && displayLombada < 3);
+
+            resultadoDisplay.innerHTML = `${displayLombada.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}<span class="text-xl ml-1 ${isError ? 'text-error' : 'text-white'}">mm</span>`;
             
-            if (encadernacao !== 'capadura' && lombadaGlobal < 3) {
-                obsDisplay.innerHTML = `<p class="text-[9px] text-white font-normal uppercase animate-pulse">Lombada mínima sugerida: 3 mm</p>`;
+            // Aplica ou remove a classe de erro no texto principal
+            if (isError) {
+                resultadoDisplay.classList.add('text-error');
+                obsDisplay.innerHTML = `<p class="text-[9px] text-error font-bold uppercase">Lombada mínima: 3mm</p>`;
             } else {
+                resultadoDisplay.classList.remove('text-error');
                 obsDisplay.innerHTML = "";
             }
 
