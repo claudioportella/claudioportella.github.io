@@ -10,6 +10,7 @@
         :root {
             --bg-deep: #0a0a0a;
             --card-dark: #141414;
+            --inner-box: #1a1a1a;
             --border-subtle: #262626;
             --accent-blue: #3b82f6;
             --success-green: #10b981;
@@ -23,17 +24,34 @@
             overflow-x: hidden;
         }
 
-        .glass-card {
+        .main-container {
             background: var(--card-dark);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
             border: 1px solid var(--border-subtle);
+            border-radius: 2.5rem;
         }
 
-        .input-dark {
-            background: #1a1a1a;
-            border: 1px solid #2d2d2d;
-            color: #fff;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        .inner-group-box {
+            background: var(--inner-box);
+            border: 1px solid var(--border-subtle);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+        }
+
+        .item-row {
+            padding: 1rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+        }
+
+        .item-row:first-child {
+            padding-top: 0;
+        }
+
+        .item-row:last-child {
+            padding-bottom: 0;
+            border-bottom: none !important;
         }
 
         .status-btn {
@@ -74,10 +92,6 @@
             filter: grayscale(1);
         }
 
-        [title] {
-            cursor: help;
-        }
-
         #preview-modal-content table {
             width: 100%;
             border-collapse: collapse;
@@ -93,16 +107,161 @@
 </head>
 <body class="min-h-screen">
 
-    <main class="max-w-4xl mx-auto p-4 md:p-8 lg:p-12 space-y-6 pb-24 h-full no-print">
-        
-        <div id="checklist-container" class="space-y-4"></div>
+    <!-- Dados de Configuração formatados para legibilidade -->
+    <script id="config-data" type="application/json">
+    [
+        {
+            "categoria": "Verificação inicial",
+            "itens": [
+                {
+                    "id": "logo",
+                    "label": "Logomarca do Senador",
+                    "pro": "Identificamos RGB.",
+                    "msg": "Lorem ipsum",
+                    "action": "Mensagem",
+                    "sol": "Enviar e-mail Logomarca e Atividade Parlamentar.",
+                    "critico": false
+                }
+            ]
+        },
+        {
+            "categoria": "Comprovação no Adobe Acrobat",
+            "itens": [
+                {
+                    "id": "rgb",
+                    "label": "Imagens em RGB / Lab / Indexadas",
+                    "pro": "Identificamos RGB.",
+                    "msg": "Lorem ipsum",
+                    "action": "Relatório",
+                    "sol": "Converter imagens para CMYK (Perfil Fogra39 ou similar).",
+                    "critico": false
+                },
+                {
+                    "id": "pant",
+                    "label": "Cores Especiais / Pantone ativos",
+                    "pro": "Pantones ativos em job CMYK.",
+                    "msg": "Lorem ipsum",
+                    "action": "Relatório",
+                    "sol": "Mapear cores para quadricromia no PDF ou fechar novo arquivo.",
+                    "critico": false
+                },
+                {
+                    "id": "tac",
+                    "label": "Carga de tinta (>300%)",
+                    "pro": "Excesso de tinta detectado.",
+                    "msg": "Lorem ipsum",
+                    "action": "Mensagem",
+                    "sol": "Tratar imagens para reduzir a carga total de tinta (TAC).",
+                    "critico": true
+                },
+                {
+                    "id": "res",
+                    "label": "Resolução (Abaixo de 300dpi)",
+                    "pro": "Imagens abaixo de 300dpi.",
+                    "msg": "Lorem ipsum",
+                    "action": "Relatório",
+                    "sol": "Solicitar imagens em alta resolution ou reduzir dimensões.",
+                    "critico": false
+                },
+                {
+                    "id": "ovp",
+                    "label": "Overprint de Branco",
+                    "pro": "Branco em sobreposição.",
+                    "msg": "Lorem ipsum",
+                    "action": "Mensagem",
+                    "sol": "Remover o atributo de overprint dos objetos brancos.",
+                    "critico": true
+                },
+                {
+                    "id": "curv",
+                    "label": "Fontes não incorporadas",
+                    "pro": "Fontes não embutidas no PDF.",
+                    "msg": "Lorem ipsum",
+                    "action": "Relatório",
+                    "sol": "Incorporar fontes no fechamento ou converter em curvas.",
+                    "critico": true
+                }
+            ]
+        },
+        {
+            "categoria": "Verificação manual",
+            "itens": [
+                {
+                    "id": "sng",
+                    "label": "Sangria técnica (3mm em todos os lados)",
+                    "pro": "Arquivo sem sobra técnica.",
+                    "msg": "Lorem ipsum",
+                    "action": "Mensagem",
+                    "sol": "Aumentar a arte ou o fundo em 3mm além da linha de corte.",
+                    "critico": true
+                },
+                {
+                    "id": "mrg",
+                    "label": "Margens de segurança / Respiros",
+                    "pro": "Elementos próximos ao corte.",
+                    "msg": "Lorem ipsum",
+                    "action": "Relatório",
+                    "sol": "Recuar textos e logos (mín. 4mm) da borda do papel.",
+                    "critico": true
+                },
+                {
+                    "id": "fmt",
+                    "label": "Formato final da página vs Pedido",
+                    "pro": "Tamanho do PDF incorreto.",
+                    "msg": "Lorem ipsum",
+                    "action": "Mensagem",
+                    "sol": "Ajustar o documento para as medidas finais solicitadas.",
+                    "critico": true
+                },
+                {
+                    "id": "k4",
+                    "label": "Preto rico em textos/traços finos",
+                    "pro": "Textos pequenos em 4 cores.",
+                    "msg": "Lorem ipsum",
+                    "action": "Relatório",
+                    "sol": "Alterar a cor do texto para apenas 100% Black (K).",
+                    "critico": false
+                },
+                {
+                    "id": "faca",
+                    "label": "Faca / Verniz Localizado / Hotstamp",
+                    "pro": "Camada técnica incorreta.",
+                    "msg": "Lorem ipsum",
+                    "action": "Mensagem",
+                    "sol": "Definir como Spot Color e aplicar Overprint no atributo.",
+                    "critico": true
+                },
+                {
+                    "id": "pags",
+                    "label": "Ordem das páginas / Versos em branco",
+                    "pro": "Inconsistência na sequência.",
+                    "msg": "Lorem ipsum",
+                    "action": "Relatório",
+                    "sol": "Revisar montagem do PDF e ordem lógica das páginas.",
+                    "critico": true
+                }
+            ]
+        }
+    ]
+    </script>
 
-        <!-- Botão de Ação -->
-        <div class="flex flex-col gap-4 pt-8">
-            <button id="btn-gerar" disabled onclick="abrirModalRelatorio()" class="generate-btn w-full bg-white hover:bg-gray-200 text-black font-black py-5 rounded-3xl transition duration-300 flex justify-center items-center gap-3 text-sm uppercase tracking-tighter shadow-xl">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256"><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM216,200H40V56H216V200Zm-24-72a8,8,0,0,1-8,8H72a8,8,0,0,1,0-16H184A8,8,0,0,1,192,128Zm0,32a8,8,0,0,1-8,8H72a8,8,0,0,1,0-16H184A8,8,0,0,1,192,160ZM192,96a8,8,0,0,1-8,8H72a8,8,0,0,1,0-16H184A8,8,0,0,1,192,96Z"></path></svg>
-                Gerar Relatório
-            </button>
+    <main class="max-w-4xl mx-auto p-4 md:p-8 lg:p-12 no-print">
+        
+        <!-- Box Principal que engloba tudo -->
+        <div class="main-container p-8 md:p-10 space-y-10">
+            
+            <div id="checklist-container" class="space-y-10">
+                <!-- Conteúdo gerado via JS -->
+            </div>
+
+            <!-- Botão de Ação -->
+            <div class="flex flex-col gap-4 pt-4">
+                <button id="btn-gerar" disabled onclick="abrirModalRelatorio()" class="generate-btn w-full bg-white hover:bg-gray-200 text-black font-black py-5 rounded-3xl transition duration-300 flex justify-center items-center gap-3 text-sm uppercase tracking-tighter shadow-xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256"><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM216,200H40V56H216V200Zm-24-72a8,8,0,0,1-8,8H72a8,8,0,0,1,0-16H184A8,8,0,0,1,192,128Zm0,32a8,8,0,0,1-8,8H72a8,8,0,0,1,0-16H184A8,8,0,0,1,192,160ZM192,96a8,8,0,0,1-8,8H72a8,8,0,0,1,0-16H184A8,8,0,0,1,192,96Z"></path></svg>
+                    Gerar Relatório
+                </button>
+            </div>
+
         </div>
     </main>
 
@@ -130,53 +289,49 @@
     </div>
 
     <script>
-        const config = [
-            {
-                categoria: "Verificação inicial",
-                itens: [
-                    { id: "logo", label: "Logomarca do Senador", pro: "Identificamos RGB.", msg: "Lorem ipsum", action: "Mensagem", sol: "Enviar e-mail Logomarca e Atividade Parlamentar.", critico: false },
-                ]
-            },
-            {
-                categoria: "Comprovação no Adobe Acrobat",
-                itens: [
-                    { id: "rgb", label: "Imagens em RGB / Lab / Indexadas", pro: "Identificamos RGB.", msg: "Lorem ipsum", action: "Relatório", sol: "Converter imagens para CMYK (Perfil Fogra39 ou similar).", critico: false },
-                    { id: "pant", label: "Cores Especiais / Pantone ativos", pro: "Pantones ativos em job CMYK.", msg: "Lorem ipsum", action: "Relatório", sol: "Mapear cores para quadricromia no PDF ou fechar novo arquivo.", critico: false },
-                    { id: "tac", label: "Carga de tinta (>300%)", pro: "Excesso de tinta detectado.", msg: "Lorem ipsum", action: "Mensagem", sol: "Tratar imagens para reduzir a carga total de tinta (TAC).", critico: true },
-                    { id: "res", label: "Resolução (Abaixo de 300dpi)", pro: "Imagens abaixo de 300dpi.", msg: "Lorem ipsum", action: "Relatório", sol: "Solicitar imagens em alta resolution ou reduzir dimensões.", critico: false },
-                    { id: "ovp", label: "Overprint de Branco", pro: "Branco em sobreposição.", msg: "Lorem ipsum", action: "Mensagem", sol: "Remover o atributo de overprint dos objetos brancos.", critico: true },
-                    { id: "curv", label: "Fontes não incorporadas", pro: "Fontes não embutidas no PDF.", msg: "Lorem ipsum", action: "Relatório", sol: "Incorporar fontes no fechamento ou converter em curvas.", critico: true }
-                ]
-            },
-            {
-                categoria: "Verificação manual",
-                itens: [
-                    { id: "sng", label: "Sangria técnica (3mm em todos os lados)", pro: "Arquivo sem sobra técnica.", msg: "Lorem ipsum", action: "Mensagem", sol: "Aumentar a arte ou o fundo em 3mm além da linha de corte.", critico: true },
-                    { id: "mrg", label: "Margens de segurança / Respiros", pro: "Elementos próximos ao corte.", msg: "Lorem ipsum", action: "Relatório", sol: "Recuar textos e logos (mín. 4mm) da borda do papel.", critico: true },
-                    { id: "fmt", label: "Formato final da página vs Pedido", pro: "Tamanho do PDF incorreto.", msg: "Lorem ipsum", action: "Mensagem", sol: "Ajustar o documento para as medidas finais solicitadas.", critico: true },
-                    { id: "k4", label: "Preto rico em textos/traços finos", pro: "Textos pequenos em 4 cores.", msg: "Lorem ipsum", action: "Relatório", sol: "Alterar a cor do texto para apenas 100% Black (K).", critico: false },
-                    { id: "faca", label: "Faca / Verniz Localizado / Hotstamp", pro: "Camada técnica incorreta.", msg: "Lorem ipsum", action: "Mensagem", sol: "Definir como Spot Color e aplicar Overprint no atributo.", critico: true },
-                    { id: "pags", label: "Ordem das páginas / Versos em branco", pro: "Inconsistência na sequência.", msg: "Lorem ipsum", action: "Relatório", sol: "Revisar montagem do PDF e ordem lógica das páginas.", critico: true }
-                ]
-            }
-        ];
-
+        let config = [];
         let state = {};
-        const totalItens = config.reduce((acc, cat) => acc + cat.itens.length, 0);
+        let totalItens = 0;
+
+        // Função para carregar os dados JSON com tratamento de erro
+        function loadConfig() {
+            try {
+                const configElement = document.getElementById('config-data');
+                if (!configElement) throw new Error("Elemento de configuração não encontrado.");
+                
+                config = JSON.parse(configElement.textContent);
+                totalItens = config.reduce((acc, cat) => acc + cat.itens.length, 0);
+            } catch (error) {
+                console.error("Erro ao carregar configuração:", error);
+                document.getElementById('checklist-container').innerHTML = `
+                    <div class="bg-red-500/10 border border-red-500 p-6 rounded-2xl text-red-500">
+                        <p class="font-bold">Erro de Configuração:</p>
+                        <p class="text-xs mt-2">${error.message}</p>
+                        <p class="text-xs mt-1 italic">Verifique se o JSON na tag &lt;script id="config-data"&gt; está formatado corretamente (aspas duplas e sem vírgulas sobrando).</p>
+                    </div>
+                `;
+                return false;
+            }
+            return true;
+        }
 
         function renderChecklist() {
             const container = document.getElementById('checklist-container');
+            container.innerHTML = ''; 
+
             config.forEach(cat => {
                 let html = `
-                    <div class="glass-card p-8 rounded-[2rem]">
-                        <h3 class="text-[10px] font-bold text-gray-500 border-b border-white/5 pb-4 mb-6 uppercase tracking-[0.2em]">${cat.categoria}</h3>
-                        <div class="grid grid-cols-1 gap-6">
+                    <div class="space-y-4">
+                        <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] ml-2">${cat.categoria}</h3>
+                        <div class="inner-group-box">
+                            <div class="grid grid-cols-1">
                 `;
-                cat.itens.forEach(item => {
+                cat.itens.forEach((item, index) => {
                     state[item.id] = null;
+                    const borderClass = index < cat.itens.length - 1 ? 'border-b border-white/5' : '';
                     html += `
-                        <div class="flex items-center justify-between group transition-all" title="Problema: ${item.pro} | Solução: ${item.sol}">
-                            <span class="text-sm font-medium text-gray-400 group-hover:text-white cursor-help">${item.label}</span>
+                        <div class="item-row group ${borderClass}" title="Problema: ${item.pro} | Solução: ${item.sol}">
+                            <span class="text-sm font-medium text-gray-400 group-hover:text-white cursor-help transition-colors">${item.label}</span>
                             <div class="flex gap-2">
                                 <button onclick="setStatus('${item.id}', 'ok')" id="btn-ok-${item.id}" class="status-btn hover:border-emerald-500/50" title="Item Verificado / OK">✓</button>
                                 <button onclick="setStatus('${item.id}', 'error')" id="btn-err-${item.id}" class="status-btn hover:border-red-500/50" title="Item com Problema / Erro">✕</button>
@@ -184,7 +339,7 @@
                         </div>
                     `;
                 });
-                html += `</div></div>`;
+                html += `</div></div></div>`;
                 container.innerHTML += html;
             });
         }
@@ -293,7 +448,9 @@
         }
 
         window.onload = () => {
-            renderChecklist();
+            if (loadConfig()) {
+                renderChecklist();
+            }
         };
     </script>
 </body>
