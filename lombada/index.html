@@ -172,7 +172,6 @@
                             <div class="pt-4 border-t border-white/10">
                                 <label for="orelhas" class="text-[10px] font-bold text-gray-500 mb-2 uppercase text-center block">Orelha (mm)</label>
                                 <input type="text" id="orelhas" oninput="calcularLombada()" class="w-full input-dark rounded-xl p-3 text-center text-sm font-medium text-white">
-                                <div id="infoOrelha" class="text-[9px] text-white text-center mt-2 uppercase font-normal hidden">largura da capa aumentará 2mm</div>
                             </div>
                         </div>
                     </div>
@@ -271,7 +270,6 @@
         let lombadaGlobal = 0;
         let highlightedItem = null;
         const SANGRIA = 5;
-        const AVANCO_ORELHA = 2;
         const ACRESCIMO_LOMBADA_CAPADURA = 3;
         const ACRESCIMO_LARGURA_CAPADURA = 9; // Canaleta
         const ACRESCIMO_ALTURA_CAPADURA = 12; // 6 acima + 6 abaixo (Total Extensão)
@@ -370,7 +368,6 @@
                 labelA.innerText = "Altura com sangria";
                 legCanaletaContainer.style.display = 'none';
                 legExtensaoContainer.style.display = 'none';
-                if (orelhaDoc > 0) larguraCapa += AVANCO_ORELHA;
             }
 
             const larguraTotalAberta = (orelhaDoc * 2) + (larguraCapa * 2) + espessura;
@@ -385,7 +382,6 @@
             document.getElementById('leg_altura').innerText = formatMM(alturaDoc);
             document.getElementById('leg_orelha').innerText = formatMM(orelhaDoc);
             document.getElementById('leg_total_aberto').innerText = formatMM(larguraTotalAberta, 1);
-            document.getElementById('leg_total_sangria_l').innerText = formatMM(larguraFinalTotal, 1);
             document.getElementById('leg_total_sangria_l').innerText = formatMM(larguraFinalTotal, 1);
             document.getElementById('leg_total_sangria_a').innerText = formatMM(alturaFinalTotal, 1);
             
@@ -492,8 +488,6 @@
             const encadernacao = document.getElementById("encadernacao").value;
             const paginasInput = document.getElementById("numPaginas").value;
             const orelhaElement = document.getElementById("orelhas");
-            const orelhasRaw = orelhaElement.value;
-            const orelhas = parseFloat(orelhasRaw) || 0;
             
             const resultadoDisplay = document.getElementById("resultado");
             const obsDisplay = document.getElementById("obs");
@@ -505,8 +499,6 @@
                 if (orelhaElement.value === "—") orelhaElement.value = "";
                 orelhaElement.disabled = false;
             }
-
-            document.getElementById("infoOrelha").classList.toggle('hidden', orelhas <= 0 || encadernacao === 'capadura');
 
             if (!paginasInput || paginasInput <= 0) {
                 lombadaGlobal = 0;
@@ -523,15 +515,13 @@
             let displayLombada = lombadaGlobal;
             if (encadernacao === 'capadura') displayLombada += ACRESCIMO_LOMBADA_CAPADURA;
 
-            // Define se deve mostrar erro (lombada inferior a 3mm)
             const isError = (encadernacao !== 'capadura' && displayLombada < 3);
 
             resultadoDisplay.innerHTML = `${displayLombada.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}<span class="text-xl ml-1 ${isError ? 'text-error' : 'text-white'}">mm</span>`;
             
-            // Aplica ou remove a classe de erro no texto principal
             if (isError) {
                 resultadoDisplay.classList.add('text-error');
-                obsDisplay.innerHTML = `<p class="text-[9px] text-error font-bold uppercase">Lombada mínima: 3mm</p>`;
+                obsDisplay.innerHTML = `<p class="text-[9px] text-error font-bold uppercase"><b>Lombada mínima: 3mm</b></p>`;
             } else {
                 resultadoDisplay.classList.remove('text-error');
                 obsDisplay.innerHTML = "";
