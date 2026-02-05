@@ -92,10 +92,48 @@
             filter: grayscale(1);
         }
 
+        /* Destiny Selector Styles */
+        .destiny-selector {
+            display: flex;
+            background: var(--inner-box);
+            padding: 4px;
+            border-radius: 1rem;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .destiny-option {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            border-radius: 0.75rem;
+            transition: all 0.2s ease;
+            color: #666;
+        }
+
+        .destiny-option.active {
+            background: #262626;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
         #preview-modal-content table {
             width: 100%;
             border-collapse: collapse;
             font-size: 13px;
+        }
+
+        /* Estilo para sub-linhas de detalhes */
+        .item-detail {
+            display: block;
+            font-size: 0.75rem;
+            opacity: 0.5;
+            margin-top: 2px;
+            font-weight: 400;
         }
 
         @media print {
@@ -114,13 +152,49 @@
             "categoria": "Verificação inicial",
             "itens": [
                 {
-                    "id": "logo",
-                    "label": "Logomarca do Senador",
-                    "pro": "Identificamos RGB.",
-                    "msg": "Lorem ipsum",
-                    "action": "Mensagem",
-                    "sol": "Enviar e-mail Logomarca e Atividade Parlamentar.",
-                    "critico": false
+                    "id": "logo_senador",
+                    "critical": true,
+                    "label": "Trabalho sem logomarca do senador",
+                    "action": "MSG",
+                    "problem": "—",
+                    "solution": "—",
+                    "message": "Enviar e-mail Logomarca e Atividade Parlamentar",
+                    "destiny": "ambos"
+                }
+            ]
+        },
+        {
+            "categoria": "Verificação no SIGRAF",
+            "itens": [
+                {
+                    "id": "sigraf_formato",
+                    "critical": true,
+                    "label": "Formato correto na Ordem de Serviço",
+                    "action": "MSG",
+                    "problem": "—",
+                    "solution": "—",
+                    "message": "Pedir correção do formato para SEAUFAT",
+                    "destiny": "impressao"
+                },
+                {
+                    "id": "sigraf_cores",
+                    "critical": true,
+                    "label": "Cores corretas na Ordem de Serviço",
+                    "action": "MSG",
+                    "problem": "—",
+                    "solution": "—",
+                    "message": "Pedir correção das cores para SEAUFAT",
+                    "destiny": "impressao"
+                },
+                {
+                    "id": "sigraf_paginas",
+                    "critical": true,
+                    "label": "Número de páginas correto na Ordem de Serviço",
+                    "action": "MSG",
+                    "problem": "—",
+                    "solution": "—",
+                    "message": "Pedir correção do número de páginas para SEAUFAT",
+                    "destiny": "impressao"
                 }
             ]
         },
@@ -128,58 +202,64 @@
             "categoria": "Comprovação no Adobe Acrobat",
             "itens": [
                 {
-                    "id": "rgb",
-                    "label": "Imagens em RGB / Lab / Indexadas",
-                    "pro": "Identificamos RGB.",
-                    "msg": "Lorem ipsum",
-                    "action": "Relatório",
-                    "sol": "Converter imagens para CMYK (Perfil Fogra39 ou similar).",
-                    "critico": false
+                    "id": "cmyk_check",
+                    "critical": true,
+                    "label": "Cores em CMYK",
+                    "action": "relatório",
+                    "problem": "Elementos em RGB",
+                    "solution": "Converter para CMYK.",
+                    "message": "—",
+                    "destiny": "impressao"
                 },
                 {
-                    "id": "pant",
-                    "label": "Cores Especiais / Pantone ativos",
-                    "pro": "Pantones ativos em job CMYK.",
-                    "msg": "Lorem ipsum",
-                    "action": "Relatório",
-                    "sol": "Mapear cores para quadricromia no PDF ou fechar novo arquivo.",
-                    "critico": false
+                    "id": "pb_check",
+                    "critical": true,
+                    "label": "Trabalho PB sem outras cores",
+                    "action": "relatório",
+                    "problem": "Elementos coloridos",
+                    "solution": "Converter para PB",
+                    "message": "—",
+                    "destiny": "impressao"
                 },
                 {
-                    "id": "tac",
-                    "label": "Carga de tinta (>300%)",
-                    "pro": "Excesso de tinta detectado.",
-                    "msg": "Lorem ipsum",
-                    "action": "Mensagem",
-                    "sol": "Tratar imagens para reduzir a carga total de tinta (TAC).",
-                    "critico": true
+                    "id": "tac_300",
+                    "critical": true,
+                    "label": "Carga de tintas abaixo de 300%",
+                    "action": "relatório",
+                    "problem": "Concentração de cores muito alta em fotos",
+                    "solution": "Clarear, de forma que a concentração de cores nas áreas mais escuras não exceda 300%.",
+                    "message": "—",
+                    "destiny": "impressao"
                 },
                 {
-                    "id": "res",
-                    "label": "Resolução (Abaixo de 300dpi)",
-                    "pro": "Imagens abaixo de 300dpi.",
-                    "msg": "Lorem ipsum",
-                    "action": "Relatório",
-                    "sol": "Solicitar imagens em alta resolution ou reduzir dimensões.",
-                    "critico": false
+                    "id": "resolution_check",
+                    "critical": true,
+                    "label": "Imagens em alta resolução",
+                    "action": "relatório",
+                    "problem": "Imagens em baixa resolução",
+                    "solution": "Usar imagens em alta resolução (300ppi); ou autorizar a impressão com este problema técnico.",
+                    "message": "—",
+                    "destiny": "impressao"
                 },
                 {
-                    "id": "ovp",
-                    "label": "Overprint de Branco",
-                    "pro": "Branco em sobreposição.",
-                    "msg": "Lorem ipsum",
-                    "action": "Mensagem",
-                    "sol": "Remover o atributo de overprint dos objetos brancos.",
-                    "critico": true
+                    "id": "pag_multiple_4",
+                    "critical": true,
+                    "label": "Número de páginas múltiplo de 4",
+                    "action": "relatório",
+                    "problem": "Total de páginas do miolo não é múltiplo de 4",
+                    "solution": "Acrescentar ou retirar páginas.",
+                    "message": "—",
+                    "destiny": "impressao"
                 },
                 {
-                    "id": "curv",
-                    "label": "Fontes não incorporadas",
-                    "pro": "Fontes não embutidas no PDF.",
-                    "msg": "Lorem ipsum",
-                    "action": "Relatório",
-                    "sol": "Incorporar fontes no fechamento ou converter em curvas.",
-                    "critico": true
+                    "id": "fonts_embed",
+                    "critical": true,
+                    "label": "Fontes incorporadas",
+                    "action": "relatório",
+                    "problem": "Fonte não incorporada",
+                    "solution": "Na exportação do PDF, configurar o programa para que incorpore as fontes.",
+                    "message": "—",
+                    "destiny": "impressao"
                 }
             ]
         },
@@ -187,58 +267,194 @@
             "categoria": "Verificação manual",
             "itens": [
                 {
-                    "id": "sng",
-                    "label": "Sangria técnica (3mm em todos os lados)",
-                    "pro": "Arquivo sem sobra técnica.",
-                    "msg": "Lorem ipsum",
-                    "action": "Mensagem",
-                    "sol": "Aumentar a arte ou o fundo em 3mm além da linha de corte.",
-                    "critico": true
+                    "id": "sangria_5mm",
+                    "critical": true,
+                    "label": "Sangria de 5 mm em todas as bordas",
+                    "action": "relatório",
+                    "problem": "Sangria",
+                    "solution": "Incluir sangria de 5 mm em todas as bordas",
+                    "message": "—",
+                    "destiny": "impressao"
                 },
                 {
-                    "id": "mrg",
-                    "label": "Margens de segurança / Respiros",
-                    "pro": "Elementos próximos ao corte.",
-                    "msg": "Lorem ipsum",
-                    "action": "Relatório",
-                    "sol": "Recuar textos e logos (mín. 4mm) da borda do papel.",
-                    "critico": true
+                    "id": "marcas_check",
+                    "critical": true,
+                    "label": "Sem marcas de corte, registro, espaçador e escala",
+                    "action": "relatório",
+                    "problem": "Marcas",
+                    "solution": "Retirar marcas de corte, escala de cores, espaçador",
+                    "message": "—",
+                    "destiny": "impressao"
                 },
                 {
-                    "id": "fmt",
-                    "label": "Formato final da página vs Pedido",
-                    "pro": "Tamanho do PDF incorreto.",
-                    "msg": "Lorem ipsum",
-                    "action": "Mensagem",
-                    "sol": "Ajustar o documento para as medidas finais solicitadas.",
-                    "critico": true
+                    "id": "marcas_dobra",
+                    "critical": true,
+                    "label": "Marcas de dobra",
+                    "action": "relatório",
+                    "problem": "Marcas de dobra",
+                    "solution": "Inserir marcas pontilhadas no local da dobra, na região externa da arte, mas dentro da área de sangria.",
+                    "message": "—",
+                    "destiny": "impressao"
                 },
                 {
-                    "id": "k4",
-                    "label": "Preto rico em textos/traços finos",
-                    "pro": "Textos pequenos em 4 cores.",
-                    "msg": "Lorem ipsum",
-                    "action": "Relatório",
-                    "sol": "Alterar a cor do texto para apenas 100% Black (K).",
-                    "critico": false
+                    "id": "margem_seguranca",
+                    "critical": true,
+                    "label": "Elementos 5 mm de afastamento das bordas",
+                    "action": "relatório",
+                    "problem": "Elementos próximos à área de corte",
+                    "solution": "Aplicar distância mínima de segurança de 5 mm. Para lombada colada, nas primeiras e últimas páginas e nas partes internas da capa a distância mínima deve ser de 10 mm.",
+                    "message": "—",
+                    "destiny": "impressao"
                 },
                 {
-                    "id": "faca",
-                    "label": "Faca / Verniz Localizado / Hotstamp",
-                    "pro": "Camada técnica incorreta.",
-                    "msg": "Lorem ipsum",
-                    "action": "Mensagem",
-                    "sol": "Definir como Spot Color e aplicar Overprint no atributo.",
-                    "critico": true
+                    "id": "preto_k",
+                    "critical": true,
+                    "label": "Elementos pretos apenas no canal K<span class='item-detail'>— com texto vazado: 30c 0m 0y 100k</span><span class='item-detail'>— sem texto vazado: 40c 20m 20y 100k</span>",
+                    "action": "relatório",
+                    "problem": "Elemento preto nas 4 cores CMYK",
+                    "solution": "Passar para somente Preto K 100%. Os outros canais de cor precisam estar em 0%.",
+                    "message": "—",
+                    "destiny": "impressao"
                 },
                 {
-                    "id": "pags",
-                    "label": "Ordem das páginas / Versos em branco",
-                    "pro": "Inconsistência na sequência.",
-                    "msg": "Lorem ipsum",
-                    "action": "Relatório",
-                    "sol": "Revisar montagem do PDF e ordem lógica das páginas.",
-                    "critico": true
+                    "id": "preto_chapado",
+                    "critical": true,
+                    "label": "Áreas com chapados pretos calçados?",
+                    "action": "relatório",
+                    "problem": "Preto chapado puro (0c 0m 0y 100k)",
+                    "solution": "Calçar o preto: Com texto vazado (30c 0m 0y 100k); Sem texto vazado (40c 20m 20y 100k)",
+                    "message": "—",
+                    "destiny": "impressao"
+                },
+                {
+                    "id": "overprint_preto",
+                    "critical": true,
+                    "label": "Elementos pretos com overprint",
+                    "action": "relatório",
+                    "problem": "Cor de fundo vazada no local do preto",
+                    "solution": "Deixar overprint. Ou seja, manter o fundo e o preto, um sobre o outro.",
+                    "message": "—",
+                    "destiny": "impressao"
+                },
+                {
+                    "id": "pag_individuais",
+                    "critical": true,
+                    "label": "Miolo sem páginas agrupadas",
+                    "action": "relatório",
+                    "problem": "Páginas agrupadas",
+                    "solution": "Finalizar arquivo com páginas individuais e em sequência.",
+                    "message": "—",
+                    "destiny": "impressao"
+                },
+                {
+                    "id": "capa_montada",
+                    "critical": true,
+                    "label": "Capa montada",
+                    "action": "relatório",
+                    "problem": "Capas e lombada em páginas diferentes",
+                    "solution": "Preparar PDF com 1ª e 4ª capas, orelhas e lombada em uma página única (capa aberta). Inserir marcas de dobra pontilhadas para a lombadas e orelhas. Se houver conteúdo na 2ª e 3ª capas, prepará-las da mesma forma.",
+                    "message": "—",
+                    "destiny": "impressao"
+                },
+                {
+                    "id": "medida_lombada",
+                    "critical": true,
+                    "label": "Medida da lombada",
+                    "action": "relatório",
+                    "problem": "Medida da lombada incompatível com a quantidade de páginas",
+                    "solution": "Ajustar lombada para XX mm.",
+                    "message": "Informar a medida correta da lombada.",
+                    "destiny": "impressao"
+                },
+                {
+                    "id": "lombada_marcada",
+                    "critical": true,
+                    "label": "Lombada marcada",
+                    "action": "relatório",
+                    "problem": "Lombada marcada",
+                    "solution": "Ajustar o layout de forma que não haja elementos alinhados com as bordas da lombada e das orelhas.",
+                    "message": "—",
+                    "destiny": "impressao"
+                },
+                {
+                    "id": "afastamento_lombada",
+                    "critical": true,
+                    "label": "Elementos afastados da lombada",
+                    "action": "relatório",
+                    "problem": "Elementos na capa/contracapa muito próximos da lombada",
+                    "solution": "Deixar a distância de 10mm, para que não fiquem em cima do vinco.",
+                    "message": "—",
+                    "destiny": "impressao"
+                },
+                {
+                    "id": "sentido_lombada",
+                    "critical": true,
+                    "label": "Sentido da lombada correto",
+                    "action": "relatório",
+                    "problem": "Conteúdo da lombada em sentido invertido",
+                    "solution": "Girar 180 graus, de forma que a leitura do texto fique de cima para baixo; ou autorizar a impressão desta forma.",
+                    "message": "—",
+                    "destiny": "impressao"
+                },
+                {
+                    "id": "tipo_encadernacao",
+                    "critical": true,
+                    "label": "Compatível com encadernação com cola",
+                    "action": "relatório",
+                    "problem": "Quantidade de páginas é pequena para acabamento com cola",
+                    "solution": "Alterar capa para grampo (sem lombada)",
+                    "message": "—",
+                    "destiny": "impressao"
+                },
+                {
+                    "id": "colofao_check",
+                    "critical": true,
+                    "label": "Colofão correto",
+                    "action": "relatório",
+                    "problem": "Informações do colofão desatualizadas",
+                    "solution": "Atualizar as informações.",
+                    "message": "—",
+                    "destiny": "impressao"
+                },
+                {
+                    "id": "ficha_catalog",
+                    "critical": true,
+                    "label": "Ficha catalográfica atualizada",
+                    "action": "MSG",
+                    "problem": "—",
+                    "solution": "—",
+                    "message": "Solicitar nova ficha catalográfica para COBIB",
+                    "destiny": "impressao"
+                },
+                {
+                    "id": "cedit_mesa",
+                    "critical": true,
+                    "label": "Livro da CEDIT com Mesa e colofão atuais",
+                    "action": "MSG",
+                    "problem": "—",
+                    "solution": "—",
+                    "message": "Solicitar atualização do colofão para SEFPRO",
+                    "destiny": "impressao"
+                },
+                {
+                    "id": "cartao_visita",
+                    "critical": true,
+                    "label": "Cartão de visitas no padrão do Senado",
+                    "action": "relatório",
+                    "problem": "Cartão de visitas fora do padrão",
+                    "solution": "Seguir o padrão do Manual de Identidade Visual do Senado Federal.",
+                    "message": "—",
+                    "destiny": "impressao"
+                },
+                {
+                    "id": "chancela_correios",
+                    "critical": true,
+                    "label": "Envelope com a chancela dos Correios",
+                    "action": "MSG",
+                    "problem": "—",
+                    "solution": "—",
+                    "message": "Confirmar a chancela dos Correios com SEAUFAT",
+                    "destiny": "impressao"
                 }
             ]
         }
@@ -247,19 +463,29 @@
 
     <main class="max-w-4xl mx-auto p-4 md:p-8 lg:p-12 no-print">
         <div class="main-container p-8 md:p-10 space-y-10">
+            
+            <!-- Selector de Destino -->
+            <div class="space-y-4">
+                <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] ml-2">Destino do Trabalho</h3>
+                <div class="destiny-selector">
+                    <div onclick="setDestiny('impressao')" id="opt-impressao" class="destiny-option active">Impressão</div>
+                    <div onclick="setDestiny('plotagem')" id="opt-plotagem" class="destiny-option">Plotagem</div>
+                </div>
+            </div>
+
             <div id="checklist-container" class="space-y-10">
                 <!-- Conteúdo gerado via JS -->
             </div>
 
-            <div class="flex flex-col gap-4 pt-4">
-                <button id="btn-gerar" disabled onclick="abrirModalRelatorio()" class="generate-btn w-full bg-white hover:bg-gray-200 text-black font-black py-5 rounded-3xl transition duration-300 flex justify-center items-center gap-3 text-sm uppercase tracking-tighter shadow-xl">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 256 256"><path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM216,200H40V56H216V200Zm-24-72a8,8,0,0,1-8,8H72a8,8,0,0,1,0-16H184A8,8,0,0,1,192,128Zm0,32a8,8,0,0,1-8,8H72a8,8,0,0,1,0-16H184A8,8,0,0,1,192,160ZM192,96a8,8,0,0,1-8,8H72a8,8,0,0,1,0-16H184A8,8,0,0,1,192,96Z"></path></svg>
+            <div class="flex pt-4">
+                <button id="btn-gerar" disabled onclick="abrirModalRelatorio()" title="Marque todos os itens para gerar o relatório" class="generate-btn mx-auto bg-white hover:bg-gray-200 text-black font-bold py-4 px-10 rounded-2xl transition duration-300 flex justify-center items-center gap-3 text-xs uppercase transition shadow-xl">
                     Gerar Relatório
                 </button>
             </div>
         </div>
     </main>
 
+    <!-- Modals and Toasts -->
     <div id="preview-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm">
         <div class="bg-white w-full max-w-2xl rounded-[2.5rem] overflow-hidden flex flex-col max-h-[90vh]">
             <div class="p-4 bg-gray-50 border-b flex justify-between items-center no-print">
@@ -268,10 +494,8 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#000" viewBox="0 0 256 256"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"></path></svg>
                 </button>
             </div>
-            <div id="preview-modal-content" class="p-8 md:p-12 overflow-y-auto bg-white text-black leading-relaxed">
-                <!-- Conteúdo gerado via JS -->
-            </div>
-            <div class="p-6 bg-gray-50 border-t grid grid-cols-2 gap-4 no-print">
+            <div id="preview-modal-content" class="p-8 md:p-12 overflow-y-auto bg-white text-black leading-relaxed"></div>
+            <div id="modal-actions" class="p-6 bg-gray-50 border-t grid grid-cols-2 gap-4 no-print">
                 <button onclick="copiarTexto()" class="bg-black text-white font-bold py-4 rounded-2xl text-xs uppercase transition hover:bg-gray-800">Copiar</button>
                 <button onclick="window.print()" class="border-2 border-black text-black font-bold py-4 rounded-2xl text-xs uppercase transition hover:bg-gray-100">Imprimir</button>
             </div>
@@ -279,58 +503,73 @@
     </div>
 
     <div id="toast" class="fixed bottom-12 left-1/2 -translate-x-1/2 bg-emerald-500 text-black font-black text-[10px] px-8 py-3 rounded-full opacity-0 transition-all duration-300 shadow-2xl pointer-events-none uppercase tracking-widest z-[60]">
-        Copiado! Pronto para colar no e-mail.
+        Copiado! Tabela pronta para colar no e-mail.
     </div>
 
     <script>
-        let config = [];
+        let fullConfig = [];
+        let activeDestiny = 'impressao';
         let state = {};
-        let totalItens = 0;
+        let visibleItensCount = 0;
 
         function loadConfig() {
             try {
                 const configElement = document.getElementById('config-data');
-                config = JSON.parse(configElement.textContent);
-                totalItens = config.reduce((acc, cat) => acc + cat.itens.length, 0);
+                fullConfig = JSON.parse(configElement.textContent);
                 return true;
             } catch (error) {
                 console.error("Erro ao carregar configuração:", error);
-                document.getElementById('checklist-container').innerHTML = `
-                    <div class="bg-red-500/10 border border-red-500 p-6 rounded-2xl text-red-500">
-                        <p class="font-bold">Erro de Configuração:</p>
-                        <p class="text-xs mt-2">${error.message}</p>
-                    </div>
-                `;
                 return false;
             }
+        }
+
+        function setDestiny(dest) {
+            activeDestiny = dest;
+            document.getElementById('opt-impressao').classList.toggle('active', dest === 'impressao');
+            document.getElementById('opt-plotagem').classList.toggle('active', dest === 'plotagem');
+            renderChecklist();
+            checkCompletion();
         }
 
         function renderChecklist() {
             const container = document.getElementById('checklist-container');
             container.innerHTML = ''; 
+            visibleItensCount = 0;
 
-            config.forEach(cat => {
-                let html = `
-                    <div class="space-y-4">
-                        <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] ml-2">${cat.categoria}</h3>
-                        <div class="inner-group-box">
-                            <div class="grid grid-cols-1">
-                `;
-                cat.itens.forEach((item, index) => {
-                    state[item.id] = null;
-                    const borderClass = index < cat.itens.length - 1 ? 'border-b border-white/5' : '';
-                    html += `
-                        <div class="item-row ${borderClass}">
-                            <span class="text-sm font-medium text-gray-400 transition-colors">${item.label}</span>
-                            <div class="flex gap-2">
-                                <button onclick="setStatus('${item.id}', 'ok')" id="btn-ok-${item.id}" class="status-btn">✓</button>
-                                <button onclick="setStatus('${item.id}', 'error')" id="btn-err-${item.id}" class="status-btn">✕</button>
-                            </div>
-                        </div>
+            fullConfig.forEach(cat => {
+                const filteredItens = cat.itens.filter(item => 
+                    item.destiny === 'ambos' || item.destiny === activeDestiny
+                );
+
+                if (filteredItens.length > 0) {
+                    let html = `
+                        <div class="space-y-4">
+                            <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] ml-2">${cat.categoria}</h3>
+                            <div class="inner-group-box">
+                                <div class="grid grid-cols-1">
                     `;
-                });
-                html += `</div></div></div>`;
-                container.innerHTML += html;
+                    
+                    filteredItens.forEach((item, index) => {
+                        visibleItensCount++;
+                        if (state[item.id] === undefined) state[item.id] = null;
+                        
+                        const borderClass = index < filteredItens.length - 1 ? 'border-b border-white/5' : '';
+                        const okActive = state[item.id] === 'ok' ? 'active-ok' : '';
+                        const errActive = state[item.id] === 'error' ? 'active-error' : '';
+
+                        html += `
+                            <div class="item-row ${borderClass}">
+                                <span class="text-sm font-medium text-gray-400 transition-colors leading-tight">${item.label}</span>
+                                <div class="flex gap-2">
+                                    <button onclick="setStatus('${item.id}', 'ok')" id="btn-ok-${item.id}" class="status-btn ${okActive}">✓</button>
+                                    <button onclick="setStatus('${item.id}', 'error')" id="btn-err-${item.id}" class="status-btn ${errActive}">✕</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    html += `</div></div></div>`;
+                    container.innerHTML += html;
+                }
             });
         }
 
@@ -356,8 +595,24 @@
         }
 
         function checkCompletion() {
-            const preenchidos = Object.values(state).filter(v => v !== null).length;
-            document.getElementById('btn-gerar').disabled = preenchidos < totalItens;
+            let preenchidosVisiveis = 0;
+            fullConfig.forEach(cat => {
+                cat.itens.forEach(item => {
+                    if ((item.destiny === 'ambos' || item.destiny === activeDestiny) && state[item.id] !== null) {
+                        preenchidosVisiveis++;
+                    }
+                });
+            });
+            const btn = document.getElementById('btn-gerar');
+            const isFinished = preenchidosVisiveis >= visibleItensCount;
+            btn.disabled = !isFinished;
+            
+            // Remove o tooltip quando estiver ativo para uma experiência mais limpa
+            if (isFinished) {
+                btn.removeAttribute('title');
+            } else {
+                btn.setAttribute('title', 'Marque todos os itens para gerar o relatório');
+            }
         }
 
         function abrirModalRelatorio() {
@@ -373,34 +628,54 @@
 
         function gerarRelatorio() {
             const preview = document.getElementById('preview-modal-content');
+            const actions = document.getElementById('modal-actions');
             let errorRows = [];
-            config.forEach(cat => {
+            let messages = [];
+            
+            fullConfig.forEach(cat => {
                 cat.itens.forEach(item => {
-                    if (state[item.id] === 'error') {
-                        errorRows.push({ prob: item.pro, sol: item.sol, critico: item.critico });
+                    if ((item.destiny === 'ambos' || item.destiny === activeDestiny) && state[item.id] === 'error') {
+                        if (item.action === "MSG" && item.message && item.message !== "—") {
+                            messages.push(item.message);
+                        } else {
+                            errorRows.push({ prob: item.problem, sol: item.solution, critical: item.critical });
+                        }
                     }
                 });
             });
 
-            let htmlContent = `<div style="font-family: Arial, sans-serif; color: #333; max-width: 100%;">`;
+            let htmlContent = `<div id="report-wrapper" style="font-family: 'Inter', sans-serif; color: #333; max-width: 100%;">`;
+
+            // Exibir mensagens (Alertas)
+            if (messages.length > 0) {
+                messages.forEach(msg => {
+                    htmlContent += `
+                        <div class="msg-alert" style="padding: 20px; margin-bottom: 12px; background-color: #fff9f0; border: 1px solid #ffeed4; border-radius: 20px; color: #7b341e; text-align: center; font-weight: 600; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            <span style="font-size: 18px;">➜</span> ${msg}
+                        </div>`;
+                });
+            }
 
             if (errorRows.length === 0) {
-                htmlContent += `<div style="padding: 15px; background-color: #e6fffa; border: 1px solid #b2f5ea; border-radius: 12px; color: #234e52; text-align: center;">`;
-                htmlContent += `<strong>✅ ARQUIVO APROVADO: Nenhuma inconsistência técnica detectada.</strong>`;
-                htmlContent += `</div>`;
+                htmlContent += `
+                    <div style="padding: 20px; background-color: #e6fffa; border: 1px solid #b2f5ea; border-radius: 20px; color: #234e52; text-align: center; font-weight: 600; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <span>✔</span> Nenhum problema técnico encontrado.
+                    </div>`;
+                actions.classList.add('hidden');
             } else {
-                htmlContent += `<table style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #edf2f7;">`;
+                htmlContent += `<table id="report-table" style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #edf2f7; margin-top: 8px;">`;
                 htmlContent += `<thead><tr style="background-color: #f7fafc; border-bottom: 2px solid #edf2f7;">`;
-                htmlContent += `<th colspan="2" style="padding: 12px; text-align: left; border: 1px solid #edf2f7; width: 50%; font-size: 11px; text-transform: uppercase;">PROBLEMA DETECTADO</th>`;
-                htmlContent += `<th style="padding: 12px; text-align: left; border: 1px solid #edf2f7; width: 50%; font-size: 11px; text-transform: uppercase;">COMO RESOLVER</th>`;
+                htmlContent += `<th colspan="2" style="padding: 12px; text-align: left; border: 1px solid #edf2f7; width: 50%; font-size: 11px; text-transform: uppercase; font-weight: 800;">PROBLEMA DETECTADO</th>`;
+                htmlContent += `<th style="padding: 12px; text-align: left; border: 1px solid #edf2f7; width: 50%; font-size: 11px; text-transform: uppercase; font-weight: 800;">COMO RESOLVER</th>`;
                 htmlContent += `</tr></thead><tbody>`;
                 
                 errorRows.forEach(row => {
-                    const icon = row.critico ? `<span style="color: #e53e3e; font-weight: bold;">❌</span>` : `<span style="color: #d69e2e; font-weight: bold;">⚠️</span>`;
-                    htmlContent += `<tr><td style="padding: 12px; border: 1px solid #edf2f7; width: 35px; text-align: center;">${icon}</td><td style="padding: 12px; border: 1px solid #edf2f7;">${row.prob}</td><td style="padding: 12px; border: 1px solid #edf2f7;">${row.sol}</td></tr>`;
+                    const icon = row.critical ? `❌` : `➜`;
+                    htmlContent += `<tr><td style="padding: 12px; border: 1px solid #edf2f7; width: 35px; text-align: center; font-size: 16px;">${icon}</td><td style="padding: 12px; border: 1px solid #edf2f7; font-weight: 500;">${row.prob}</td><td style="padding: 12px; border: 1px solid #edf2f7; color: #4a5568;">${row.sol}</td></tr>`;
                 });
                 
                 htmlContent += `</tbody></table>`;
+                actions.classList.remove('hidden');
             }
 
             htmlContent += `</div>`;
@@ -408,19 +683,26 @@
         }
 
         async function copiarTexto() {
-            const reportDiv = document.getElementById('preview-modal-content');
+            const tableElement = document.getElementById('report-table');
+            if (!tableElement) return;
+
             try {
-                const blob = new Blob([reportDiv.innerHTML], { type: 'text/html' });
-                const data = [new ClipboardItem({ 'text/html': blob, 'text/plain': new Blob([reportDiv.innerText], { type: 'text/plain' }) })];
+                // Cria um elemento temporário apenas com a tabela para garantir que as mensagens não vão junto
+                const blob = new Blob([tableElement.outerHTML], { type: 'text/html' });
+                const data = [new ClipboardItem({ 
+                    'text/html': blob, 
+                    'text/plain': new Blob([tableElement.innerText], { type: 'text/plain' }) 
+                })];
                 await navigator.clipboard.write(data);
             } catch (err) {
                 const range = document.createRange();
-                range.selectNode(reportDiv);
+                range.selectNode(tableElement);
                 window.getSelection().removeAllRanges();
                 window.getSelection().addRange(range);
                 document.execCommand('copy');
                 window.getSelection().removeAllRanges();
             }
+            
             const toast = document.getElementById('toast');
             toast.style.opacity = "1";
             setTimeout(() => toast.style.opacity = "0", 2500);
