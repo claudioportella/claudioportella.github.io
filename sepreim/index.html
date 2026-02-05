@@ -54,6 +54,14 @@
             border-bottom: none !important;
         }
 
+        /* Classe para destaque de palavras específicas */
+        .highlight-text {
+            font-size: 1.25em;
+            color: inherit;
+            font-weight: 700;
+            display: inline-block;
+        }
+
         .status-btn {
             width: 38px;
             height: 38px;
@@ -635,49 +643,39 @@
             fullConfig.forEach(cat => {
                 cat.itens.forEach(item => {
                     if ((item.destiny === 'ambos' || item.destiny === activeDestiny) && state[item.id] === 'error') {
-                        if (item.action === "MSG" && item.message && item.message !== "—") {
+                        if (item.action === "MSG" && item.message !== "—") {
                             messages.push(item.message);
                         } else {
-                            errorRows.push({ prob: item.problem, sol: item.solution, critical: item.critical });
+                            const cleanProblem = item.problem.replace(/<[^>]*>/g, '');
+                            errorRows.push({ prob: cleanProblem, sol: item.solution, critical: item.critical });
                         }
                     }
                 });
             });
 
-            let htmlContent = `<div id="report-wrapper" style="font-family: 'Inter', sans-serif; color: #333; max-width: 100%;">`;
-
-            // Exibir mensagens (Alertas)
+            let htmlContent = `<div id="report-table-container" style="font-family: 'Inter', sans-serif; color: #333;">`;
             if (messages.length > 0) {
                 messages.forEach(msg => {
-                    htmlContent += `
-                        <div class="msg-alert" style="padding: 20px; margin-bottom: 12px; background-color: #fff9f0; border: 1px solid #ffeed4; border-radius: 20px; color: #7b341e; text-align: center; font-weight: 600; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                            <span style="font-size: 18px;">➜</span> ${msg}
-                        </div>`;
+                    htmlContent += `<div style="padding: 15px; margin-bottom: 10px; background: #fff9f0; border: 1px solid #ffeed4; border-radius: 15px; text-align: center; font-weight: 600; font-size: 13px;">➜ ${msg}</div>`;
                 });
             }
 
-            if (errorRows.length === 0) {
-                htmlContent += `
-                    <div style="padding: 20px; background-color: #e6fffa; border: 1px solid #b2f5ea; border-radius: 20px; color: #234e52; text-align: center; font-weight: 600; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                        <span>✔</span> Nenhum problema técnico encontrado.
-                    </div>`;
+            if (errorRows.length === 0 && messages.length === 0) {
+                htmlContent += `<div style="padding: 20px; text-align: center; font-weight: 600; color: #234e52;">✔ Nenhum problema técnico encontrado</div>`;
                 actions.classList.add('hidden');
-            } else {
+            } else if (errorRows.length > 0) {
                 htmlContent += `<table id="report-table" style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #edf2f7; margin-top: 8px;">`;
-                htmlContent += `<thead><tr style="background-color: #f7fafc; border-bottom: 2px solid #edf2f7;">`;
-                htmlContent += `<th colspan="2" style="padding: 12px; text-align: left; border: 1px solid #edf2f7; width: 50%; font-size: 11px; text-transform: uppercase; font-weight: 800;">PROBLEMA DETECTADO</th>`;
-                htmlContent += `<th style="padding: 12px; text-align: left; border: 1px solid #edf2f7; width: 50%; font-size: 11px; text-transform: uppercase; font-weight: 800;">COMO RESOLVER</th>`;
-                htmlContent += `</tr></thead><tbody>`;
-                
+                htmlContent += `<thead style="background: #f7fafc;"><tr style="border-bottom: 2px solid #edf2f7;"><th colspan="2" style="padding: 10px; text-align: left; font-size: 10px; text-transform: uppercase;">Problema</th><th style="padding: 10px; text-align: left; font-size: 10px; text-transform: uppercase;">Solução</th></tr></thead><tbody>`;
                 errorRows.forEach(row => {
                     const icon = row.critical ? `❌` : `➜`;
-                    htmlContent += `<tr><td style="padding: 12px; border: 1px solid #edf2f7; width: 35px; text-align: center; font-size: 16px;">${icon}</td><td style="padding: 12px; border: 1px solid #edf2f7; font-weight: 500;">${row.prob}</td><td style="padding: 12px; border: 1px solid #edf2f7; color: #4a5568;">${row.sol}</td></tr>`;
+                    htmlContent += `<tr><td style="padding: 10px; border: 1px solid #edf2f7; text-align: center;">${icon}</td><td style="padding: 10px; border: 1px solid #edf2f7; font-weight: 500;">${row.prob}</td><td style="padding: 10px; border: 1px solid #edf2f7; color: #4a5568;">${row.sol}</td></tr>`;
                 });
-                
                 htmlContent += `</tbody></table>`;
                 actions.classList.remove('hidden');
+            } else if (messages.length > 0) {
+                // Caso existam apenas mensagens e nenhum erro técnico na tabela
+                actions.classList.add('hidden');
             }
-
             htmlContent += `</div>`;
             preview.innerHTML = htmlContent;
         }
@@ -687,22 +685,14 @@
             if (!tableElement) return;
 
             try {
-                // Cria um elemento temporário apenas com a tabela para garantir que as mensagens não vão junto
                 const blob = new Blob([tableElement.outerHTML], { type: 'text/html' });
-                const data = [new ClipboardItem({ 
-                    'text/html': blob, 
-                    'text/plain': new Blob([tableElement.innerText], { type: 'text/plain' }) 
-                })];
+                const data = [new ClipboardItem({ 'text/html': blob, 'text/plain': new Blob([tableElement.innerText], { type: 'text/plain' }) })];
                 await navigator.clipboard.write(data);
             } catch (err) {
-                const range = document.createRange();
-                range.selectNode(tableElement);
-                window.getSelection().removeAllRanges();
-                window.getSelection().addRange(range);
+                const range = document.createRange(); range.selectNode(tableElement);
+                window.getSelection().removeAllRanges(); window.getSelection().addRange(range);
                 document.execCommand('copy');
-                window.getSelection().removeAllRanges();
             }
-            
             const toast = document.getElementById('toast');
             toast.style.opacity = "1";
             setTimeout(() => toast.style.opacity = "0", 2500);
