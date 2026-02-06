@@ -162,7 +162,7 @@
                 {
                     "id": "logo_senador",
                     "critical": true,
-                    "label": "Trabalho sem logomarca do senador",
+                    "label": "Trabalho sem <span class='highlight-text'>logomarca</span> do senador",
                     "action": "MSG",
                     "problem": "—",
                     "solution": "—",
@@ -307,7 +307,7 @@
                 {
                     "id": "margem_seguranca",
                     "critical": true,
-                    "label": "Elementos 5 mm de afastamento das bordas",
+                    "label": "Elements 5 mm de afastamento das bordas",
                     "action": "relatório",
                     "problem": "Elementos próximos à área de corte",
                     "solution": "Aplicar distância mínima de segurança de 5 mm. Para lombada colada, nas primeiras e últimas páginas e nas partes internas da capa a distância mínima deve ser de 10 mm.",
@@ -504,14 +504,14 @@
             </div>
             <div id="preview-modal-content" class="p-8 md:p-12 overflow-y-auto bg-white text-black leading-relaxed"></div>
             <div id="modal-actions" class="p-6 bg-gray-50 border-t grid grid-cols-2 gap-4 no-print">
-                <button onclick="copiarTexto()" class="bg-black text-white font-bold py-4 rounded-2xl text-xs uppercase transition hover:bg-gray-800">Copiar</button>
-                <button onclick="window.print()" class="border-2 border-black text-black font-bold py-4 rounded-2xl text-xs uppercase transition hover:bg-gray-100">Imprimir</button>
+                <button onclick="copiarTexto()" class="bg-black text-white font-bold py-4 rounded-2xl text-xs uppercase transition hover:bg-gray-800">Copiar relatório</button>
             </div>
         </div>
     </div>
 
-    <div id="toast" class="fixed bottom-12 left-1/2 -translate-x-1/2 bg-emerald-500 text-black font-black text-[10px] px-8 py-3 rounded-full opacity-0 transition-all duration-300 shadow-2xl pointer-events-none uppercase tracking-widest z-[60]">
-        Copiado! Tabela pronta para colar no e-mail.
+    <!-- Ajuste no Toast: text-xs, rounded-2xl e preenchimento maior -->
+    <div id="toast" class="fixed bottom-12 left-1/2 -translate-x-1/2 bg-emerald-500 text-black font-bold text-xs px-10 py-4 rounded-2xl opacity-0 transition-all duration-300 shadow-2xl pointer-events-none uppercase tracking-widest z-[60]">
+        Relatório copiado! Pronto para colar no e-mail.
     </div>
 
     <script>
@@ -615,7 +615,6 @@
             const isFinished = preenchidosVisiveis >= visibleItensCount;
             btn.disabled = !isFinished;
             
-            // Remove o tooltip quando estiver ativo para uma experiência mais limpa
             if (isFinished) {
                 btn.removeAttribute('title');
             } else {
@@ -626,6 +625,7 @@
         function abrirModalRelatorio() {
             gerarRelatorio();
             document.getElementById('preview-modal').classList.remove('hidden');
+            document.getElementById('modal-actions').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
         }
 
@@ -656,16 +656,16 @@
             let htmlContent = `<div id="report-table-container" style="font-family: 'Inter', sans-serif; color: #333;">`;
             if (messages.length > 0) {
                 messages.forEach(msg => {
-                    htmlContent += `<div style="padding: 15px; margin-bottom: 10px; background: #fff9f0; border: 1px solid #ffeed4; border-radius: 15px; text-align: center; font-weight: 600; font-size: 13px;">➜ ${msg}</div>`;
+                    htmlContent += `<div style="padding: 15px; margin-bottom: 10px; background: #fff9f0; border: 1px solid #ffeed4; border-radius: 1.5rem; text-align: center; font-weight: 600; font-size: 13px; color: #854d0e;">➜ ${msg}</div>`;
                 });
             }
 
             if (errorRows.length === 0 && messages.length === 0) {
-                htmlContent += `<div style="padding: 20px; text-align: center; font-weight: 600; color: #234e52;">✔ Nenhum problema técnico encontrado</div>`;
+                htmlContent += `<div style="padding: 15px; background: #f0fdf4; border: 1px solid #dcfce7; border-radius: 1.5rem; text-align: center; font-weight: 600; font-size: 13px; color: #166534;">✔ Nenhum problema técnico encontrado</div>`;
                 actions.classList.add('hidden');
             } else if (errorRows.length > 0) {
                 htmlContent += `<table id="report-table" style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #edf2f7; margin-top: 8px;">`;
-                htmlContent += `<thead style="background: #f7fafc;"><tr style="border-bottom: 2px solid #edf2f7;"><th colspan="2" style="padding: 10px; text-align: left; font-size: 10px; text-transform: uppercase;">Problema</th><th style="padding: 10px; text-align: left; font-size: 10px; text-transform: uppercase;">Solução</th></tr></thead><tbody>`;
+                htmlContent += `<thead style="background: #f7fafc;"><tr style="border-bottom: 2px solid #edf2f7;"><th colspan="2" style="padding: 10px; text-align: left; font-size: 10px; text-transform: uppercase;">Problema encontrado</th><th style="padding: 10px; text-align: left; font-size: 10px; text-transform: uppercase;">Como solucionar</th></tr></thead><tbody>`;
                 errorRows.forEach(row => {
                     const icon = row.critical ? `❌` : `➜`;
                     htmlContent += `<tr><td style="padding: 10px; border: 1px solid #edf2f7; text-align: center;">${icon}</td><td style="padding: 10px; border: 1px solid #edf2f7; font-weight: 500;">${row.prob}</td><td style="padding: 10px; border: 1px solid #edf2f7; color: #4a5568;">${row.sol}</td></tr>`;
@@ -673,7 +673,6 @@
                 htmlContent += `</tbody></table>`;
                 actions.classList.remove('hidden');
             } else if (messages.length > 0) {
-                // Caso existam apenas mensagens e nenhum erro técnico na tabela
                 actions.classList.add('hidden');
             }
             htmlContent += `</div>`;
@@ -693,6 +692,9 @@
                 window.getSelection().removeAllRanges(); window.getSelection().addRange(range);
                 document.execCommand('copy');
             }
+            
+            window.getSelection().removeAllRanges();
+
             const toast = document.getElementById('toast');
             toast.style.opacity = "1";
             setTimeout(() => toast.style.opacity = "0", 2500);
