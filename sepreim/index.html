@@ -171,7 +171,7 @@
                     "problem": "—",
                     "solution": "—",
                     "message": "Pedir correção do formato para SEAUFAT",
-                    "destiny": "impressao"
+                    "destiny": "ambos"
                 },
                 {
                     "id": "sigraf_cores",
@@ -223,14 +223,14 @@
                     "critical": true,
                     "label": "Carga de tintas abaixo de 300%",
                     "action": "relatório",
-                    "problem": "Concentração de cores muito alta em fotos",
+                    "problem": "Concentração de cores muito alta",
                     "solution": "Clarear, de forma que a concentração de cores nas áreas mais escuras não exceda 300%.",
                     "message": "—",
                     "destiny": "impressao"
                 },
                 {
                     "id": "resolution_check",
-                    "critical": true,
+                    "critical": false,
                     "label": "Imagens em alta resolução",
                     "action": "relatório",
                     "problem": "Imagens em baixa resolução",
@@ -241,7 +241,7 @@
                 {
                     "id": "pag_multiple_4",
                     "critical": true,
-                    "label": "Páginas múltiplo de 4",
+                    "label": "Número de páginas múltiplo de 4",
                     "action": "relatório",
                     "problem": "Total de páginas do miolo não é múltiplo de 4",
                     "solution": "Acrescentar ou retirar páginas.",
@@ -266,19 +266,19 @@
                 {
                     "id": "sangria_5mm",
                     "critical": true,
-                    "label": "Sangria de 5 mm em todas as bordas",
+                    "label": "Sangria de 5mm em todas as bordas",
                     "action": "relatório",
-                    "problem": "Sangria",
-                    "solution": "Incluir sangria de 5 mm em todas as bordas",
+                    "problem": "Ausência de sangria",
+                    "solution": "Incluir sangria de 5mm em todas as bordas",
                     "message": "—",
                     "destiny": "impressao"
                 },
                 {
                     "id": "marcas_check",
                     "critical": true,
-                    "label": "Sem marcas de corte, registro...",
+                    "label": "Sem marcas de corte",
                     "action": "relatório",
-                    "problem": "Marcas",
+                    "problem": "Marcas de corte",
                     "solution": "Retirar marcas de corte, escala de cores, espaçador",
                     "message": "—",
                     "destiny": "impressao"
@@ -296,7 +296,7 @@
                 {
                     "id": "margem_seguranca",
                     "critical": true,
-                    "label": "Margem de segurança de 5 mm",
+                    "label": "Margem de segurança de 5 mm<span class='item-detail'>Para lombada colada, nas primeiras e últimas páginas e nas partes internas da capa a distância mínima deve ser de 10 mm</span>",
                     "action": "relatório",
                     "problem": "Elementos próximos à área de corte",
                     "solution": "Aplicar distância mínima de segurança de 5 mm. Para lombada colada, nas primeiras e últimas páginas e nas partes internas da capa a distância mínima deve ser de 10 mm.",
@@ -306,7 +306,7 @@
                 {
                     "id": "preto_k",
                     "critical": true,
-                    "label": "Elementos pretos apenas no canal K<span class='item-detail'>— com texto vazado: 30c 0m 0y 100k</span><span class='item-detail'>— sem texto vazado: 40c 20m 20y 100k</span>",
+                    "label": "Elementos pretos apenas no canal K",
                     "action": "relatório",
                     "problem": "Elemento preto nas 4 cores CMYK",
                     "solution": "Passar para somente Preto K 100%. Os outros canais de cor precisam estar em 0%.",
@@ -316,7 +316,7 @@
                 {
                     "id": "preto_chapado",
                     "critical": true,
-                    "label": "Áreas com chapados pretos calçados?",
+                    "label": "Áreas chapadas com preto calçado<span class='item-detail'>O preto nas áreas chapadas deve ser:</span><span class='item-detail'>— com texto vazado: 30c 0m 0y 100k</span><span class='item-detail'>— sem texto vazado: 40c 20m 20y 100k</span>",
                     "action": "relatório",
                     "problem": "Preto chapado puro (0c 0m 0y 100k)",
                     "solution": "Calçar o preto: Com texto vazado (30c 0m 0y 100k); Sem texto vazado (40c 20m 20y 100k)",
@@ -346,9 +346,9 @@
                 {
                     "id": "capa_montada",
                     "critical": true,
-                    "label": "Capa aberta montada",
+                    "label": "Capa montada",
                     "action": "relatório",
-                    "problem": "Capas e lombada em páginas diferentes",
+                    "problem": "Capa e contracapa em páginas diferentes",
                     "solution": "Preparar PDF com 1ª e 4ª capas, orelhas e lombada em uma página única (capa aberta). Inserir marcas de dobra pontilhadas para a lombadas e orelhas. Se houver conteúdo na 2ª e 3ª capas, prepará-las da mesma forma.",
                     "message": "—",
                     "destiny": "impressao"
@@ -356,7 +356,7 @@
                 {
                     "id": "medida_lombada",
                     "critical": true,
-                    "label": "Medida da lombada",
+                    "label": "Lombada com medida correta<span class='item-detail'>Conferir em <a href=\"https://claudioportella.com/lombada/\" target=\"_blank\"><span class=\"underline\">cálculo de lombada</span></a></span>",
                     "action": "relatório",
                     "problem": "Medida da lombada incompatível com a quantidade de páginas",
                     "solution": "Ajustar lombada para XX mm.",
@@ -385,7 +385,7 @@
                 },
                 {
                     "id": "sentido_lombada",
-                    "critical": true,
+                    "critical": false,
                     "label": "Sentido da lombada correto",
                     "action": "relatório",
                     "problem": "Conteúdo da lombada em sentido invertido",
