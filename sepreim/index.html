@@ -143,321 +143,6 @@
 </head>
 <body class="min-h-screen">
 
-    <script id="config-data" type="application/json">
-    [
-        {
-            "categoria": "Verificação inicial",
-            "itens": [
-                {
-                    "id": "logo_senador",
-                    "critical": true,
-                    "label": "Trabalho sem logomarca do senador",
-                    "action": "MSG",
-                    "problem": "—",
-                    "solution": "—",
-                    "message": "Enviar e-mail Logomarca e Atividade Parlamentar",
-                    "destiny": "ambos"
-                }
-            ]
-        },
-        {
-            "categoria": "Verificação no SIGRAF",
-            "itens": [
-                {
-                    "id": "sigraf_formato",
-                    "critical": true,
-                    "label": "Formato correto na Ordem de Serviço",
-                    "action": "MSG",
-                    "problem": "—",
-                    "solution": "—",
-                    "message": "Pedir correção do formato para SEAUFAT",
-                    "destiny": "ambos"
-                },
-                {
-                    "id": "sigraf_cores",
-                    "critical": true,
-                    "label": "Cores corretas na Ordem de Serviço",
-                    "action": "MSG",
-                    "problem": "—",
-                    "solution": "—",
-                    "message": "Pedir correção das cores para SEAUFAT",
-                    "destiny": "impressao"
-                },
-                {
-                    "id": "sigraf_paginas",
-                    "critical": true,
-                    "label": "Número de páginas correto na OS",
-                    "action": "MSG",
-                    "problem": "—",
-                    "solution": "—",
-                    "message": "Pedir correção do número de páginas para SEAUFAT",
-                    "destiny": "impressao"
-                }
-            ]
-        },
-        {
-            "categoria": "Comprovação no Adobe Acrobat",
-            "itens": [
-                {
-                    "id": "cmyk_check",
-                    "critical": true,
-                    "label": "Cores em CMYK",
-                    "action": "relatório",
-                    "problem": "Elementos em RGB",
-                    "solution": "Converter para CMYK.",
-                    "message": "—",
-                    "destiny": "impressao"
-                },
-                {
-                    "id": "pb_check",
-                    "critical": true,
-                    "label": "Trabalho PB sem outras cores",
-                    "action": "relatório",
-                    "problem": "Elementos coloridos",
-                    "solution": "Converter para PB",
-                    "message": "—",
-                    "destiny": "impressao"
-                },
-                {
-                    "id": "tac_300",
-                    "critical": true,
-                    "label": "Carga de tintas abaixo de 300%",
-                    "action": "relatório",
-                    "problem": "Concentração de cores muito alta",
-                    "solution": "Clarear, de forma que a concentração de cores nas áreas mais escuras não exceda 300%.",
-                    "message": "—",
-                    "destiny": "impressao"
-                },
-                {
-                    "id": "resolution_check",
-                    "critical": false,
-                    "label": "Imagens em alta resolução",
-                    "action": "relatório",
-                    "problem": "Imagens em baixa resolução",
-                    "solution": "Usar imagens em alta resolução (300ppi); ou autorizar a impressão com este problema técnico.",
-                    "message": "—",
-                    "destiny": "impressao"
-                },
-                {
-                    "id": "pag_multiple_4",
-                    "critical": true,
-                    "label": "Número de páginas múltiplo de 4",
-                    "action": "relatório",
-                    "problem": "Total de páginas do miolo não é múltiplo de 4",
-                    "solution": "Acrescentar ou retirar páginas.",
-                    "message": "—",
-                    "destiny": "impressao"
-                },
-                {
-                    "id": "fonts_embed",
-                    "critical": true,
-                    "label": "Fontes incorporadas",
-                    "action": "relatório",
-                    "problem": "Fonte não incorporada",
-                    "solution": "Na exportação do PDF, configurar o programa para que incorpore as fontes.",
-                    "message": "—",
-                    "destiny": "impressao"
-                }
-            ]
-        },
-        {
-            "categoria": "Verificação manual",
-            "itens": [
-                {
-                    "id": "sangria_5mm",
-                    "critical": true,
-                    "label": "Sangria de 5mm em todas as bordas",
-                    "action": "relatório",
-                    "problem": "Ausência de sangria",
-                    "solution": "Incluir sangria de 5mm em todas as bordas",
-                    "message": "—",
-                    "destiny": "impressao"
-                },
-                {
-                    "id": "marcas_check",
-                    "critical": true,
-                    "label": "Sem marcas de corte",
-                    "action": "relatório",
-                    "problem": "Marcas de corte",
-                    "solution": "Retirar marcas de corte, escala de cores, espaçador",
-                    "message": "—",
-                    "destiny": "impressao"
-                },
-                {
-                    "id": "marcas_dobra",
-                    "critical": true,
-                    "label": "Marcas de dobra",
-                    "action": "relatório",
-                    "problem": "Marcas de dobra",
-                    "solution": "Inserir marcas pontilhadas no local da dobra, na região externa da arte, mas dentro da área de sangria.",
-                    "message": "—",
-                    "destiny": "impressao"
-                },
-                {
-                    "id": "margem_seguranca",
-                    "critical": true,
-                    "label": "Margem de segurança de 5 mm<span class='item-detail'>Para lombada colada, nas primeiras e últimas páginas e nas partes internas da capa a distância mínima deve ser de 10 mm</span>",
-                    "action": "relatório",
-                    "problem": "Elementos próximos à área de corte",
-                    "solution": "Aplicar distância mínima de segurança de 5 mm. Para lombada colada, nas primeiras e últimas páginas e nas partes internas da capa a distância mínima deve ser de 10 mm.",
-                    "message": "—",
-                    "destiny": "impressao"
-                },
-                {
-                    "id": "preto_k",
-                    "critical": true,
-                    "label": "Elementos pretos apenas no canal K",
-                    "action": "relatório",
-                    "problem": "Elemento preto nas 4 cores CMYK",
-                    "solution": "Passar para somente Preto K 100%. Os outros canais de cor precisam estar em 0%.",
-                    "message": "—",
-                    "destiny": "impressao"
-                },
-                {
-                    "id": "preto_chapado",
-                    "critical": true,
-                    "label": "Áreas chapadas com preto calçado<span class='item-detail'>O preto nas áreas chapadas deve ser:</span><span class='item-detail'>— com texto vazado: 30c 0m 0y 100k</span><span class='item-detail'>— sem texto vazado: 40c 20m 20y 100k</span>",
-                    "action": "relatório",
-                    "problem": "Preto chapado puro (0c 0m 0y 100k)",
-                    "solution": "Calçar o preto: Com texto vazado (30c 0m 0y 100k); Sem texto vazado (40c 20m 20y 100k)",
-                    "message": "—",
-                    "destiny": "impressao"
-                },
-                {
-                    "id": "overprint_preto",
-                    "critical": true,
-                    "label": "Elementos pretos com overprint",
-                    "action": "relatório",
-                    "problem": "Cor de fundo vazada no local do preto",
-                    "solution": "Deixar overprint. Ou seja, manter o fundo e o preto, um sobre o outro.",
-                    "message": "—",
-                    "destiny": "impressao"
-                },
-                {
-                    "id": "pag_individuais",
-                    "critical": true,
-                    "label": "Miolo sem páginas agrupadas",
-                    "action": "relatório",
-                    "problem": "Páginas agrupadas",
-                    "solution": "Finalizar arquivo com páginas individuais e em sequência.",
-                    "message": "—",
-                    "destiny": "impressao"
-                },
-                {
-                    "id": "capa_montada",
-                    "critical": true,
-                    "label": "Capa montada",
-                    "action": "relatório",
-                    "problem": "Capa e contracapa em páginas diferentes",
-                    "solution": "Preparar PDF com 1ª e 4ª capas, orelhas e lombada em uma página única (capa aberta). Inserir marcas de dobra pontilhadas para a lombadas e orelhas. Se houver conteúdo na 2ª e 3ª capas, prepará-las da mesma forma.",
-                    "message": "—",
-                    "destiny": "impressao"
-                },
-                {
-                    "id": "medida_lombada",
-                    "critical": true,
-                    "label": "Lombada com medida correta<span class='item-detail'>Conferir em <a href=\"https://claudioportella.com/lombada/\" target=\"_blank\"><span class=\"underline\">cálculo de lombada</span></a></span>",
-                    "action": "relatório",
-                    "problem": "Medida da lombada incompatível com a quantidade de páginas",
-                    "solution": "Ajustar lombada para XX mm.",
-                    "message": "Informar a medida correta da lombada.",
-                    "destiny": "impressao"
-                },
-                {
-                    "id": "lombada_marcada",
-                    "critical": true,
-                    "label": "Lombada marcada",
-                    "action": "relatório",
-                    "problem": "Lombada marcada",
-                    "solution": "Ajustar o layout de forma que não haja elementos alinhados com as bordas da lombada e das orelhas.",
-                    "message": "—",
-                    "destiny": "impressao"
-                },
-                {
-                    "id": "afastamento_lombada",
-                    "critical": true,
-                    "label": "Elementos afastados da lombada",
-                    "action": "relatório",
-                    "problem": "Elementos na capa/contracapa muito próximos da lombada",
-                    "solution": "Deixar a distância de 10mm, para que não fiquem em cima do vinco.",
-                    "message": "—",
-                    "destiny": "impressao"
-                },
-                {
-                    "id": "sentido_lombada",
-                    "critical": false,
-                    "label": "Sentido da lombada correto",
-                    "action": "relatório",
-                    "problem": "Conteúdo da lombada em sentido invertido",
-                    "solution": "Girar 180 graus, de forma que a leitura do texto fique de cima para baixo; ou autorizar a impressão desta forma.",
-                    "message": "—",
-                    "destiny": "impressao"
-                },
-                {
-                    "id": "tipo_encadernacao",
-                    "critical": true,
-                    "label": "Compatível com encadernação com cola",
-                    "action": "relatório",
-                    "problem": "Quantidade de páginas é pequena para acabamento com cola",
-                    "solution": "Alterar capa para grampo (sem lombada)",
-                    "message": "—",
-                    "destiny": "impressao"
-                },
-                {
-                    "id": "colofao_check",
-                    "critical": true,
-                    "label": "Colofão correto",
-                    "action": "relatório",
-                    "problem": "Informações do colofão desatualizadas",
-                    "solution": "Atualizar as informações.",
-                    "message": "—",
-                    "destiny": "impressao"
-                },
-                {
-                    "id": "ficha_catalog",
-                    "critical": true,
-                    "label": "Ficha catalográfica atualizada",
-                    "action": "MSG",
-                    "problem": "—",
-                    "solution": "—",
-                    "message": "Solicitar nova ficha catalográfica para COBIB",
-                    "destiny": "impressao"
-                },
-                {
-                    "id": "cedit_mesa",
-                    "critical": true,
-                    "label": "Livro da CEDIT com Mesa e colofão atuais",
-                    "action": "MSG",
-                    "problem": "—",
-                    "solution": "—",
-                    "message": "Solicitar atualização do colofão para SEFPRO",
-                    "destiny": "impressao"
-                },
-                {
-                    "id": "cartao_visita",
-                    "critical": true,
-                    "label": "Cartão de visitas no padrão do Senado",
-                    "action": "relatório",
-                    "problem": "Cartão de visitas fora do padrão",
-                    "solution": "Seguir o padrão do Manual de Identidade Visual do Senado Federal.",
-                    "message": "—",
-                    "destiny": "impressao"
-                },
-                {
-                    "id": "chancela_correios",
-                    "critical": true,
-                    "label": "Envelope com a chancela dos Correios",
-                    "action": "MSG",
-                    "problem": "—",
-                    "solution": "—",
-                    "message": "Confirmar a chancela dos Correios com SEAUFAT",
-                    "destiny": "impressao"
-                }
-            ]
-        }
-    ]
-    </script>
-
     <main class="max-w-4xl mx-auto p-4 md:p-8 lg:p-12 no-print">
         <div class="main-container p-8 md:p-10 space-y-10">
             
@@ -503,21 +188,352 @@
     </div>
 
     <script>
-        let fullConfig = [];
+        /*
+        ========================================================================
+                                    DADOS / CONFIGURAÇÃO
+        ========================================================================
+        */
+
+        const categoria = (nome, itens) => ({ categoria: nome, itens });
+        const item = (o) => o;
+
+        const fullConfig = [
+            categoria("Verificação inicial", [
+                item({
+                    id: "logo_senador",
+                    critical: true,
+                    label: "Trabalho sem logomarca do senador",
+                    action: "mensagem",
+                    problem: "—",
+                    solution: "—",
+                    message: "Enviar e-mail Logomarca e Atividade Parlamentar",
+                    destiny: "ambos"
+                })
+            ]),
+            categoria("Verificação no SIGRAF", [
+                item({
+                    id: "sigraf_formato",
+                    critical: true,
+                    label: "Formato correto na Ordem de Serviço",
+                    action: "mensagem",
+                    problem: "—",
+                    solution: "—",
+                    message: "Pedir correção do formato para SEAUFAT",
+                    destiny: "ambos"
+                }),
+                item({
+                    id: "sigraf_cores",
+                    critical: true,
+                    label: "Cores corretas na Ordem de Serviço",
+                    action: "mensagem",
+                    problem: "—",
+                    solution: "—",
+                    message: "Pedir correção das cores para SEAUFAT",
+                    destiny: "impressao"
+                }),
+                item({
+                    id: "sigraf_paginas",
+                    critical: true,
+                    label: "Número de páginas correto na OS",
+                    action: "mensagem",
+                    problem: "—",
+                    solution: "—",
+                    message: "Pedir correção do número de páginas para SEAUFAT",
+                    destiny: "impressao"
+                })
+            ]),
+            categoria("Comprovação no Adobe Acrobat", [
+                item({
+                    id: "cmyk_check",
+                    critical: true,
+                    label: "Cores em CMYK",
+                    action: "relatório",
+                    problem: "Elementos em RGB",
+                    solution: "Converter para CMYK.",
+                    message: "—",
+                    destiny: "impressao"
+                }),
+                item({
+                    id: "pb_check",
+                    critical: true,
+                    label: "Trabalho PB sem outras cores",
+                    action: "relatório",
+                    problem: "Elementos coloridos",
+                    solution: "Converter para PB",
+                    message: "—",
+                    destiny: "impressao"
+                }),
+                item({
+                    id: "tac_300",
+                    critical: true,
+                    label: "Carga de tintas abaixo de 300%",
+                    action: "relatório",
+                    problem: "Concentração de cores muito alta",
+                    solution: "Clarear, de forma que a concentração de cores nas áreas mais escuras não exceda 300%.",
+                    message: "—",
+                    destiny: "impressao"
+                }),
+                item({
+                    id: "resolution_check",
+                    critical: false,
+                    label: "Imagens em alta resolução",
+                    action: "relatório",
+                    problem: "Imagens em baixa resolução",
+                    solution: "Usar imagens em alta resolução (300ppi); ou autorizar a impressão com este problema técnico.",
+                    message: "—",
+                    destiny: "impressao"
+                }),
+                item({
+                    id: "pag_multiple_4",
+                    critical: true,
+                    label: "Número de páginas múltiplo de 4",
+                    action: "relatório",
+                    problem: "Total de páginas do miolo não é múltiplo de 4",
+                    solution: "Acrescentar ou retirar páginas.",
+                    message: "—",
+                    destiny: "impressao"
+                }),
+                item({
+                    id: "fonts_embed",
+                    critical: true,
+                    label: "Fontes incorporadas",
+                    action: "relatório",
+                    problem: "Fonte não incorporada",
+                    solution: "Na exportação do PDF, configurar o programa para que incorpore as fontes.",
+                    message: "—",
+                    destiny: "impressao"
+                })
+            ]),
+            categoria("Verificação manual", [
+                item({
+                    id: "sangria_5mm",
+                    critical: true,
+                    label: "Sangria de 5mm em todas as bordas",
+                    action: "relatório",
+                    problem: "Ausência de sangria",
+                    solution: "Incluir sangria de 5mm em todas as bordas",
+                    message: "—",
+                    destiny: "impressao"
+                }),
+                item({
+                    id: "marcas_check",
+                    critical: true,
+                    label: "Sem marcas de corte",
+                    action: "relatório",
+                    problem: "Marcas de corte",
+                    solution: "Retirar marcas de corte, escala de cores, espaçador",
+                    message: "—",
+                    destiny: "impressao"
+                }),
+                item({
+                    id: "marcas_dobra",
+                    critical: true,
+                    label: "Marcas de dobra",
+                    action: "relatório",
+                    problem: "Marcas de dobra",
+                    solution: "Inserir marcas pontilhadas no local da dobra, na região externa da arte, mas dentro da área de sangria.",
+                    message: "—",
+                    destiny: "impressao"
+                }),
+                item({
+                    id: "margem_seguranca",
+                    critical: true,
+                    label: "Margem de segurança de 5 mm",
+                    details: [
+                        "Para lombada colada, nas primeiras e últimas páginas e nas partes internas da capa a distância mínima deve ser de 10 mm"
+                    ],
+                    action: "relatório",
+                    problem: "Elementos próximos à área de corte",
+                    solution: "Aplicar distância mínima de segurança de 5 mm. Para lombada colada, nas primeiras e últimas páginas e nas partes internas da capa a distância mínima deve ser de 10 mm.",
+                    message: "—",
+                    destiny: "impressao"
+                }),
+                item({
+                    id: "preto_k",
+                    critical: true,
+                    label: "Elementos pretos apenas no canal K",
+                    action: "relatório",
+                    problem: "Elemento preto nas 4 cores CMYK",
+                    solution: "Passar para somente Preto K 100%. Os outros canais de cor precisam estar em 0%.",
+                    message: "—",
+                    destiny: "impressao"
+                }),
+                item({
+                    id: "preto_chapado",
+                    critical: true,
+                    label: "Áreas chapadas com preto calçado",
+                    details: [
+                        "O preto nas áreas chapadas deve ser:",
+                        "— com texto vazado: 30c 0m 0y 100k",
+                        "— sem texto vazado: 40c 20m 20y 100k"
+                    ],
+                    action: "relatório",
+                    problem: "Preto chapado puro (0c 0m 0y 100k)",
+                    solution: "Calçar o preto: Com texto vazado (30c 0m 0y 100k); Sem texto vazado (40c 20m 20y 100k)",
+                    message: "—",
+                    destiny: "impressao"
+                }),
+                item({
+                    id: "overprint_preto",
+                    critical: true,
+                    label: "Elementos pretos com overprint",
+                    action: "relatório",
+                    problem: "Cor de fundo vazada no local do preto",
+                    solution: "Deixar overprint. Ou seja, manter o fundo e o preto, um sobre o outro.",
+                    message: "—",
+                    destiny: "impressao"
+                }),
+                item({
+                    id: "pag_individuais",
+                    critical: true,
+                    label: "Miolo sem páginas agrupadas",
+                    action: "relatório",
+                    problem: "Páginas agrupadas",
+                    solution: "Finalizar arquivo com páginas individuais e em sequência.",
+                    message: "—",
+                    destiny: "impressao"
+                }),
+                item({
+                    id: "capa_montada",
+                    critical: true,
+                    label: "Capa montada",
+                    action: "relatório",
+                    problem: "Capa e contracapa em páginas diferentes",
+                    solution: "Preparar PDF com 1ª e 4ª capas, orelhas e lombada em uma página única (capa aberta). Inserir marcas de dobra pontilhadas para a lombadas e orelhas. Se houver conteúdo na 2ª e 3ª capas, prepará-las da mesma forma.",
+                    message: "—",
+                    destiny: "impressao"
+                }),
+                item({
+                    id: "medida_lombada",
+                    critical: true,
+                    label: "Lombada com medida correta",
+                    details: [
+                        'Conferir em <a href="https://claudioportella.com/lombada/" target="_blank"><span class="underline">cálculo de lombada</span></a>'
+                    ],
+                    action: "ambos",
+                    problem: "Medida da lombada incompatível com a quantidade de páginas",
+                    solution: "Ajustar lombada para XX mm.",
+                    message: "Incluir a medida correta da lombada no relatório.",
+                    destiny: "impressao"
+                }),
+                item({
+                    id: "lombada_marcada",
+                    critical: true,
+                    label: "Lombada marcada",
+                    action: "relatório",
+                    problem: "Lombada marcada",
+                    solution: "Ajustar o layout de forma que não haja elementos alinhados com as bordas da lombada e das orelhas.",
+                    message: "—",
+                    destiny: "impressao"
+                }),
+                item({
+                    id: "afastamento_lombada",
+                    critical: true,
+                    label: "Elementos afastados da lombada",
+                    action: "relatório",
+                    problem: "Elementos na capa/contracapa muito próximos da lombada",
+                    solution: "Deixar a distância de 10mm, para que não fiquem em cima do vinco.",
+                    message: "—",
+                    destiny: "impressao"
+                }),
+                item({
+                    id: "sentido_lombada",
+                    critical: false,
+                    label: "Sentido da lombada correto",
+                    action: "relatório",
+                    problem: "Conteúdo da lombada em sentido invertido",
+                    solution: "Girar 180 graus, de forma que a leitura do texto fique de cima para baixo; ou autorizar a impressão desta forma.",
+                    message: "—",
+                    destiny: "impressao"
+                }),
+                item({
+                    id: "encadernacao_cola",
+                    critical: true,
+                    label: "Compatível com encadernação com cola",
+                    details: [
+                        'Para cola, a lombada deve ter mais de 3 mm'
+                    ],
+                    action: "relatório",
+                    problem: "Quantidade de páginas é pequena para acabamento com cola",
+                    solution: "Alterar capa para grampo (sem lombada)",
+                    message: "—",
+                    destiny: "impressao"
+                }),
+                    item({
+                    id: "encadernacao_grampo",
+                    critical: true,
+                    label: "Compatível com encadernação com grampo",
+                    details: [
+                        'Para grampo, a lombada deve ter menos de 3 mm'
+                    ],
+                    action: "relatório",
+                    problem: "Quantidade de páginas é grande para acabamento com grampo",
+                    solution: "Alterar capa para lombada colada.",
+                    message: "—",
+                    destiny: "impressao"
+                }),
+                item({
+                    id: "colofao_check",
+                    critical: true,
+                    label: "Colofão correto",
+                    action: "relatório",
+                    problem: "Informações do colofão desatualizadas",
+                    solution: "Atualizar as informações.",
+                    message: "—",
+                    destiny: "impressao"
+                }),
+                item({
+                    id: "ficha_catalog",
+                    critical: true,
+                    label: "Ficha catalográfica atualizada",
+                    action: "mensagem",
+                    problem: "—",
+                    solution: "—",
+                    message: "Solicitar nova ficha catalográfica para COBIB",
+                    destiny: "impressao"
+                }),
+                item({
+                    id: "cedit_mesa",
+                    critical: true,
+                    label: "Livro da CEDIT com Mesa e colofão atualizados",
+                    action: "mensagem",
+                    problem: "—",
+                    solution: "—",
+                    message: "Solicitar atualização do colofão para SEFPRO",
+                    destiny: "impressao"
+                }),
+                item({
+                    id: "cartao_visita",
+                    critical: true,
+                    label: "Cartão de visitas no padrão do Senado",
+                    action: "relatório",
+                    problem: "Cartão de visitas fora do padrão",
+                    solution: "Seguir o padrão do Manual de Identidade Visual do Senado Federal (https://www12.senado.leg.br/identidadevisual).",
+                    message: "—",
+                    destiny: "impressao"
+                }),
+                item({
+                    id: "chancela_correios",
+                    critical: true,
+                    label: "Envelope com a chancela dos Correios",
+                    action: "mensagem",
+                    problem: "—",
+                    solution: "—",
+                    message: "Confirmar a chancela dos Correios com SEAUFAT",
+                    destiny: "impressao"
+                })
+            ])
+        ];
+
+        /*
+        ========================================================================
+                                        LÓGICA
+        ========================================================================
+        */
+
         let activeDestiny = 'impressao';
         let state = {};
         let visibleItensCount = 0;
-
-        function loadConfig() {
-            try {
-                const configElement = document.getElementById('config-data');
-                fullConfig = JSON.parse(configElement.textContent);
-                return true;
-            } catch (error) {
-                console.error("Erro ao carregar configuração:", error);
-                return false;
-            }
-        }
 
         function setDestiny(dest) {
             activeDestiny = dest;
@@ -525,48 +541,6 @@
             document.getElementById('opt-plotagem').classList.toggle('active', dest === 'plotagem');
             renderChecklist();
             checkCompletion();
-        }
-
-        function renderChecklist() {
-            const container = document.getElementById('checklist-container');
-            container.innerHTML = ''; 
-            visibleItensCount = 0;
-
-            fullConfig.forEach(cat => {
-                const filteredItens = cat.itens.filter(item => 
-                    item.destiny === 'ambos' || item.destiny === activeDestiny
-                );
-
-                if (filteredItens.length > 0) {
-                    let html = `
-                        <div class="space-y-4">
-                            <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] ml-2">${cat.categoria}</h3>
-                            <div class="inner-group-box">
-                                <div class="grid grid-cols-1">
-                    `;
-                    
-                    filteredItens.forEach((item, index) => {
-                        visibleItensCount++;
-                        if (state[item.id] === undefined) state[item.id] = null;
-                        
-                        const borderClass = index < filteredItens.length - 1 ? 'border-b border-white/5' : '';
-                        const okActive = state[item.id] === 'ok' ? 'active-ok' : '';
-                        const errActive = state[item.id] === 'error' ? 'active-error' : '';
-
-                        html += `
-                            <div class="item-row ${borderClass}">
-                                <span class="text-sm font-medium text-gray-400 transition-colors leading-tight">${item.label}</span>
-                                <div class="flex gap-2">
-                                    <button onclick="setStatus('${item.id}', 'ok')" id="btn-ok-${item.id}" class="status-btn ${okActive}">✓</button>
-                                    <button onclick="setStatus('${item.id}', 'error')" id="btn-err-${item.id}" class="status-btn ${errActive}">✕</button>
-                                </div>
-                            </div>
-                        `;
-                    });
-                    html += `</div></div></div>`;
-                    container.innerHTML += html;
-                }
-            });
         }
 
         function setStatus(id, type) {
@@ -621,52 +595,6 @@
             document.body.style.overflow = 'auto';
         }
 
-        function gerarRelatorio() {
-            const preview = document.getElementById('preview-modal-content');
-            const actions = document.getElementById('modal-actions');
-            let errorRows = [];
-            let messages = [];
-            
-            fullConfig.forEach(cat => {
-                cat.itens.forEach(item => {
-                    if ((item.destiny === 'ambos' || item.destiny === activeDestiny) && state[item.id] === 'error') {
-                        if (item.action === "MSG" && item.message !== "—") {
-                            messages.push(item.message);
-                        } else {
-                            const cleanProblem = item.problem.replace(/<[^>]*>/g, '');
-                            errorRows.push({ prob: cleanProblem, sol: item.solution, critical: item.critical });
-                        }
-                    }
-                });
-            });
-
-            let htmlContent = `<div id="report-table-container" style="font-family: 'Inter', sans-serif; color: #333;">`;
-            
-            if (messages.length > 0) {
-                messages.forEach(msg => {
-                    htmlContent += `<div style="padding: 15px; margin-bottom: 10px; background: #fff9f0; border: 1px solid #ffeed4; border-radius: 1.5rem; text-align: center; font-weight: 600; font-size: 13px; color: #854d0e;">➜ ${msg}</div>`;
-                });
-            }
-
-            if (errorRows.length === 0 && messages.length === 0) {
-                htmlContent += `<div style="padding: 15px; background: #f0fdf4; border: 1px solid #dcfce7; border-radius: 1.5rem; text-align: center; font-weight: 600; font-size: 13px; color: #166534;">✔ Nenhum problema técnico encontrado</div>`;
-                actions.classList.add('hidden');
-            } else if (errorRows.length > 0) {
-                htmlContent += `<table id="report-table" style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #edf2f7; margin-top: 8px;">`;
-                htmlContent += `<thead style="background: #f7fafc;"><tr style="border-bottom: 2px solid #edf2f7;"><th colspan="2" style="padding: 10px; text-align: left; font-size: 10px; text-transform: uppercase;">Problema encontrado</th><th style="padding: 10px; text-align: left; font-size: 10px; text-transform: uppercase;">Como solucionar</th></tr></thead><tbody>`;
-                errorRows.forEach(row => {
-                    const icon = row.critical ? `❌` : `➜`;
-                    htmlContent += `<tr><td style="padding: 10px; border: 1px solid #edf2f7; text-align: center;">${icon}</td><td style="padding: 10px; border: 1px solid #edf2f7; font-weight: 500;">${row.prob}</td><td style="padding: 10px; border: 1px solid #edf2f7; color: #4a5568;">${row.sol}</td></tr>`;
-                });
-                htmlContent += `</tbody></table>`;
-                actions.classList.remove('hidden');
-            } else {
-                actions.classList.add('hidden');
-            }
-            htmlContent += `</div>`;
-            preview.innerHTML = htmlContent;
-        }
-
         async function copiarTexto() {
             const tableElement = document.getElementById('report-table');
             if (!tableElement) return;
@@ -693,8 +621,113 @@
             setTimeout(() => toast.style.opacity = "0", 2500);
         }
 
+        /*
+        ========================================================================
+                                    RENDER / UI
+        ========================================================================
+        */
+
+        function renderDetails(details = []) {
+            if (!details || details.length === 0) return '';
+            return details.map(d => `<span class="item-detail">${d}</span>`).join('');
+        }
+
+        function renderChecklist() {
+            const container = document.getElementById('checklist-container');
+            container.innerHTML = ''; 
+            visibleItensCount = 0;
+
+            fullConfig.forEach(cat => {
+                const filteredItens = cat.itens.filter(item => 
+                    item.destiny === 'ambos' || item.destiny === activeDestiny
+                );
+
+                if (filteredItens.length > 0) {
+                    let html = `
+                        <div class="space-y-4">
+                            <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] ml-2">${cat.categoria}</h3>
+                            <div class="inner-group-box">
+                                <div class="grid grid-cols-1">
+                    `;
+                    
+                    filteredItens.forEach((i, index) => {
+                        visibleItensCount++;
+                        if (state[i.id] === undefined) state[i.id] = null;
+                        
+                        const borderClass = index < filteredItens.length - 1 ? 'border-b border-white/5' : '';
+                        const okActive = state[i.id] === 'ok' ? 'active-ok' : '';
+                        const errActive = state[i.id] === 'error' ? 'active-error' : '';
+
+                        html += `
+                            <div class="item-row ${borderClass}">
+                                <span class="text-sm font-medium text-gray-400 transition-colors leading-tight">
+                                    ${i.label}${renderDetails(i.details)}
+                                </span>
+                                <div class="flex gap-2">
+                                    <button onclick="setStatus('${i.id}', 'ok')" id="btn-ok-${i.id}" class="status-btn ${okActive}">✓</button>
+                                    <button onclick="setStatus('${i.id}', 'error')" id="btn-err-${i.id}" class="status-btn ${errActive}">✕</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    html += `</div></div></div>`;
+                    container.innerHTML += html;
+                }
+            });
+        }
+
+        function gerarRelatorio() {
+            const preview = document.getElementById('preview-modal-content');
+            const actions = document.getElementById('modal-actions');
+            let errorRows = [];
+            let messages = [];
+            
+            fullConfig.forEach(cat => {
+                cat.itens.forEach(item => {
+                    if ((item.destiny === 'ambos' || item.destiny === activeDestiny) && state[item.id] === 'error') {
+                        const cleanProblem = item.problem.replace(/<[^>]*>/g, '');
+
+                        if (item.action === "mensagem") {
+                            if (item.message !== "—") messages.push(item.message);
+                        } else if (item.action === "ambos") {
+                            if (item.message !== "—") messages.push(item.message);
+                            errorRows.push({ prob: cleanProblem, sol: item.solution, critical: item.critical });
+                        } else {
+                            errorRows.push({ prob: cleanProblem, sol: item.solution, critical: item.critical });
+                        }
+                    }
+                });
+            });
+
+            let htmlContent = `<div id="report-table-container" style="font-family: 'Inter', sans-serif; color: #333;">`;
+            
+            if (messages.length > 0) {
+                messages.forEach(msg => {
+                    htmlContent += `<div style="padding: 15px; margin-bottom: 10px; background: #fff9f0; border: 1px solid #ffeed4; border-radius: 1.5rem; text-align: center; font-weight: 600; font-size: 13px; color: #854d0e;">➜ ${msg}</div>`;
+                });
+            }
+
+            if (errorRows.length === 0 && messages.length === 0) {
+                htmlContent += `<div style="padding: 15px; background: #f0fdf4; border: 1px solid #dcfce7; border-radius: 1.5rem; text-align: center; font-weight: 600; font-size: 13px; color: #166534;">✔ Nenhum problema técnico encontrado</div>`;
+                actions.classList.add('hidden');
+            } else if (errorRows.length > 0) {
+                htmlContent += `<table id="report-table" style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #edf2f7; margin-top: 8px;">`;
+                htmlContent += `<thead style="background: #f7fafc;"><tr style="border-bottom: 2px solid #edf2f7;"><th colspan="2" style="padding: 10px; text-align: left; font-size: 10px; text-transform: uppercase;">Problema encontrado</th><th style="padding: 10px; text-align: left; font-size: 10px; text-transform: uppercase;">Como solucionar</th></tr></thead><tbody>`;
+                errorRows.forEach(row => {
+                    const icon = row.critical ? `❌` : `⚠️`;
+                    htmlContent += `<tr><td style="padding: 10px; border: 1px solid #edf2f7; text-align: center;">${icon}</td><td style="padding: 10px; border: 1px solid #edf2f7; font-weight: 500;">${row.prob}</td><td style="padding: 10px; border: 1px solid #edf2f7; color: #4a5568;">${row.sol}</td></tr>`;
+                });
+                htmlContent += `</tbody></table>`;
+                actions.classList.remove('hidden');
+            } else {
+                actions.classList.add('hidden');
+            }
+            htmlContent += `</div>`;
+            preview.innerHTML = htmlContent;
+        }
+
         window.onload = () => { 
-            if (loadConfig()) renderChecklist(); 
+            renderChecklist(); 
         };
     </script>
 </body>
