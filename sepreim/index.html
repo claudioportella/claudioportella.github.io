@@ -650,22 +650,22 @@
                                 <div class="grid grid-cols-1">
                     `;
                     
-                    filteredItens.forEach((i, index) => {
+                    filteredItens.forEach((itemObj, index) => {
                         visibleItensCount++;
-                        if (state[i.id] === undefined) state[i.id] = null;
+                        if (state[itemObj.id] === undefined) state[itemObj.id] = null;
                         
                         const borderClass = index < filteredItens.length - 1 ? 'border-b border-white/5' : '';
-                        const okActive = state[i.id] === 'ok' ? 'active-ok' : '';
-                        const errActive = state[i.id] === 'error' ? 'active-error' : '';
+                        const okActive = state[itemObj.id] === 'ok' ? 'active-ok' : '';
+                        const errActive = state[itemObj.id] === 'error' ? 'active-error' : '';
 
                         html += `
                             <div class="item-row ${borderClass}">
                                 <span class="text-sm font-medium text-gray-400 transition-colors leading-tight">
-                                    ${i.label}${renderDetails(i.details)}
+                                    ${itemObj.label}${renderDetails(itemObj.details)}
                                 </span>
                                 <div class="flex gap-2">
-                                    <button onclick="setStatus('${i.id}', 'ok')" id="btn-ok-${i.id}" class="status-btn ${okActive}">✓</button>
-                                    <button onclick="setStatus('${i.id}', 'error')" id="btn-err-${i.id}" class="status-btn ${errActive}">✕</button>
+                                    <button onclick="setStatus('${itemObj.id}', 'ok')" id="btn-ok-${itemObj.id}" class="status-btn ${okActive}">✓</button>
+                                    <button onclick="setStatus('${itemObj.id}', 'error')" id="btn-err-${itemObj.id}" class="status-btn ${errActive}">✕</button>
                                 </div>
                             </div>
                         `;
@@ -699,24 +699,29 @@
                 });
             });
 
-            let htmlContent = `<div id="report-table-container" style="font-family: 'Inter', sans-serif; color: #333;">`;
+            // CSS Inline Otimizado para E-mail e Resiliência
+            const fontStack = "font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;";
+            let htmlContent = `<div id="report-table-container" style="${fontStack} color: #333;">`;
             
             if (messages.length > 0) {
                 messages.forEach(msg => {
-                    htmlContent += `<div style="padding: 15px; margin-bottom: 10px; background: #fff9f0; border: 1px solid #ffeed4; border-radius: 1.5rem; text-align: center; font-weight: 600; font-size: 13px; color: #854d0e;">➜ ${msg}</div>`;
+                    htmlContent += `<div style="padding: 15px; margin-bottom: 10px; background: #fff9f0; border: 1px solid #ffeed4; border-radius: 1rem; text-align: center; font-weight: 600; font-size: 13px; color: #854d0e;">➜ ${msg}</div>`;
                 });
             }
 
             if (errorRows.length === 0 && messages.length === 0) {
-                htmlContent += `<div style="padding: 15px; background: #f0fdf4; border: 1px solid #dcfce7; border-radius: 1.5rem; text-align: center; font-weight: 600; font-size: 13px; color: #166534;">✔ Nenhum problema técnico encontrado</div>`;
+                htmlContent += `<div style="padding: 15px; background: #f0fdf4; border: 1px solid #dcfce7; border-radius: 1rem; text-align: center; font-weight: 600; font-size: 13px; color: #166534;">✔ Nenhum problema técnico encontrado</div>`;
                 actions.classList.add('hidden');
             } else if (errorRows.length > 0) {
-                htmlContent += `<table id="report-table" style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #edf2f7; margin-top: 8px;">`;
-                htmlContent += `<thead style="background: #f7fafc;"><tr style="border-bottom: 2px solid #edf2f7;"><th colspan="2" style="padding: 10px; text-align: left; font-size: 10px; text-transform: uppercase;">Problema encontrado</th><th style="padding: 10px; text-align: left; font-size: 10px; text-transform: uppercase;">Como solucionar</th></tr></thead><tbody>`;
+                // Tabela com atributos legados para máxima compatibilidade
+                htmlContent += `<table id="report-table" cellpadding="0" cellspacing="0" border="0" style="width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid #edf2f7; margin-top: 8px; ${fontStack}">`;
+                htmlContent += `<thead style="background: #f7fafc;"><tr style="border-bottom: 2px solid #edf2f7;"><th colspan="2" style="padding: 12px 10px; text-align: left; font-size: 10px; text-transform: uppercase; color: #718096; border: 1px solid #edf2f7;">Problema encontrado</th><th style="padding: 12px 10px; text-align: left; font-size: 10px; text-transform: uppercase; color: #718096; border: 1px solid #edf2f7;">Como solucionar</th></tr></thead><tbody>`;
+                
                 errorRows.forEach(row => {
                     const icon = row.critical ? `❌` : `⚠️`;
-                    htmlContent += `<tr><td style="padding: 10px; border: 1px solid #edf2f7; text-align: center;">${icon}</td><td style="padding: 10px; border: 1px solid #edf2f7; font-weight: 500;">${row.prob}</td><td style="padding: 10px; border: 1px solid #edf2f7; color: #4a5568;">${row.sol}</td></tr>`;
+                    htmlContent += `<tr><td style="padding: 12px 10px; border: 1px solid #edf2f7; text-align: center; width: 30px; vertical-align: middle;">${icon}</td><td style="padding: 12px 10px; border: 1px solid #edf2f7; font-weight: 600; color: #2d3748; vertical-align: middle;">${row.prob}</td><td style="padding: 12px 10px; border: 1px solid #edf2f7; color: #4a5568; vertical-align: middle; line-height: 1.5;">${row.sol}</td></tr>`;
                 });
+                
                 htmlContent += `</tbody></table>`;
                 actions.classList.remove('hidden');
             } else {
