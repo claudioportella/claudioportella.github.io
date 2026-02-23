@@ -446,13 +446,28 @@
                     message: "—",
                     destiny: "impressao"
                 }),
+                    item({
+                    id: "encadernacao_capa_dura",
+                    critical: true,
+                    label: "Compatível com encadernação com capa dura",
+                    details: [
+                        "Para capa dura, a lombada deve ter entre 3 mm e 47 mm",
+                        "— Usar couchê fosco 170"
+                    ],  
+                    action: "mensagem",
+                    problem: "—",
+                    solution: "—",
+                    message: "Solicitar para SEAUFAT alteração do papel da capa",
+                    destiny: "impressao"
+                }),
                 item({
                     id: "encadernacao_cola",
                     critical: true,
                     label: "Compatível com encadernação com cola",
                     details: [
-                        'Para cola, a lombada deve ter entre 3 mm e 47 mm'
-                    ],
+                        "Para cola, a lombada deve ter entre 3 mm e 47 mm",
+                        "— NÃO usar couchê fosco 170"
+                    ],                                        
                     action: "relatório",
                     problem: "Quantidade de páginas é pequena para acabamento com cola",
                     solution: "Alterar capa para grampo (sem lombada).",
@@ -750,6 +765,7 @@
     </script>
 </body>
 </html>
+
 
 
 
