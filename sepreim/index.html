@@ -259,7 +259,7 @@
                     label: "Trabalho PB sem outras cores",
                     action: "relatório",
                     problem: "Elementos coloridos",
-                    solution: "Converter para PB",
+                    solution: "Converter para PB.",
                     message: "—",
                     destiny: "impressao"
                 }),
@@ -311,7 +311,7 @@
                     label: "Sangria de 5mm em todas as bordas",
                     action: "relatório",
                     problem: "Ausência de sangria",
-                    solution: "Incluir sangria de 5mm em todas as bordas",
+                    solution: "Incluir sangria de 5mm em todas as bordas.",
                     message: "—",
                     destiny: "impressao"
                 }),
@@ -321,7 +321,7 @@
                     label: "Sem marcas de corte",
                     action: "relatório",
                     problem: "Marcas de corte",
-                    solution: "Retirar marcas de corte, escala de cores, espaçador",
+                    solution: "Retirar marcas de corte, escala de cores, espaçador.",
                     message: "—",
                     destiny: "impressao"
                 }),
@@ -369,7 +369,7 @@
                     ],
                     action: "relatório",
                     problem: "Preto chapado puro (0c 0m 0y 100k)",
-                    solution: "Calçar o preto: Com texto vazado (30c 0m 0y 100k); Sem texto vazado (40c 20m 20y 100k)",
+                    solution: "Calçar o preto: Com texto vazado (30c 0m 0y 100k); Sem texto vazado (40c 20m 20y 100k).",
                     message: "—",
                     destiny: "impressao"
                 }),
@@ -455,7 +455,7 @@
                     ],
                     action: "relatório",
                     problem: "Quantidade de páginas é pequena para acabamento com cola",
-                    solution: "Alterar capa para grampo (sem lombada)",
+                    solution: "Alterar capa para grampo (sem lombada).",
                     message: "—",
                     destiny: "impressao"
                 }),
@@ -470,6 +470,19 @@
                     problem: "Quantidade de páginas é grande para acabamento com grampo",
                     solution: "Alterar capa para lombada colada.",
                     message: "—",
+                    destiny: "impressao"
+                }),
+                    item({
+                    id: "encadernacao_espiral",
+                    critical: true,
+                    label: "Compatível com encadernação com espiral",
+                    details: [
+                        'Para espiral, a /"lombada/" deve ter menos de 50 mm'
+                    ],
+                    action: "mensagem",
+                    problem: "Quantidade de páginas é grande para acabamento com espiral",
+                    solution: "—",
+                    message: "Pedir alteração para SEAUFAT",
                     destiny: "impressao"
                 }),
                 item({
@@ -737,4 +750,5 @@
     </script>
 </body>
 </html>
+
 
