@@ -1,0 +1,104 @@
+:root {
+    --bg-deep: #0a0a0a;
+    --card-dark: #141414;
+    --border-subtle: #262626;
+    --error-red: #ef4444;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-deep);
+    color: #ededed;
+    overflow-x: hidden;
+}
+
+.glass-card {
+    background: var(--card-dark);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border-subtle);
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.input-dark {
+    background: #1a1a1a;
+    border: 1px solid #2d2d2d;
+    color: #fff;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.input-dark:focus {
+    border-color: #3b82f6;
+    outline: none;
+}
+
+.input-dark:disabled {
+    cursor: not-allowed;
+}
+
+.canvas-container {
+    display: none;
+    background: #0f0f0f;
+    border-radius: 2rem;
+    border: 1px solid var(--border-subtle);
+    overflow: hidden;
+    width: 100%;
+    padding: 1.5rem;
+    max-height: 100%; 
+}
+
+#drawingArea {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    width: 100%;
+    min-height: 0;
+    position: relative;
+}
+
+svg {
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+}
+
+.technical-line {
+    vector-effect: non-scaling-stroke;
+    shape-rendering: crispEdges;
+    stroke-linecap: square;
+    stroke-linejoin: miter;
+    stroke-width: 1 !important;
+}
+
+.legenda-item {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0.15rem 0.5rem;
+    border-radius: 0.5rem;
+}
+
+.legenda-item:hover {
+    background-color: #1a1a1a;
+    transform: translateX(4px);
+}
+
+.legenda-destaque {
+    background-color: transparent !important;
+    border: 1px solid #2d2d2d !important;
+    padding: 0.4rem 0.75rem !important;
+    margin-bottom: 2px;
+}
+
+.legenda-destaque:hover {
+    background-color: #1a1a1a !important;
+}
+
+/* Classe para o estado de erro */
+.text-error {
+    color: var(--error-red) !important;
+}
