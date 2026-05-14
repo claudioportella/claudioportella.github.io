@@ -1,4 +1,4 @@
-let activeDestiny = 'impressao';
+let activeDestiny = null;
 let state = {};
 let visibleItensCount = 0;
 
@@ -6,6 +6,8 @@ function setDestiny(dest) {
     activeDestiny = dest;
     document.getElementById('opt-impressao').classList.toggle('active', dest === 'impressao');
     document.getElementById('opt-plotagem').classList.toggle('active', dest === 'plotagem');
+    document.getElementById('opt-expediente').classList.toggle('active', dest === 'expediente');
+    document.getElementById('content-wrapper').classList.remove('hidden');
     renderChecklist();
     checkCompletion();
 }
@@ -35,7 +37,8 @@ function checkCompletion() {
     let preenchidosVisiveis = 0;
     fullConfig.forEach(cat => {
         cat.itens.forEach(item => {
-            if ((item.destiny === 'ambos' || item.destiny === activeDestiny) && state[item.id] !== null) {
+            const isVisible = Array.isArray(item.destiny) ? item.destiny.includes(activeDestiny) : (item.destiny === 'todos' || item.destiny === activeDestiny);
+            if (isVisible && state[item.id] !== null) {
                 preenchidosVisiveis++;
             }
         });
@@ -105,9 +108,9 @@ function renderChecklist() {
     visibleItensCount = 0;
 
     fullConfig.forEach(cat => {
-        const filteredItens = cat.itens.filter(item => 
-            item.destiny === 'ambos' || item.destiny === activeDestiny
-        );
+        const filteredItens = cat.itens.filter(item => {
+            return Array.isArray(item.destiny) ? item.destiny.includes(activeDestiny) : (item.destiny === 'todos' || item.destiny === activeDestiny);
+        });
 
         if (filteredItens.length > 0) {
             let html = `

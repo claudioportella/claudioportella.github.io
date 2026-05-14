@@ -11,7 +11,7 @@ const fullConfig = [
             problem: "—",
             solution: "—",
             message: "Enviar e-mail Logomarca e Atividade Parlamentar",
-            destiny: "ambos"
+            destiny: ["impressao", "plotagem", "expediente"]
         })
     ]),
     categoria("Verificação no SIGRAF", [
@@ -23,7 +23,7 @@ const fullConfig = [
             problem: "—",
             solution: "—",
             message: "Pedir correção do formato para SEAUFAT",
-            destiny: "ambos"
+            destiny: ["impressao", "plotagem", "expediente"]
         }),
         item({
             id: "sigraf_cores",
@@ -33,7 +33,7 @@ const fullConfig = [
             problem: "—",
             solution: "—",
             message: "Pedir correção das cores para SEAUFAT",
-            destiny: "impressao"
+            destiny: ["impressao", "expediente"]
         }),
         item({
             id: "sigraf_paginas",
@@ -65,7 +65,7 @@ const fullConfig = [
             problem: "Elementos coloridos",
             solution: "Converter para PB.",
             message: "—",
-            destiny: "impressao"
+            destiny: ["impressao", "expediente"]
         }),
         item({
             id: "tac_300",
@@ -75,7 +75,7 @@ const fullConfig = [
             problem: "Concentração de cores muito alta",
             solution: "Clarear, de forma que a concentração de cores nas áreas mais escuras não exceda 300%.",
             message: "—",
-            destiny: "impressao"
+            destiny: ["impressao", "expediente"]
         }),
         item({
             id: "resolution_check",
@@ -105,7 +105,7 @@ const fullConfig = [
             problem: "Fonte não incorporada",
             solution: "Na exportação do PDF, configurar o programa para que incorpore as fontes.",
             message: "—",
-            destiny: "impressao"
+            destiny: ["impressao", "plotagem", "expediente"]
         })
     ]),
     categoria("Verificação manual", [
@@ -117,7 +117,7 @@ const fullConfig = [
             problem: "Ausência de sangria",
             solution: "Incluir sangria de 5mm em todas as bordas.",
             message: "—",
-            destiny: "impressao"
+            destiny: ["impressao", "expediente"]
         }),
         item({
             id: "marcas_check",
@@ -127,7 +127,7 @@ const fullConfig = [
             problem: "Marcas de corte",
             solution: "Retirar marcas de corte, escala de cores, espaçador.",
             message: "—",
-            destiny: "impressao"
+            destiny: ["impressao", "expediente"]
         }),
         item({
             id: "marcas_dobra",
@@ -212,9 +212,9 @@ const fullConfig = [
             critical: true,
             label: "Lombada com medida correta",
             details: [
-                'Conferir em <a href="https://claudioportella.com/lombada/" target="_blank"><span class="underline">cálculo de lombada</span></a>'
+                'Conferir em <a href="https://claudioportella.com/lombada/" target="_blank"><span class="underline">Cálculo de Lombada</span></a>'
             ],
-            action: "ambos",
+            action: ["relatório", "mensagem"],
             problem: "Medida da lombada incompatível com a quantidade de páginas",
             solution: "Ajustar lombada para XX mm.",
             message: "Incluir a medida correta da lombada no relatório",
@@ -250,14 +250,14 @@ const fullConfig = [
             message: "—",
             destiny: "impressao"
         }),
-            item({
+        item({
             id: "encadernacao_capa_dura",
             critical: true,
             label: "Compatível com encadernação com capa dura",
             details: [
                 "Para capa dura, a lombada deve ter entre 3 mm e 47 mm",
                 "— Usar couchê fosco 170"
-            ],  
+            ],
             action: "mensagem",
             problem: "—",
             solution: "—",
@@ -271,19 +271,19 @@ const fullConfig = [
             details: [
                 "Para cola, a lombada deve ter entre 3 mm e 47 mm",
                 "— NÃO usar couchê fosco 170"
-            ],                                        
+            ],
             action: "relatório",
             problem: "Quantidade de páginas é pequena para acabamento com cola",
             solution: "Alterar capa para grampo (sem lombada).",
             message: "—",
             destiny: "impressao"
         }),
-            item({
+        item({
             id: "encadernacao_grampo",
             critical: true,
             label: "Compatível com encadernação com grampo",
             details: [
-                'Para grampo, a lombada deve ter menos de 3 mm'
+                "Para grampo, a lombada deve ter menos de 3 mm"
             ],
             action: "relatório",
             problem: "Quantidade de páginas é grande para acabamento com grampo",
@@ -291,12 +291,12 @@ const fullConfig = [
             message: "—",
             destiny: "impressao"
         }),
-            item({
+        item({
             id: "encadernacao_espiral",
             critical: true,
             label: "Compatível com encadernação com espiral",
             details: [
-                'Para espiral, a \"lombada\" deve ter menos de 50 mm'
+                'Para espiral, a "lombada" deve ter menos de 50 mm'
             ],
             action: "mensagem",
             problem: "Quantidade de páginas é grande para acabamento com espiral",
@@ -340,7 +340,7 @@ const fullConfig = [
             label: "Cartão de visitas no padrão do Senado",
             action: "relatório",
             problem: "Cartão de visitas fora do padrão",
-            solution: "Seguir o padrão do <a href=\"https://www12.senado.leg.br/identidadevisual\" target=\"_blank\"><span class=\"underline\">Manual de Identidade Visual do Senado Federal</span></a>.",
+            solution: 'Seguir o padrão do <a href="https://www12.senado.leg.br/identidadevisual" target="_blank"><span class="underline">Manual de Identidade Visual do Senado Federal</span></a>.',
             message: "—",
             destiny: "impressao"
         }),

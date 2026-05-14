@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor Checklist: JS ↔ Planilha</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        textarea {
+            font-family: 'ui-monospace', 'SFMono-Regular', Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            white-space: pre;
+            overflow-wrap: normal;
+        }
+        .toast {
+            visibility: hidden;
+            min-width: 200px;
+            margin-left: -100px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 12px;
+            position: fixed;
+            z-index: 100;
+            left: 50%;
+            bottom: 30px;
+            font-size: 14px;
+        }
+        .toast.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen p-4 md:p-8 text-slate-800">
+    <div id="toast" class="toast">Copiado para a área de transferência!</div>
+
+    <div class="max-w-7xl mx-auto">
+        <header class="mb-6 flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-bold text-slate-900 text-blue-600">JS ⇄ Spreadsheet Converter</h1>
+                <p class="text-slate-600 mt-1">Formato Lado-a-Lado - Serialização Humana Personalizada</p>
+            </div>
+            <div class="text-right">
+                <span class="text-xs font-mono text-gray-400 bg-white px-2 py-1 rounded border border-gray-200">v3.0 - Smart Quotes & Arrays</span>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+            <!-- Coluna Planilha (CSV/TSV) -->
+            <div class="flex flex-col gap-2">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <label class="text-xs font-bold uppercase text-slate-500 tracking-wider">Dados da Planilha</label>
+                        <select id="delimiter" class="text-xs border rounded px-1 py-0.5 bg-white font-medium text-blue-600 border-blue-200 focus:outline-none">
+                            <option value="\t">Usar TAB (Recomendado para Excel)</option>
+                            <option value=",">Usar VÍRGULA (CSV Padrão)</option>
+                        </select>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="copyToClipboard('csvInput')" class="text-xs px-2 py-1 bg-blue-100 text-blue-700 hover:bg-blue-200 rounded transition font-medium">Copiar</button>
+                        <button onclick="clearArea('csv')" class="text-xs px-2 py-1 bg-slate-200 hover:bg-slate-300 rounded transition">Limpar</button>
+                    </div>
+                </div>
+                <textarea id="csvInput" class="w-full h-[600px] p-4 rounded-lg border border-slate-300 shadow-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all text-sm" placeholder="Cole os dados da planilha aqui (ex: Excel)..."></textarea>
+                <button onclick="convertCsvToJs()" class="mt-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all flex items-center justify-center gap-2">
+                    Gerar Código JS ➔
+                </button>
+            </div>
+
+            <!-- Coluna JS -->
+            <div class="flex flex-col gap-2">
+                <div class="flex justify-between items-center">
+                    <label class="text-xs font-bold uppercase text-slate-500 tracking-wider">Código JavaScript</label>
+                    <div class="flex gap-2">
+                        <button onclick="copyToClipboard('jsInput')" class="text-xs px-2 py-1 bg-green-100 text-green-700 hover:bg-green-200 rounded transition font-medium">Copiar</button>
+                        <button onclick="clearArea('js')" class="text-xs px-2 py-1 bg-slate-200 hover:bg-slate-300 rounded transition">Limpar</button>
+                    </div>
+                </div>
+                <textarea id="jsInput" class="w-full h-[600px] p-4 rounded-lg border border-slate-300 shadow-sm focus:ring-2 focus:ring-green-500 outline-none transition-all text-sm" placeholder="Cole o código JavaScript aqui..."></textarea>
+                <button onclick="convertJsToCsv()" class="mt-2 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all flex items-center justify-center gap-2">
+                    ⬅ Gerar para Planilha
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showToast() {
+            const x = document.getElementById("toast");
+            x.className = "toast show";
+            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+        }
+
+        function copyToClipboard(id) {
+            const copyText = document.getElementById(id);
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            document.execCommand("copy");
+            showToast();
+        }
+
+        function clearArea(id) {
+            document.getElementById(id + 'Input').value = '';
+        }
+
+        function removeAccents(str) {
+            if (!str) return "";
+            return str.normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase()
+                .trim();
+        }
+
+        function getDelimiter() {
+            const val = document.getElementById('delimiter').value;
+            return val === '\\t' ? '\t' : ',';
+        }
+
+        // Função inteligente de stringify para emular o modo de escrita humano
+        function customStringify(str) {
+            if (typeof str !== 'string') return JSON.stringify(str);
+            // Se tiver aspas duplas, não tiver aspas simples e não tiver quebras de linha
+            if (str.includes('"') && !str.includes("'") && !str.includes('\n') && !str.includes('\r')) {
+                return "'" + str + "'";
+            }
+            // Caso contrário usa o serializador padrão que previne quebra de código (usa aspas duplas)
+            return JSON.stringify(str);
+        }
+
+        function parseSpreadsheetData(text) {
+            const delim = getDelimiter();
+            const result = [];
+            let row = [];
+            let col = "";
+            let inQuotes = false;
+            let isFieldStart = true;
+            
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                const next = text[i+1];
+
+                if (isFieldStart && char === '"') {
+                    inQuotes = true;
+                    isFieldStart = false;
+                } else if (inQuotes && char === '"' && next === '"') {
+                    col += '"'; i++; 
+                } else if (inQuotes && char === '"') {
+                    inQuotes = false;
+                } else if (!inQuotes && char === delim) {
+                    row.push(col); col = "";
+                    isFieldStart = true;
+                } else if (!inQuotes && (char === '\n' || char === '\r')) {
+                    if (char === '\r' && next === '\n') i++;
+                    row.push(col);
+                    if (row.some(c => c.trim() !== '')) result.push(row);
+                    row = []; col = "";
+                    isFieldStart = true;
+                } else {
+                    col += char;
+                    isFieldStart = false;
+                }
+            }
+            if (col || row.length) {
+                row.push(col);
+                if (row.some(c => c.trim() !== '')) result.push(row);
+            }
+            return result;
+        }
+
+        function convertCsvToJs() {
+            const text = document.getElementById('csvInput').value;
+            const rows = parseSpreadsheetData(text);
+            if (rows.length < 1) return;
+
+            const keys = rows.map(r => r[0] ? r[0].trim() : "");
+            const colCount = Math.max(...rows.map(r => r.length));
+            const items = [];
+
+            for (let c = 1; c < colCount; c++) {
+                const item = {};
+                rows.forEach((row, rIdx) => {
+                    if (keys[rIdx]) {
+                        item[keys[rIdx]] = (row[c] || "").trim();
+                    }
+                });
+                if (item.id) items.push(item);
+            }
+
+            const categories = {};
+            items.forEach(it => {
+                const cat = it.categoria || "Geral";
+                if (!categories[cat]) categories[cat] = [];
+                categories[cat].push(it);
+            });
+
+            let output = "const categoria = (nome, itens) => ({ categoria: nome, itens });\n";
+            output += "const item = (o) => o;\n\n";
+            output += "const fullConfig = [\n";
+            
+            const catEntries = Object.entries(categories);
+            
+            catEntries.forEach(([name, catItems], cIdx) => {
+                output += `    categoria("${name}", [\n`;
+                
+                catItems.forEach((it, iIdx) => {
+                    const fieldOrder = ['id', 'critical', 'label', 'details', 'action', 'problem', 'solution', 'message', 'destiny'];
+                    const existingKeys = Object.keys(it).filter(k => k !== 'categoria');
+                    const sortedKeys = [...new Set([...fieldOrder, ...existingKeys])];
+
+                    output += `        item({\n`;
+                    let propsLines = [];
+
+                    sortedKeys.forEach((k) => {
+                        if (it[k] === undefined) return;
+                        
+                        let val = it[k];
+                        const isPlaceholder = val === '—' || val === '-' || val === '';
+                        const isRequired = ['id', 'critical', 'label', 'action', 'problem', 'solution', 'message', 'destiny'].includes(k);
+                        
+                        if (isPlaceholder && !isRequired) return;
+
+                        let valStr;
+                        if (k === 'critical') {
+                            valStr = (val.toLowerCase() === 'x' || val.toLowerCase() === 'true' || val === '1') ? 'true' : 'false';
+                        } else if (k === 'destiny' || k === 'action') {
+                            if (val.includes(',')) {
+                                const arr = val.split(',').map(d => k === 'destiny' ? removeAccents(d.trim()) : d.trim());
+                                valStr = '[' + arr.map(v => customStringify(v)).join(', ') + ']';
+                            } else {
+                                valStr = customStringify(k === 'destiny' ? removeAccents(val) : val);
+                            }
+                        } else if (k === 'details') {
+                            if (!isPlaceholder) {
+                                const detailsArr = val.split('\n').filter(d => d.trim()).map(d => d.trim());
+                                valStr = '[\n                ' + detailsArr.map(v => customStringify(v)).join(',\n                ') + '\n            ]';
+                            } else {
+                                return; // Pula os details vazios
+                            }
+                        } else {
+                            valStr = customStringify(val);
+                        }
+
+                        propsLines.push(`            ${k}: ${valStr}`);
+                    });
+
+                    output += propsLines.join(',\n') + '\n';
+                    output += `        })${iIdx === catItems.length - 1 ? '' : ','}\n`;
+                });
+                
+                output += `    ])${cIdx === catEntries.length - 1 ? '' : ','}\n`;
+            });
+            output += "];";
+
+            document.getElementById('jsInput').value = output;
+        }
+
+        function convertJsToCsv() {
+            const js = document.getElementById('jsInput').value;
+            const delim = getDelimiter();
+            const items = [];
+            const allKeys = new Set(["id", "categoria"]);
+
+            const catRegex = /categoria\s*\(\s*"([^"]+)"\s*,\s*\[([\s\S]*?)\]\s*\)/g;
+            const itemRegex = /item\s*\(\s*\{([\s\S]*?)\}\s*\)/g;
+            
+            // Regex melhorado para aceitar strings JS formatadas
+            const propRegex = /(\w+)\s*:\s*(true|false|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\[[\s\S]*?\])/g;
+
+            let catMatch;
+            while ((catMatch = catRegex.exec(js)) !== null) {
+                const catName = catMatch[1];
+                const itemsBlock = catMatch[2];
+                let itemMatch;
+                while ((itemMatch = itemRegex.exec(itemsBlock)) !== null) {
+                    const propsBlock = itemMatch[1];
+                    const item = { categoria: catName };
+                    let propMatch;
+                    while ((propMatch = propRegex.exec(propsBlock)) !== null) {
+                        const key = propMatch[1];
+                        let val = propMatch[2].trim();
+                        allKeys.add(key);
+
+                        if (val.startsWith('"') || val.startsWith("'")) {
+                            val = val.slice(1, -1).replace(/\\"/g, '"').replace(/\\'/g, "'");
+                        } else if (val.startsWith('[')) {
+                            const isDetails = key === 'details';
+                            const arrayStr = val.slice(1, -1);
+                            
+                            const strInArrayRegex = /("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/g;
+                            const elements = [];
+                            let strMatch;
+                            while ((strMatch = strInArrayRegex.exec(arrayStr)) !== null) {
+                                elements.push(strMatch[0].slice(1, -1).replace(/\\"/g, '"').replace(/\\'/g, "'"));
+                            }
+                            
+                            val = elements.join(isDetails ? '\n' : ', ');
+                        } else if (val === 'true') {
+                            val = 'X';
+                        } else if (val === 'false') {
+                            val = '';
+                        }
+                        
+                        item[key] = val;
+                    }
+                    items.push(item);
+                }
+            }
+
+            if (items.length === 0) return;
+
+            const orderedBase = ["id", "categoria", "critical", "label", "details", "action", "problem", "solution", "message", "destiny"];
+            const finalKeys = [...orderedBase];
+            allKeys.forEach(k => { if (!finalKeys.includes(k)) finalKeys.push(k); });
+
+            let spreadsheetText = "";
+            finalKeys.forEach(key => {
+                let row = [key];
+                items.forEach(item => {
+                    let val = (item[key] !== undefined && item[key] !== "") ? item[key] : "—";
+                    if (val.includes(delim) || val.includes('"') || val.includes('\n')) {
+                        val = `"${val.replace(/"/g, '""')}"`;
+                    }
+                    row.push(val);
+                });
+                spreadsheetText += row.join(delim) + "\n";
+            });
+
+            document.getElementById('csvInput').value = spreadsheetText.trim();
+        }
+    </script>
+</body>
+</html>

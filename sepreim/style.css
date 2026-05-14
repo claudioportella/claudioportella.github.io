@@ -93,6 +93,9 @@ body {
 
 .destiny-option {
     flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     padding: 10px;
     font-size: 11px;
@@ -123,6 +126,15 @@ body {
     opacity: 0.5;
     margin-top: 2px;
     font-weight: 400;
+}
+
+#content-wrapper {
+    transition: opacity 0.3s ease;
+}
+
+#content-wrapper.hidden {
+    display: none;
+    opacity: 0;
 }
 
 @media print {
