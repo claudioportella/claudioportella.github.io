@@ -154,12 +154,13 @@ function gerarRelatorio() {
     
     fullConfig.forEach(cat => {
         cat.itens.forEach(item => {
-            if ((item.destiny === 'ambos' || item.destiny === activeDestiny) && state[item.id] === 'error') {
+            const isVisible = Array.isArray(item.destiny) ? item.destiny.includes(activeDestiny) : (item.destiny === 'todos' || item.destiny === activeDestiny);
+            if (isVisible && state[item.id] === 'error') {
                 const cleanProblem = item.problem.replace(/<[^>]*>/g, '');
 
                 if (item.action === "mensagem") {
                     if (item.message !== "—") messages.push(item.message);
-                } else if (item.action === "ambos") {
+                } else if (Array.isArray(item.action) ? item.action.includes("mensagem") : item.action === "ambos") {
                     if (item.message !== "—") messages.push(item.message);
                     errorRows.push({ prob: cleanProblem, sol: item.solution, critical: item.critical });
                 } else {
