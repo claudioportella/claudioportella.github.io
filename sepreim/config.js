@@ -16,6 +16,19 @@ const fullConfig = [
     ]),
     categoria("Verificação no SIGRAF", [
         item({
+            id: "revisao_servso",
+            critical: true,
+            label: "Trabalho já está revisado",
+            details: [
+                "Verficar se a revisão será feita pela SEGRAF ou já foi feita pelo cliente"
+            ],
+            action: "mensagem",
+            problem: "—",
+            solution: "—",
+            message: "Enviar para SERVSO",
+            destiny: ["impressao", "plotagem"]
+        }),
+        item({
             id: "sigraf_formato",
             critical: true,
             label: "Formato correto na Ordem de Serviço",
