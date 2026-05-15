@@ -358,6 +358,19 @@ const fullConfig = [
             destiny: "impressao"
         }),
         item({
+            id: "modelo_cliche",
+            critical: false,
+            label: "Modelo de relevo/douração impresso na pasta",
+            details: [
+                "Os trabalhos com relevo ou douração precisam de um modelo impresso na pasta"
+            ],
+            action: "mensagem",
+            problem: "—",
+            solution: "—",
+            message: "Incluir um modelo impresso na pasta.",
+            destiny: ["impressao", "expediente"]
+        }),
+        item({
             id: "chancela_correios",
             critical: true,
             label: "Envelope com a chancela dos Correios",
