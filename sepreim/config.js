@@ -264,6 +264,16 @@ const fullConfig = [
             destiny: "impressao"
         }),
         item({
+            id: "reserva_cola",
+            critical: false,
+            label: "Parte interna da lombada em branco",
+            action: "relatório",
+            problem: "Impressão na parte interna da lombada",
+            solution: "Deixar a parte interna da lombada em branco, porque a tinta nessa área prejudica a colagem do miolo.",
+            message: "—",
+            destiny: "impressao"
+        }),
+        item({
             id: "encadernacao_capa_dura",
             critical: true,
             label: "Compatível com encadernação com capa dura",
