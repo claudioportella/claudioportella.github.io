@@ -365,7 +365,7 @@ const fullConfig = [
             problem: "Cartão de visitas fora do padrão",
             solution: 'Seguir o padrão do <a href="https://www12.senado.leg.br/identidadevisual" target="_blank"><span class="underline">Manual de Identidade Visual do Senado Federal</span></a>.',
             message: "—",
-            destiny: "impressao"
+            destiny: "expediente"
         }),
         item({
             id: "modelo_cliche",
