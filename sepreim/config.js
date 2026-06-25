@@ -101,16 +101,6 @@ const fullConfig = [
             destiny: "impressao"
         }),
         item({
-            id: "pag_multiple_4",
-            critical: true,
-            label: "Número de páginas múltiplo de 4",
-            action: "relatório",
-            problem: "Total de páginas do miolo não é múltiplo de 4",
-            solution: "Acrescentar ou retirar páginas.",
-            message: "—",
-            destiny: "impressao"
-        }),
-        item({
             id: "fonts_embed",
             critical: true,
             label: "Fontes incorporadas",
@@ -122,6 +112,16 @@ const fullConfig = [
         })
     ]),
     categoria("Verificação manual", [
+        item({
+            id: "pag_multiple_4",
+            critical: true,
+            label: "Número de páginas múltiplo de 4",
+            action: "relatório",
+            problem: "Total de páginas do miolo não é múltiplo de 4",
+            solution: "Acrescentar ou retirar páginas.",
+            message: "—",
+            destiny: "impressao"
+        }),
         item({
             id: "sangria_5mm",
             critical: true,
