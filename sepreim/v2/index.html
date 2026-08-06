@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificação de Problemas Técnicos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Adicionamos o PapaParse para ler sua planilha automaticamente -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen">
+
+    <main class="max-w-4xl mx-auto p-4 md:p-8 lg:p-12 no-print">
+        <div class="main-container p-8 md:p-10 space-y-10">
+            
+            <div class="space-y-4">
+                <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] ml-2">Destino do Trabalho</h3>
+                
+                <!-- Os botões de destino agora serão gerados magicamente pelo JS aqui -->
+                <div class="destiny-selector" id="destiny-selector">
+                    <div class="p-4 text-center text-gray-400 text-xs w-full animate-pulse">
+                        Carregando opções da planilha...
+                    </div>
+                </div>
+            </div>
+
+            <div id="content-wrapper" class="hidden">
+                <div id="checklist-container" class="space-y-10">
+                    <!-- Conteúdo gerado via JS -->
+                </div>
+
+                <div class="flex pt-4">
+                    <button id="btn-gerar" disabled onclick="abrirModalRelatorio()" title="Marque todos os itens para gerar o relatório" class="generate-btn mx-auto bg-white hover:bg-gray-200 text-black font-bold py-4 px-10 rounded-2xl transition duration-300 flex justify-center items-center gap-3 text-xs uppercase shadow-xl">
+                        Gerar Relatório
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="preview-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-2xl rounded-[2.5rem] overflow-hidden flex flex-col max-h-[90vh]">
+            <div class="p-4 bg-gray-50 border-b flex justify-between items-center no-print">
+                <span class="text-[10px] font-black uppercase text-gray-400 ml-4">Relatório de problemas técnicos</span>
+                <button onclick="fecharModal()" class="p-2 hover:bg-gray-200 rounded-full transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#000" viewBox="0 0 256 256"><path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"></path></svg>
+                </button>
+            </div>
+            <div id="preview-modal-content" class="p-8 md:p-12 overflow-y-auto bg-white text-black leading-relaxed"></div>
+            <div id="modal-actions" class="p-6 bg-gray-50 border-t flex justify-center no-print hidden">
+                <button onclick="copiarTexto()" class="bg-black text-white font-bold py-4 px-10 rounded-2xl transition duration-300 flex justify-center items-center gap-3 text-xs uppercase shadow-xl hover:bg-gray-800">
+                    Copiar relatório
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="fixed bottom-12 left-1/2 -translate-x-1/2 bg-emerald-500 text-black font-bold text-xs px-10 py-4 rounded-2xl opacity-0 transition-all duration-300 shadow-2xl pointer-events-none uppercase tracking-widest z-[60]">
+        Relatório copiado! Pronto para colar no e-mail.
+    </div>
+
+    <!-- Note que o config.js foi removido -->
+    <script src="script.js"></script>
+</body>
+</html>
