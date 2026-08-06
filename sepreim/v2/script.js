@@ -1,5 +1,5 @@
 // =========================================================
-// COLE AQUI O LINK CSV GERADO PELO GOOGLE SHEETS
+// CSV GERADO PELO GOOGLE SHEETS
 // =========================================================
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRBKGxaOzaYNX-C58a9wAXdbc_2xrB4jfIZkE_EHpeJd_9F4AQzpsEFTaX0BdEav9j3ROEjKDG-BTNi/pub?gid=529813744&single=true&output=csv"; 
 
